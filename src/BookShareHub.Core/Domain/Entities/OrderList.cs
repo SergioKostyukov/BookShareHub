@@ -1,6 +1,6 @@
 ﻿namespace BookShareHub.Core.Domain.Entities;
 
-internal class OrderList
+public class OrderList
 {
 	public int Id { get; set; }
 	public int OrderId { get; set; }

@@ -1,6 +1,6 @@
 ﻿namespace BookShareHub.Core.Domain.Entities;
 
-internal class Chat
+public class Chat
 {
 	public int Id { get; set; }
 	public int AdminID { get; set; } // possible value duplication in "ChatSubscribersList" 

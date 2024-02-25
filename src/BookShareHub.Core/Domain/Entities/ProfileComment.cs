@@ -1,6 +1,6 @@
 ﻿namespace BookShareHub.Core.Domain.Entities;
 
-internal class ProfileComment
+public class ProfileComment
 {
 	public int Id { get; set; }
 	public int AuthorId { get; set; }

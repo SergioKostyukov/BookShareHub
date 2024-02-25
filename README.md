@@ -11,7 +11,7 @@ Below is a description of the functionality, divided into the corresponding page
 - User Login/SignUp
     - Registration and login to the system
 - Account
-    - Basic user information
+    - View basic user information
     - View exchange history
     - View profile comments
     - (Additional) Other statistics
@@ -22,7 +22,7 @@ Below is a description of the functionality, divided into the corresponding page
     - Possibility to view the books available in the library
     - Search for books within the library
     - Possibility to offer the order terms to the book owner
-    - (Additional) Sorting and filtering by criteria
+    - Sorting and filtering by criteria
     - (Additional) Anonymous book exchange based on value and description
 - Order page
     - Exchange books according to their value
@@ -49,8 +49,8 @@ Below is a description of the functionality, divided into the corresponding page
 
 - User - each user enters his own information during registration
 - Book - parameters of the book are set when it is added to the general library
-- Order - parameters at checkout
+- Order - order parameters/status
 - OrderList - list of order objects
-- ProfileComment - the user has the opportunity to leave a comment about the user after a successful (or not) order.
-- Chat - the user can create a chat or join an existing one.
+- ProfileComment - the user has the opportunity to leave a comment about the other user after a successful (or not) order
+- Chat - the user can create a chat or join an existing one
 - ChatSubscribersList - each chat contains a list of subscribed users

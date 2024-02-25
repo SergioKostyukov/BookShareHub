@@ -1,6 +1,6 @@
 ﻿namespace BookShareHub.Core.Domain.Entities;
 
-internal class ChatSubscribersList
+public class ChatSubscribersList
 {
 	public int Id { get; set; }
 	public int ChatId { get; set; }

@@ -1,7 +1,11 @@
+using BookShareHub.Infrastructure.Data;
+using Microsoft.Extensions.Configuration;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddStorage(builder.Configuration);
 
 var app = builder.Build();
 
