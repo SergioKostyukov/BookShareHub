@@ -17,10 +17,12 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired();
 
 			builder.Property(x => x.OrderStatus)
-				.IsRequired();
+				.IsRequired()
+				.HasConversion<int>();
 
 			builder.Property(x => x.OrderType)
-				.IsRequired();
+				.IsRequired()
+				.HasConversion<int>();
 
 			builder.Property(x => x.CreatedDate)
 				.IsRequired();
@@ -29,7 +31,8 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired();
 
 			builder.Property(x => x.Check)
-				.IsRequired();
+				.IsRequired()
+				.HasColumnType("decimal(8,2)");
 		}
 	}
 }

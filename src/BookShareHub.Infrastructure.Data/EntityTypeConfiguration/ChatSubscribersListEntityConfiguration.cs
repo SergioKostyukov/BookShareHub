@@ -16,7 +16,9 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(x => x.UserId)
 				.IsRequired();
 
-			builder.Property(x => x.Status);
+			builder.Property(x => x.Status)
+				.IsRequired()
+				.HasConversion<int>();
 
 			builder.Property(x => x.AddedTime)
 				.IsRequired();

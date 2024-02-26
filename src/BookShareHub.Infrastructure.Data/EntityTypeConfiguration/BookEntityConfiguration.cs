@@ -25,10 +25,12 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(x => x.Description);
 
 			builder.Property(x => x.Value)
-				.IsRequired();
+				.IsRequired()
+				.HasColumnType("decimal(18,2)");
 
 			builder.Property(x => x.Price)
-				.IsRequired();
+				.IsRequired()
+				.HasColumnType("decimal(18,2)");
 		}
 	}
 }

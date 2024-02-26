@@ -10,7 +10,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 		{
 			builder.HasKey(x => x.Id);
 
-			builder.Property(x => x.AdminID)
+			builder.Property(x => x.AdminId)
 				.IsRequired();
 
 			builder.Property(x => x.Title)
@@ -21,8 +21,9 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(x => x.CreateDate)
 				.IsRequired();
 
-			builder.Property(x => x.Type)
-				.IsRequired();
+			builder.Property(x => x.ChatType)
+				.IsRequired()
+				.HasConversion<int>();
 
 			builder.Property(x => x.Messages)
 				.IsRequired();

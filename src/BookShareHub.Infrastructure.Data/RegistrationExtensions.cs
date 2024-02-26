@@ -11,7 +11,7 @@ namespace BookShareHub.Infrastructure.Data
 		{
 			serviceCollection.AddDbContext<BookShareHubDbContext>(options =>
 			{
-				options.UseSqlServer(configuration["ConnectionStrings:LocalDbSqlServer"]);
+				options.UseSqlServer(configuration["ConnectionStrings:LocalDbSqlServer"], options => options.MigrationsAssembly("BookShareHub.Infrastructure.Data"));
 			});
 		}
 	}

@@ -19,7 +19,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.Property(x => x.Email);
 
-			builder.Property(x => x.Password)
+			builder.Property(x => x.HashPassword)
 				.IsRequired();
 
 			builder.Property(x => x.Rating);

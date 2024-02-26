@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
 using BookShareHub.Core.Domain.Entities;
+using BookShareHub.Infrastructure.Data.EntityTypeConfiguration;
 
 namespace BookShareHub.Infrastructure.Data
 {
@@ -16,5 +17,10 @@ namespace BookShareHub.Infrastructure.Data
 		public DbSet<OrderList> OrdersLists { get; set; }
 		public DbSet<Chat> Chats { get; set; }
 		public DbSet<ChatSubscribersList> ChatsSubscribersLists { get; set; }
+
+		protected override void OnModelCreating(ModelBuilder modelBuilder)
+		{
+			modelBuilder.ApplyConfiguration(new OrderListEntityConfiguration());
+		}
 	}
 }

@@ -8,8 +8,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 	{
 		public void Configure(EntityTypeBuilder<OrderList> builder)
 		{
-			builder.Property(x => x.Id)
-				.IsRequired();
+			builder.HasKey(x => new {x.OrderId, x.BookId});
 
 			builder.Property(x => x.OrderId)
 				.IsRequired();
