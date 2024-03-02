@@ -5,7 +5,7 @@ namespace BookShareHub.Infrastructure.Data
 {
 	public static class SeedingExtensions
 	{
-		public static async Task DarabaseEnsureCreated(this IApplicationBuilder applicationBuilder)
+		public static async Task DatabaseEnsureCreated(this IApplicationBuilder applicationBuilder)
 		{
 			using(var scope = applicationBuilder.ApplicationServices.CreateScope())
 			{

@@ -8,8 +8,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 	{
 		public void Configure(EntityTypeBuilder<ProfileComment> builder)
 		{
-			builder.Property(x => x.Id)
-				.IsRequired();
+			builder.HasKey(x => x.Id);
 
 			builder.Property(x => x.AuthorId)
 				.IsRequired();

@@ -1,11 +1,8 @@
-﻿namespace BookShareHub.Core.Domain.Entities;
+﻿using Microsoft.AspNetCore.Identity;
 
-public class User
+namespace BookShareHub.Core.Domain.Entities;
+
+public class User : IdentityUser
 {
-	public int Id {  get; set; }
-	public string Name { get; set; }
-	public string Tag { get; set; }
-	public string? Email { get; set; }
-	public string HashPassword { get; set; }
 	public float? Rating { get; set; }
 }

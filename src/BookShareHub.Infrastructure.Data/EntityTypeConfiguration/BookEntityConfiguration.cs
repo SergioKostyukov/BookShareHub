@@ -24,11 +24,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.Property(x => x.Description);
 
-			builder.Property(x => x.Value)
-				.IsRequired()
-				.HasColumnType("decimal(18,2)");
-
-			builder.Property(x => x.Price)
+			builder.Property(x => x.OriginalPrice)
 				.IsRequired()
 				.HasColumnType("decimal(18,2)");
 		}

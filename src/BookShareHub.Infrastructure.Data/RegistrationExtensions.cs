@@ -1,7 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore.SqlServer;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BookShareHub.Infrastructure.Data
 {
@@ -11,7 +10,8 @@ namespace BookShareHub.Infrastructure.Data
 		{
 			serviceCollection.AddDbContext<BookShareHubDbContext>(options =>
 			{
-				options.UseSqlServer(configuration["ConnectionStrings:LocalDbSqlServer"], options => options.MigrationsAssembly("BookShareHub.Infrastructure.Data"));
+				options.UseSqlServer(configuration["ConnectionStrings:LocalDbSqlServer"], 
+					options => options.MigrationsAssembly(typeof(BookShareHubDbContext).Assembly.FullName));
 			});
 		}
 	}

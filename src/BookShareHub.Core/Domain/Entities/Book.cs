@@ -8,6 +8,5 @@ public class Book
 	public string Author { get; set; }
 	public string Language { get; set; }
 	public string? Description { get; set; }
-	public decimal Value { get; set; } // internal abstract currency
-	public decimal Price { get; set; }
+	public decimal OriginalPrice { get; set; }
 }

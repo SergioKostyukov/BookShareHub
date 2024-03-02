@@ -8,19 +8,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 	{
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
-			builder.Property(x => x.Id)
-				.IsRequired();
-
-			builder.Property(x => x.Name)
-				.IsRequired();
-
-			builder.Property(x => x.Tag)
-				.IsRequired();
-
-			builder.Property(x => x.Email);
-
-			builder.Property(x => x.HashPassword)
-				.IsRequired();
+			builder.HasKey(u => u.Id);
 
 			builder.Property(x => x.Rating);
 		}
