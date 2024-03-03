@@ -7,7 +7,7 @@ namespace BookShareHub.Infrastructure.Data
 	{
 		public static async Task DatabaseEnsureCreated(this IApplicationBuilder applicationBuilder)
 		{
-			using(var scope = applicationBuilder.ApplicationServices.CreateScope())
+            using (var scope = applicationBuilder.ApplicationServices.CreateScope())
 			{
 				var dbContext = scope.ServiceProvider.GetRequiredService<BookShareHubDbContext>();
 				var database = dbContext.Database;

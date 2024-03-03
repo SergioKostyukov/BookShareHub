@@ -10,7 +10,10 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 		{
 			builder.HasKey(x => x.Id);
 
-			builder.Property(x => x.OwnerId)
+			builder.Property(x => x.Id)
+				.UseIdentityColumn();
+
+            builder.Property(x => x.OwnerId)
 				.IsRequired();
 
 			builder.Property(x => x.Title)
@@ -24,7 +27,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 
 			builder.Property(x => x.Description);
 
-			builder.Property(x => x.OriginalPrice)
+			builder.Property(x => x.Price)
 				.IsRequired()
 				.HasColumnType("decimal(18,2)");
 		}

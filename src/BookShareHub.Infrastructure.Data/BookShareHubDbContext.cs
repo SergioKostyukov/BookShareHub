@@ -10,7 +10,7 @@ namespace BookShareHub.Infrastructure.Data
 	public class BookShareHubDbContext : IdentityDbContext<User>
     {
 		public BookShareHubDbContext(DbContextOptions<BookShareHubDbContext> options) : base(options) { }
-
+		public BookShareHubDbContext() { }
 		public DbSet<User> Users { get; set; }
 		public DbSet<ProfileComment> ProfileComments { get; set; }
 		public DbSet<Book> Books { get; set; }
@@ -23,9 +23,15 @@ namespace BookShareHub.Infrastructure.Data
 		{
 			base.OnModelCreating(modelBuilder);
 
-			modelBuilder.ApplyConfiguration(new OrderListEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new UserEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ProfileCommentEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new BookEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new OrderListEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ChatEntityConfiguration());
+            modelBuilder.ApplyConfiguration(new ChatSubscribersListEntityConfiguration());
 
-			modelBuilder.Entity<IdentityUserLogin<string>>()
+            modelBuilder.Entity<IdentityUserLogin<string>>()
 				.HasKey(x => new { x.LoginProvider, x.ProviderKey });
 		}
 	}

@@ -8,7 +8,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 	{
 		public void Configure(EntityTypeBuilder<User> builder)
 		{
-			builder.HasKey(u => u.Id);
+            builder.HasKey(u => u.Id);
 
 			builder.Property(x => x.Rating);
 		}

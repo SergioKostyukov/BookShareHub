@@ -6,4 +6,9 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\BookShareHub.Core\BookShareHub.Core.csproj" />
+    <ProjectReference Include="..\BookShareHub.Infrastructure.Data\BookShareHub.Infrastructure.Data.csproj" />
+  </ItemGroup>
+
 </Project>

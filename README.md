@@ -9,48 +9,46 @@ Overall, the platform offers a seamless solution for book enthusiasts to connect
 
 Below is a description of the functionality, divided into the corresponding pages of the application
 - User Login/SignUp
-    - Registration and login to the system
+    - User registration and login functionality
 - Account
-    - View basic user information
-    - View exchange history
-    - View profile comments
-    - (Additional) Other statistics
+    - Access basic user information
+    - View exchange history and profile comments
+    - (Additional) View additional statistics
 - Main page
-    - Navigation through the pages (library, active, myBooks)
-    - (Additional) Possibility to view news/updates/advertisements
+    - Navigate through different sections such as library, active exchanges, and user's book listings
+    - (Additional) Access news, updates, or advertisements
 - Books list
-    - Possibility to view the books available in the library
-    - Search for books within the library
-    - Possibility to offer the order terms to the book owner
-    - Sorting and filtering by criteria
-    - (Additional) Anonymous book exchange based on value and description
+    - Browse available books in the library
+    - Sort and filter books based on various criteria
+    - Search for specific books within the library
+    - Initiate exchange requests with book owners
+    - (Additional) Enable anonymous book exchanges based on value and description
 - Order page
-    - Exchange books according to their value
-    - Possibility to view information about the book, seller, delivery params
-    - Possibility to create a chat with the seller
-    - Possibility to send a request for exchange with a proposal (the other party must accept or reject)
-    - Possibility to place an order if agreed upon
-    - Possibility to leave a comment about the seller
+    - Facilitate book exchanges based on agreed-upon terms
+    - View detailed information about the book, seller, and delivery parameters
+    - Initiate chats with sellers
+    - Send and respond to exchange requests
+    - Leave feedback about the seller
 - My shared books
-    - Add own book for exchange
-    - Change exist book params
-    - (Additional) Determining the value of the book according to specified parameters
+    - Add new books for exchange
+    - Modify existing book details
+    - (Additional) Determine the value of books based on specified parameters
 - Book page
-    - Setting/changing book parameters
+    - Manage book parameters and details
 - Active (actual raffles/auctions/chats/meetings)
-    - Possibility to view/delete private chats with sellers
-    - Possibility to create/join/exit a discussion channel for a book/series of books
-    - Possibility to create/join/exit an auction/raffle for donations
-    - (Additional) Possibility to create/join video conferences and literary evenings
+    - View and manage private chats with sellers
+    - Participate in or create discussion channels for books or series
+    - Join or organize auctions and raffles for book donations
+    - (Additional) Organize or participate in video conferences and literary events
 - Additional general features
-    - book crossing posibility
+    - Enable book crossing initiatives
 
-## Entity classes description
+## Entity class descriptions
 
-- User - each user enters his own information during registration
-- Book - parameters of the book are set when it is added to the general library
-- Order - order parameters/status
-- OrderList - list of order objects
-- ProfileComment - the user has the opportunity to leave a comment about the other user after a successful (or not) order
-- Chat - the user can create a chat or join an existing one
-- ChatSubscribersList - each chat contains a list of subscribed users
+- User: Stores user information provided during registration
+- Book: Stores parameters of books added to the library
+- Order: Manages order parameters and status
+- OrderList: Maintains a list of order objects
+- ProfileComment: Allows users to leave comments about other users after successful transactions
+- Chat: Facilitates user-to-user communication through chat creation or joining
+- ChatSubscribersList: Manages a list of subscribers for each chat channel

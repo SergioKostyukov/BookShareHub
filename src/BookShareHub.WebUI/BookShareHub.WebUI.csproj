@@ -25,6 +25,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\BookShareHub.Application\BookShareHub.Application.csproj" />
     <ProjectReference Include="..\BookShareHub.Infrastructure.Data\BookShareHub.Infrastructure.Data.csproj" />
   </ItemGroup>
 

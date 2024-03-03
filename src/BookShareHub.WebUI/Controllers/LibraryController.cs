@@ -1,10 +1,14 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	public class LibraryController : Controller
+    [Authorize]
+    public class LibraryController(ILogger<HomeController> logger) : Controller
 	{
-		public IActionResult Index()
+        private readonly ILogger<HomeController> _logger = logger;
+
+        public IActionResult Library()
 		{
 			return View();
 		}

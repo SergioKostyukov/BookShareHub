@@ -1,6 +1,7 @@
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
+using BookShareHub.Application;
 
 namespace BookShareHub;
 public class Program
@@ -9,13 +10,16 @@ public class Program
 	{
 		var builder = WebApplication.CreateBuilder(args);
 
-		// Add services to the container.
 		builder.Services.AddStorage(builder.Configuration);
 
 		builder.Services.AddDefaultIdentity<User>()
 			.AddEntityFrameworkStores<BookShareHubDbContext>();
 
-		builder.Services.AddControllersWithViews();
+        builder.Services.AddHttpContextAccessor();
+
+		builder.Services.AddServices();
+
+        builder.Services.AddControllersWithViews();
 		builder.Services.AddRazorPages();
 
 		builder.Services.Configure<IdentityOptions>(options =>
@@ -27,7 +31,6 @@ public class Program
 
 		var app = builder.Build();
 
-		// Configure the HTTP request pipeline.
 		if (!app.Environment.IsDevelopment())
 		{
 			app.UseExceptionHandler("/Home/Error");
