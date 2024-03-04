@@ -1,11 +1,6 @@
-﻿ using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Extensions.DependencyInjection;
-using BookShareHub.Application.Interfaces;
+﻿using BookShareHub.Application.Interfaces;
 using BookShareHub.Application.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BookShareHub.Application
 {
@@ -14,6 +9,7 @@ namespace BookShareHub.Application
 		public static IServiceCollection AddServices(this IServiceCollection services)
 		{
 			services.AddScoped<IBookService, BookService>();
+
 			return services;
 		}
 	}

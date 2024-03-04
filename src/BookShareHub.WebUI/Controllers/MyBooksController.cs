@@ -1,8 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
-using System.Security.Claims;
-
 using BookShareHub.WebUI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
@@ -19,6 +18,7 @@ namespace BookShareHub.WebUI.Controllers
             {
                 return BadRequest("UserId not found");
             }
+
             var books = await _bookService.GetBooksByUserId(userId);
 			var bookTitles = books.Select(book => new BookTitleDto
 			{

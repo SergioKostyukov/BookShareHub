@@ -1,19 +1,18 @@
-﻿using Microsoft.AspNetCore.Mvc;
-
-using BookShareHub.WebUI.Models;
+﻿using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
-using System.Security.Claims;
+using BookShareHub.WebUI.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-    public class BookController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class BookController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
     {
         private readonly IBookService _bookService = bookService;
         private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
 		[HttpGet]
-		public async Task<IActionResult> EditBook(int id)
+		public async Task<IActionResult> GetEditBook(int id)
 		{
 			var book = await _bookService.GetBookByIdAsync(id);
 
@@ -32,14 +31,14 @@ namespace BookShareHub.WebUI.Controllers
 				Price = book.Price
 			};
 
-			return View(model);
+			return View("~/Views/Book/EditBook.cshtml", model);
 		}
 
 		[HttpGet]
-		public IActionResult AddBook()
+		public IActionResult GetAddBook()
 		{
 			var model = new BookDto();
-			return View(model);
+			return View("~/Views/Book/AddBook.cshtml", model);
 		}
 
 		[HttpPost]

@@ -4,7 +4,7 @@
 
 <div class="row">
 	<div class="col-md-3 mb-4">
-		<a href="@Url.Action("AddBook", "Book")" class="card-link d-block text-decoration-none" style="height: 100%;">
+		<a href="@Url.Action("GetAddBook", "Book")" class="card-link d-block text-decoration-none" style="height: 100%;">
 			<div class="card">
 				<div class="card-body">
 					<h5 class="card-title text-center">Add Book</h5>
@@ -17,7 +17,7 @@
 	@foreach (var book in Model ?? Enumerable.Empty<BookTitleDto>())
 	{
 		<div class="col-md-3 mb-4">
-			<div class="card" onclick="location.href='@Url.Action("EditBook", "Book", new { id = book.Id })'">
+			<div class="card" onclick="location.href='@Url.Action("GetEditBook", "Book", new { id = book.Id })'">
 				<div class="card-body">
 					<h5 class="card-title">Title: @book.Title</h5>
 					<p class="card-text">Author: @book.Author</p>
@@ -38,7 +38,6 @@
 		background-color: #3498db;
 		border-radius: 10px;
 		transition: transform 0.3s ease;
-		
 	}
 
 		.card:hover {

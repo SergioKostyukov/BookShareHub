@@ -2,7 +2,7 @@
 
 namespace BookShareHub.WebUI.Controllers
 {
-    public class ActiveController : Controller
+	public class ActiveController : Controller
     {
         public IActionResult Active()
         {

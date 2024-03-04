@@ -10,8 +10,10 @@ public class Program
 	{
 		var builder = WebApplication.CreateBuilder(args);
 
+		// Add services related to storage using the configuration specified
 		builder.Services.AddStorage(builder.Configuration);
 
+		// Add default identity services using the User entity and Entity Framework stores
 		builder.Services.AddDefaultIdentity<User>()
 			.AddEntityFrameworkStores<BookShareHubDbContext>();
 
@@ -19,9 +21,10 @@ public class Program
 
 		builder.Services.AddServices();
 
-        builder.Services.AddControllersWithViews();
+		builder.Services.AddControllersWithViews();
 		builder.Services.AddRazorPages();
 
+		// Configure identity options to customize password requirements
 		builder.Services.Configure<IdentityOptions>(options =>
 		{
 			options.Password.RequireDigit = false;

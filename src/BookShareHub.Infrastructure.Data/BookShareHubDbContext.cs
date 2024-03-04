@@ -1,9 +1,8 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Design;
-using BookShareHub.Core.Domain.Entities;
+﻿using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data.EntityTypeConfiguration;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookShareHub.Infrastructure.Data
 {
