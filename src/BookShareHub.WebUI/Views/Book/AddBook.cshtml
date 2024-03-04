@@ -7,7 +7,7 @@
                 <div class="card-body">
                     <h2 class="text-center">Add New Book</h2>
                     <hr>
-					<form asp-controller="Book" asp-action="AddBook" method="post">
+                    <form asp-controller="Book" asp-action="AddBook" method="post" autocomplete="off">
                         <div class="form-group">
                             <label asp-for="Title" class="control-label"></label>
                             <input asp-for="Title" class="form-control" />

@@ -17,10 +17,6 @@ html {
     min-height: 100%;
 }
 
-body {
-    margin-bottom: 60px;
-}
-
 /*tab-navigation*/
 .login-logout-card .card-header {
     padding: 0 0 12px 0;

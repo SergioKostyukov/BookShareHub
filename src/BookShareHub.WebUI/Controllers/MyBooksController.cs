@@ -22,6 +22,7 @@ namespace BookShareHub.WebUI.Controllers
             var books = await _bookService.GetBooksByUserId(userId);
 			var bookTitles = books.Select(book => new BookTitleDto
 			{
+                Id = book.Id,
 				Title = book.Title,
 				Author = book.Author
 			}).ToList();

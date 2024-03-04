@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace BookShareHub.Core.Domain.Entities;
+﻿namespace BookShareHub.Core.Domain.Entities;
 
 public class OrderList
 {

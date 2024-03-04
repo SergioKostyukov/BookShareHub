@@ -10,7 +10,11 @@ namespace BookShareHub.Application.Interfaces
 {
     public interface IBookService
     {
-        Task<List<Book>> GetBooksByUserId(string userId);
-        Task AddBook(Book book);
-    }
+		Task<IEnumerable<Book>> GetAllBooksAsync();
+		Task<List<Book>> GetBooksByUserId(string userId);
+		Task<Book> GetBookByIdAsync(int id);
+		Task AddBookAsync(Book book);
+		Task EditBookAsync(Book book);
+		Task DeleteBookAsync(int id);
+	}
 }

@@ -1,21 +1,6 @@
-﻿namespace BookShareHub.Core.Domain.Entities;
+﻿using BookShareHub.Core.Domain.Enums;
 
-public enum OrderStatus
-{
-	Request,
-	Agreed,
-	Done,
-	Canceled
-}
-
-public enum OrderType
-{
-	Free,
-	Trade,
-	Sale,
-	Raffle,
-	Auction
-}
+namespace BookShareHub.Core.Domain.Entities;
 
 public class Order
 {

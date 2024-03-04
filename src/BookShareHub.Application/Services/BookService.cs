@@ -19,12 +19,34 @@ namespace BookShareHub.Application.Services
             return await _context.Books.Where(b => b.OwnerId == userId).ToListAsync();
         }
 
-        public async Task AddBook(Book book)
+        public async Task AddBookAsync(Book book)
         {
-            Console.WriteLine(book.Title, book.Author);
-
             _context.Books.Add(book);
             await _context.SaveChangesAsync();
         }
-    }
+
+		public Task<IEnumerable<Book>> GetAllBooksAsync()
+		{
+			throw new NotImplementedException();
+		}
+
+		public async Task<Book> GetBookByIdAsync(int id)
+		{
+			return await _context.Books.FirstOrDefaultAsync(b => b.Id == id);
+		}
+
+		public async Task EditBookAsync(Book book)
+		{
+			_context.Books.Update(book);
+			await _context.SaveChangesAsync();
+		}
+
+		public async Task DeleteBookAsync(int id)
+		{
+			var book = await _context.Books.FindAsync(id) ?? throw new InvalidOperationException("Book not found");
+
+			_context.Books.Remove(book);
+			await _context.SaveChangesAsync();
+		}
+	}
 }

@@ -1,11 +1,6 @@
-﻿namespace BookShareHub.Core.Domain.Entities;
+﻿using BookShareHub.Core.Domain.Enums;
 
-public enum UserChatStatus
-{
-	Admin,
-	Moderator,
-	User
-}
+namespace BookShareHub.Core.Domain.Entities;
 
 public class ChatSubscribersList
 {
