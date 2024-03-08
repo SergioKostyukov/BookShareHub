@@ -8,7 +8,6 @@ public class Book
 	public string Author { get; set; }
 	public string Language { get; set; }
 	public string? Description { get; set; }
-	//public string? ImagePath { get; set; }
-	//public decimal? OriginalPrice { get; set; }
 	public decimal? Price { get; set; }
+	public string? ImagePath { get; set; }
 }

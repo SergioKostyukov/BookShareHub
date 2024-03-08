@@ -1,40 +1,51 @@
 ﻿@model BookDto
 
 <div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <div class="card">
-                <div class="card-body">
-                    <h2 class="text-center">Add New Book</h2>
-                    <hr>
-                    <form asp-controller="Book" asp-action="AddBook" method="post" autocomplete="off">
-                        <div class="form-group">
-                            <label asp-for="Title" class="control-label"></label>
-                            <input asp-for="Title" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Author" class="control-label"></label>
-                            <input asp-for="Author" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Language" class="control-label"></label>
-                            <input asp-for="Language" class="form-control" />
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Description" class="control-label"></label>
-                            <textarea asp-for="Description" class="form-control" rows="4"></textarea>
-                        </div>
-                        <div class="form-group">
-                            <label asp-for="Price" class="control-label"></label>
-                            <input asp-for="Price" class="form-control" />
-                        </div>
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                            <a href="@Url.Action("MyBooks", "MyBooks")" class="btn btn-secondary">Cancel</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="text-center">Add New Book</h2>
+					<hr>
+					<form asp-controller="Book" asp-action="AddBook" method="post" autocomplete="off" enctype="multipart/form-data">
+						<div class="form-group">
+							<label asp-for="Title" class="control-label"></label>
+							<input asp-for="Title" class="form-control" />
+						</div>
+						<div>
+							<label asp-for="Author" class="control-label"></label>
+							<input asp-for="Author" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label asp-for="Language" class="control-label"></label>
+							<input asp-for="Language" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label asp-for="Description" class="control-label"></label>
+							<textarea asp-for="Description" class="form-control" rows="4"></textarea>
+						</div>
+						<div class="form-group">
+							<label asp-for="Price" class="control-label"></label>
+							<input asp-for="Price" class="form-control" />
+						</div>
+						<div class="form-group">
+							<label asp-for="ImageFile" class="control-label">Image</label>
+							<input asp-for="ImageFile" class="form-control" , accept="image/*" />
+							<span asp-validation-for="ImageFile" class="text-danger"></span>
+						</div>
+						<input type="hidden" asp-for="OwnerId" />
+						<input type="hidden" asp-for="Id" />
+						<div class="text-center">
+							<button type="submit" class="btn btn-primary">Submit</button>
+							<a href="@Url.Action("MyBooks", "MyBooks")" class="btn btn-secondary">Cancel</a>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>
+
+@section Styles {
+	<link rel="stylesheet" href="~/css/book.css" />
+}

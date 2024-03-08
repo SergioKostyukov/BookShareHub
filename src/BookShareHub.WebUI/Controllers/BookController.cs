@@ -1,21 +1,19 @@
 ﻿using System.Security.Claims;
+using BookShareHub.Application.DTOs;
 using BookShareHub.Application.Interfaces;
-using BookShareHub.Core.Domain.Entities;
-using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
 	public class BookController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
-    {
-        private readonly IBookService _bookService = bookService;
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+	{
+		private readonly IBookService _bookService = bookService;
+		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
 		[HttpGet]
 		public async Task<IActionResult> GetEditBook(int id)
 		{
 			var book = await _bookService.GetBookByIdAsync(id);
-
 			if (book == null)
 			{
 				return NotFound();
@@ -24,11 +22,13 @@ namespace BookShareHub.WebUI.Controllers
 			var model = new BookDto
 			{
 				Id = book.Id,
+				OwnerId = book.OwnerId,
 				Title = book.Title,
 				Author = book.Author,
 				Language = book.Language,
 				Description = book.Description,
-				Price = book.Price
+				Price = book.Price,
+				ImagePath = book.ImagePath
 			};
 
 			return View("~/Views/Book/EditBook.cshtml", model);
@@ -42,8 +42,8 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> EditBook(BookDto modelDto)
-        {
+		public async Task<IActionResult> AddBook(BookDto modelDto)
+		{
 			if (ModelState.IsValid)
 			{
 				string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -51,52 +51,26 @@ namespace BookShareHub.WebUI.Controllers
 				{
 					return BadRequest("UserId not found");
 				}
+				modelDto.OwnerId = userId;
 
-				var book = new Book
-				{
-					Id = modelDto.Id,
-					OwnerId = userId,
-					Title = modelDto.Title,
-					Author = modelDto.Author,
-					Language = modelDto.Language,
-					Description = modelDto.Description,
-					Price = modelDto.Price
-				};
-
-				await _bookService.EditBookAsync(book);
+				await _bookService.AddBookAsync(modelDto);
 				return RedirectToAction("MyBooks", "MyBooks");
 			}
 
 			return View(modelDto);
 		}
 
-        [HttpPost]
-        public async Task<IActionResult> AddBook(BookDto modelDto)
-        {
-            if (ModelState.IsValid)
-            {
-                string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-                if (userId == null)
-                {
-                    return BadRequest("UserId not found");
-                }
+		[HttpPost]
+		public async Task<IActionResult> EditBook(BookDto modelDto)
+		{
+			if (ModelState.IsValid)
+			{
+				await _bookService.EditBookAsync(modelDto);
+				return RedirectToAction("MyBooks", "MyBooks");
+			}
 
-                var book = new Book
-                {
-                    OwnerId = userId,
-                    Title = modelDto.Title,
-                    Author = modelDto.Author,
-                    Language = modelDto.Language,
-                    Description = modelDto.Description,
-                    Price = modelDto.Price
-                };
-
-                await _bookService.AddBookAsync(book);
-                return RedirectToAction("MyBooks", "MyBooks");
-            }
-
-            return View(modelDto);
-        }
+			return View(modelDto);
+		}
 
 		[HttpPost]
 		public async Task<IActionResult> DeleteBook(int id)
@@ -106,3 +80,36 @@ namespace BookShareHub.WebUI.Controllers
 		}
 	}
 }
+
+
+/* methods to update image permanent (defore save button activate)
+ 
+		[HttpPost]
+		public async Task<IActionResult> ReplaceBook(BookDto model)
+		{
+			
+
+			return View("~/Views/Book/EditBook.cshtml", model);
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> UploadBook(BookDto model)
+		{
+			//string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			//if (userId == null)
+			//{
+			//	return BadRequest("UserId not found");
+			//}
+
+			//var uploadBookInfo = new UploadBookImageDto
+			//{
+			//	Id = userId,
+			//	ImagePath = model.ImageFile.Name
+			//};
+
+			//await _bookService.UploadBookImageAsync(uploadBookInfo);
+
+			return View("~/Views/Book/EditBook.cshtml", model);
+		}
+ 
+ */

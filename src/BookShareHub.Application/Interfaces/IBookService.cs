@@ -1,4 +1,5 @@
 ﻿using BookShareHub.Core.Domain.Entities;
+using BookShareHub.Application.DTOs;
 
 namespace BookShareHub.Application.Interfaces
 {
@@ -7,8 +8,11 @@ namespace BookShareHub.Application.Interfaces
 		Task<IEnumerable<Book>> GetAllBooksAsync(string userId);
 		Task<List<Book>> GetBooksByUserId(string userId);
 		Task<Book> GetBookByIdAsync(int id);
-		Task AddBookAsync(Book book);
-		Task EditBookAsync(Book book);
+		Task AddBookAsync(BookDto book);
+		Task EditBookAsync(BookDto book);
 		Task DeleteBookAsync(int id);
 	}
 }
+
+// Task EditBookImageAsync(EditBookImageDto book);
+// Task UploadBookImageAsync(EditBookImageDto book);

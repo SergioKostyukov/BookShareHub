@@ -1,0 +1,44 @@
+﻿.container {
+    margin-top: 15px;
+}
+
+img {
+    border-radius: 10px;
+}
+
+.card {
+    border-radius: 20px;
+    background-color: #ccc;
+    border: none;
+    padding: 10px 20px
+}
+
+.form-control {
+    border-radius: 10px;
+}
+
+textarea.form-control {
+    resize: none;
+}
+
+/* buttons */
+
+.btn-primary {
+    margin: 10px 10px 0 0;
+    background-color: #007bff;
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-secondary {
+    margin-top: 10px;
+    background-color: #6c757d;
+    border: none;
+    border-radius: 10px;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    border: none;
+    border-radius: 10px;
+}

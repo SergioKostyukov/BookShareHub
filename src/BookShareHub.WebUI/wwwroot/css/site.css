@@ -8,7 +8,11 @@ html {
     }
 }
 
-.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+.btn:focus, 
+.btn:active:focus, 
+.btn-link.nav-link:focus, 
+.form-control:focus, 
+.form-check-input:focus {
     box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
@@ -17,26 +21,6 @@ html {
     min-height: 100%;
 }
 
-/*tab-navigation*/
-.login-logout-card .card-header {
-    padding: 0 0 12px 0;
-}
-
-.login-logout-card ul.nav-tabs {
-    margin: 0 0 -12px 0;
-}
-
-.login-logout-card li.nav-item {
-    width: 50%
-}
-
-.login-logout-card a.nav-link {
-    font-size: 1rem;
-    color: #495057;
-    text-align: center;
-    padding: 1rem;
-}
-
-.login-logout-card .card-body {
-    padding: 10px 20px;
+body {
+    user-select: none;
 }

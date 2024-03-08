@@ -1,6 +1,6 @@
 ﻿using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
-using BookShareHub.WebUI.Models;
+using BookShareHub.Application.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers

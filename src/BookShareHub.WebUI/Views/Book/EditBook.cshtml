@@ -1,47 +1,75 @@
 ﻿@model BookDto
 
-<div class="container">
-	<div class="row justify-content-center">
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="text-center">Book Details</h2>
-					<hr>
-					<form asp-controller="Book" asp-action="EditBook" method="post" autocomplete="off">
-						<input type="hidden" asp-for="Id" />
-						<div class="form-group">
-							<label asp-for="Title" class="control-label"></label>
-							<input asp-for="Title" class="form-control" />
-						</div>
-						<div class="form-group">
-							<label asp-for="Author" class="control-label"></label>
-							<input asp-for="Author" class="form-control" />
-						</div>
-						<div class="form-group">
-							<label asp-for="Language" class="control-label"></label>
-							<input asp-for="Language" class="form-control" />
-						</div>
-						<div class="form-group">
-							<label asp-for="Description" class="control-label"></label>
-							<textarea asp-for="Description" class="form-control" rows="4"></textarea>
-						</div>
-						<div class="form-group">
-							<label asp-for="Price" class="control-label"></label>
-							<input asp-for="Price" class="form-control" />
-						</div>
-						<div class="text-center">
-							<button type="submit" class="btn btn-primary">Save</button>
-							<a href="@Url.Action("MyBooks", "MyBooks")" class="btn btn-secondary">Cancel</a>
-						</div>
-					</form>
-					<form asp-controller="Book" asp-action="DeleteBook" method="post" autocomplete="off">
-						<input type="hidden" asp-for="Id" />
-						<div class="text-center">
-							<button type="submit" class="btn btn-danger" id="btnDelete">Delete</button>
-						</div>
-					</form>
+<div class="row justify-content-center">
+	<div class="card col-md-6">
+		<div class="card-body">
+
+			<form asp-controller="Book" asp-action="EditBook" method="post" autocomplete="off" enctype="multipart/form-data">
+				<input type="hidden" asp-for="Id" />
+				@if (!string.IsNullOrEmpty(Model.ImagePath))
+				{
+					<img src="@("~" + Model.ImagePath)" asp-append-version="true" class="img-fluid" alt="Book Image">
+					<div class="form-group">
+						<label asp-for="ImageFile" class="btn btn-info mt-2">Replace Image</label>
+						<input asp-for="ImageFile" class="d-none" , accept="image/*" />
+						<span asp-validation-for="ImageFile" class="text-danger"></span>
+					</div>
+				}
+
+				<div class="form-group">
+					<label asp-for="Title" class="control-label"></label>
+					<input asp-for="Title" class="form-control" />
 				</div>
-			</div>
+				<div class="form-group">
+					<label asp-for="Author" class="control-label"></label>
+					<input asp-for="Author" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label asp-for="Language" class="control-label"></label>
+					<input asp-for="Language" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label asp-for="Description" class="control-label"></label>
+					<textarea asp-for="Description" class="form-control" rows="4"></textarea>
+				</div>
+				<div class="form-group">
+					<label asp-for="Price" class="control-label"></label>
+					<input asp-for="Price" class="form-control" />
+				</div>
+				<div class="form-group">
+					<input type="hidden" asp-for="OwnerId" />
+					<div class="d-flex justify-content-start">
+						<button type="submit" class="btn btn-primary mr-2">Save</button>
+						<a href="@Url.Action("MyBooks", "MyBooks")" class="btn btn-secondary">Cancel</a>
+					</div>
+				</div>
+			</form>
+
+			<form asp-controller="Book" asp-action="DeleteBook" method="post" autocomplete="off">
+				<input type="hidden" name="id" value="@Model.Id" />
+				<div class="d-flex justify-content-end">
+					<button type="submit" class="btn btn-danger">Delete</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
+
+@section Styles {
+	<link rel="stylesheet" href="~/css/book.css" asp-append-version="true" />
+}
+
+
+@* forms to update book image separate from other params
+@if (!string.IsNullOrEmpty(Model.ImagePath))
+{
+	<img src="@("~" + Model.ImagePath)" asp-append-version="true" class="img-fluid" alt="Book Image">
+	<form asp-controller="Book" asp-action="ReplaceImage" method="post" enctype="multipart/form-data">
+		<input type="file" name="file" id="file" class="d-none">
+		<label for="file" class="btn btn-info mt-2">Replace Image</label>
+	</form>
+	<form asp-controller="Book" asp-action="UploadImage" method="post" enctype="multipart/form-data">
+		<input type="file" name="file" id="file" class="d-none">
+		<button for="file" class="btn btn-info mt-2">Upload</button>
+	</form>
+} *@
