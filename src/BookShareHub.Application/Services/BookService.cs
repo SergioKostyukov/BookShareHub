@@ -1,8 +1,8 @@
-﻿using System.Net;
-using BookShareHub.Application.DTOs;
+﻿using BookShareHub.Application.Dto;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
+using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookShareHub.Application.Services
@@ -37,7 +37,7 @@ namespace BookShareHub.Application.Services
 
 		// ----------------------- PATCH METHODS -----------------------
 		// Add book to DB
-		public async Task AddBookAsync(BookDto bookDto)
+		public async Task AddBookAsync(BookDto bookDto, IFormFile? imageFile)
 		{
 			var book = new Book
 			{
@@ -49,7 +49,7 @@ namespace BookShareHub.Application.Services
 				Price = bookDto.Price
 			};
 
-			if (bookDto.ImageFile?.Length > 0)
+			if (imageFile?.Length > 0)
 			{
 				string imageFolderPath = "wwwroot/images";
 				if (!Directory.Exists(imageFolderPath))
@@ -65,13 +65,13 @@ namespace BookShareHub.Application.Services
 					}
 				}
 
-				string extension = Path.GetExtension(bookDto.ImageFile.FileName);
+				string extension = Path.GetExtension(imageFile.FileName);
 				string fileName = bookDto.OwnerId + DateTime.Now.ToString("yymmssfff") + extension;
 				string path = Path.Combine(imageFolderPath, fileName);
 
 				using (var fileStream = new FileStream(path, FileMode.Create))
 				{
-					await bookDto.ImageFile.CopyToAsync(fileStream);
+					await imageFile.CopyToAsync(fileStream);
 				}
 
 				book.ImagePath = "/images/" + fileName;
@@ -82,7 +82,7 @@ namespace BookShareHub.Application.Services
 		}
 
 		// Edit book data in DB
-		public async Task EditBookAsync(BookDto bookDto)
+		public async Task EditBookAsync(BookDto bookDto, IFormFile? imageFile)
 		{
 			var book = new Book
 			{
@@ -95,18 +95,18 @@ namespace BookShareHub.Application.Services
 				Price = bookDto.Price
 			};
 
-			if (bookDto.ImageFile?.Length > 0)
+			if (imageFile?.Length > 0)
 			{
 				await DeleteBookImage(bookDto.Id);
 
 				string imageFolderPath = "wwwroot/images";
-				string extension = Path.GetExtension(bookDto.ImageFile.FileName);
+				string extension = Path.GetExtension(imageFile.FileName);
 				string fileName = bookDto.OwnerId + DateTime.Now.ToString("yymmssfff") + extension;
 				string path = Path.Combine(imageFolderPath, fileName);
 
 				using (var fileStream = new FileStream(path, FileMode.Create))
 				{
-					await bookDto.ImageFile.CopyToAsync(fileStream);
+					await imageFile.CopyToAsync(fileStream);
 				}
 
 				book.ImagePath = "/images/" + fileName;

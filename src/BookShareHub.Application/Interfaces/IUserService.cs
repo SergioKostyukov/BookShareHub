@@ -3,7 +3,8 @@ using BookShareHub.Application.Dto;
 
 namespace BookShareHub.Application.Interfaces
 {
-	public class IRaffleService
+	public interface IUserService
 	{
+		Task<User> GetUserById(string userId);
 	}
 }

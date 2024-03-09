@@ -1,8 +1,8 @@
 ﻿using System.Security.Claims;
-using BookShareHub.Application.DTOs;
 using BookShareHub.Application.Interfaces;
+using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
-using BookShareHub.Core.Domain.Enums;
+using BookShareHub.Application.Dto;
 
 namespace BookShareHub.WebUI.Controllers
 {
@@ -20,16 +20,19 @@ namespace BookShareHub.WebUI.Controllers
 				return NotFound();
 			}
 
-			var model = new BookDto
+			var model = new BookModel
 			{
-				Id = book.Id,
-				OwnerId = book.OwnerId,
-				Title = book.Title,
-				Author = book.Author,
-				Language = book.Language,
-				Description = book.Description,
-				Price = book.Price,
-				ImagePath = book.ImagePath
+				Book = new BookDto
+				{
+					Id = book.Id,
+					OwnerId = book.OwnerId,
+					Title = book.Title,
+					Author = book.Author,
+					Language = book.Language,
+					Description = book.Description,
+					Price = book.Price,
+					ImagePath = book.ImagePath
+				}
 			};
 
 			return View("~/Views/Book/EditBook.cshtml", model);
@@ -38,12 +41,12 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpGet]
 		public IActionResult GetAddBook()
 		{
-			var model = new BookDto();
+			var model = new BookModel();
 			return View("~/Views/Book/AddBook.cshtml", model);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddBook(BookDto modelDto)
+		public async Task<IActionResult> AddBook(BookModel model)
 		{
 			if (ModelState.IsValid)
 			{
@@ -52,25 +55,25 @@ namespace BookShareHub.WebUI.Controllers
 				{
 					return BadRequest("UserId not found");
 				}
-				modelDto.OwnerId = userId;
+				model.Book.OwnerId = userId;
 
-				await _bookService.AddBookAsync(modelDto);
+				await _bookService.AddBookAsync(model.Book, model.ImageFile);
 				return RedirectToAction("MyBooks", "MyBooks");
 			}
 
-			return View(modelDto);
+			return View(model);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> EditBook(BookDto modelDto)
+		public async Task<IActionResult> EditBook(BookModel model)
 		{
 			if (ModelState.IsValid)
 			{
-				await _bookService.EditBookAsync(modelDto);
+				await _bookService.EditBookAsync(model.Book, model.ImageFile);
 				return RedirectToAction("MyBooks", "MyBooks");
 			}
 
-			return View("~/Views/Book/EditBook.cshtml", modelDto);
+			return View("~/Views/Book/EditBook.cshtml", model);
 		}
 
 		[HttpPost]

@@ -1,21 +1,29 @@
-﻿@model List<BookTitleDto>
+﻿@model LibraryModel
 
 <h2>Library</h2>
 
-<div class="row">
-	@foreach (var book in Model ?? Enumerable.Empty<BookTitleDto>())
-	{
-		<div class="col-md-3 mb-4">
-			<div class="card" onclick="location.href='@Url.Action("Order", "Order", new { id = book.Id })'">
-				<img src="@("~" + book.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
-				<div class="card-body">
-					<h5 class="card-title">Title: @book.Title</h5>
-					<p class="card-text">Author: @book.Author</p>
-				</div>
-			</div>
-		</div>
-	}
-</div>
+@if (Model.BookTitles != null && Model.BookTitles.Any())
+{
+    <div class="row">
+        @foreach (var book in Model.BookTitles)
+        {
+            <div class="col-md-3 mb-4">
+                <div class="card" onclick="location.href='@Url.Action("Order", "Order", new { id = book.Id })'">
+                    <img src="@("~" + book.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
+                    <div class="card-body">
+                        <h5 class="card-title">Title: @book.Title</h5>
+                        <p class="card-text">Author: @book.Author</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+else
+{
+    <p>No books available.</p>
+}
+
 
 @section Styles {
 	<link rel="stylesheet" href="~/css/bookList.css" />

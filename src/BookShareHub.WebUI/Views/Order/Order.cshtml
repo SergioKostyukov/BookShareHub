@@ -1,17 +1,17 @@
-﻿@model BookDto
+﻿@model OrderModel
 
 <div class="row" style="height: 90vh;">
 	<div class="col-md-8" style="height: 100%;">
 		<div class="advertising-block">
 			<div class="title-block">
-				<h5 class="card-title">Title: @Model.Title</h5>
-				<img src="@("~" + Model.ImagePath)" asp-append-version="true" class="img-fluid" alt="Book Image">
+				<h5 class="card-title">Title: @Model.Book.Title</h5>
+				<img src="@("~" + Model.Book.ImagePath)" asp-append-version="true" class="img-fluid" alt="Book Image">
 			</div>
 			<div class="card-body">
-				<p class="card-text">Author: @Model.Author</p>
-				<p class="card-text">Language: @Model.Language</p>
-				<p class="card-text">Description: @Model.Description</p>
-				<p class="card-text">Price: @Model.Price</p>
+				<p class="card-text">Author: @Model.Book.Author</p>
+				<p class="card-text">Language: @Model.Book.Language</p>
+				<p class="card-text">Description: @Model.Book.Description</p>
+				<p class="card-text">Price: @Model.Book.Price</p>
 			</div>
 		</div>
 	</div>

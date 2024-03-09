@@ -1,5 +1,5 @@
 ﻿using BookShareHub.Core.Domain.Entities;
-using BookShareHub.Application.DTOs;
+using BookShareHub.Application.Dto;
 
 namespace BookShareHub.Application.Interfaces
 {

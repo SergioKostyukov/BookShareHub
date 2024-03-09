@@ -1,5 +1,5 @@
 using System.Diagnostics;
-using BookShareHub.Application.DTOs;
+using BookShareHub.Application.Dto;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

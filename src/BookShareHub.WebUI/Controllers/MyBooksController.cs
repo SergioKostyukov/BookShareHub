@@ -1,12 +1,13 @@
 ﻿using System.Security.Claims;
-using BookShareHub.Application.DTOs;
+using BookShareHub.Application.Dto;
 using BookShareHub.Application.Interfaces;
+using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	[Authorize]
+    [Authorize]
 	public class MyBooksController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
 	{
         private readonly IBookService _bookService = bookService;
@@ -22,14 +23,17 @@ namespace BookShareHub.WebUI.Controllers
             }
 
             var books = await _bookService.GetBooksByUserId(userId);
-			var bookTitles = books.Select(book => new BookTitleDto(
-				Id: book.Id,
-				Title: book.Title,
-				Author: book.Author,
-				ImagePath: book.ImagePath
-			)).ToList();
+            var booksTitles = new MyBooksModel
+            {
+                BookTitles = books.Select(book => new BookTitleDto(
+                    Id: book.Id,
+                    Title: book.Title,
+                    Author: book.Author,
+                    ImagePath: book.ImagePath
+                )).ToList()
+            };
 
-			return View(bookTitles);
+            return View(booksTitles);
         }
     }
 }

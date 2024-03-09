@@ -1,4 +1,4 @@
-﻿using BookShareHub.Application.DTOs;
+﻿using BookShareHub.Application.Dto;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;

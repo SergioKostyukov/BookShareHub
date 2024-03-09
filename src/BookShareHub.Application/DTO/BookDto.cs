@@ -1,7 +1,6 @@
-﻿using Microsoft.AspNetCore.Http;
-using BookShareHub.Core.Domain.Enums;
+﻿using BookShareHub.Core.Domain.Enums;
 
-namespace BookShareHub.Application.DTOs;
+namespace BookShareHub.Application.Dto;
 
 public class BookDto
 {
@@ -13,5 +12,4 @@ public class BookDto
 	public string? Description { get; set; }
 	public decimal? Price { get; set; }
 	public string? ImagePath { get; set; }
-	public IFormFile? ImageFile { get; set; }
 }

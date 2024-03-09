@@ -1,6 +1,6 @@
 ﻿using BookShareHub.Core.Domain.Enums;
 
-namespace BookShareHub.Application.DTOs;
+namespace BookShareHub.Application.Dto;
 
 public class OrderDto
 {
@@ -11,5 +11,5 @@ public class OrderDto
 	public OrderType OrderType { get; set; }
 	public DateTime CreatedDate { get; set; }
 	public DateTime OrderDate { get; set; }
-	public decimal CheckAmount { get; set; } // check amount
+	public decimal CheckAmount { get; set; }
 }
