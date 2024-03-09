@@ -3,57 +3,24 @@
 }
 
 <h1>@ViewData["Title"]</h1>
+
 <div class="row" style="height: 80vh;">
 	<div class="col-md-6" style="height: 100%;">
 		<div class="list-group" style="height: 100%;">
 			<a href="@Url.Action("Library", "Library")" class="list-group-item list-group-item-action">Library</a>
-			<a href="@Url.Action("Active", "Active")" class="list-group-item list-group-item-action">Active</a>
-			<a href="@Url.Action("MyBooks", "MyBooks")" class="list-group-item list-group-item-action">My Books</a>
+			<a href="@Url.Action("Raffle", "Raffle")" class="list-group-item list-group-item-action">Raffles</a>
+			<a href="@Url.Action("Auction", "Auction")" class="list-group-item list-group-item-action">Auctions</a>
 		</div>
 	</div>
 	<div class="col-md-6" style="height: 100%;">
-		<div class="advertising-block">
+		<div class="list-group" style="height: 100%;">
+			<a href="@Url.Action("MyBooks", "MyBooks")" class="list-group-item list-group-item-action">MyBooks</a>
+			<a href="@Url.Action("Chat", "Chat")" class="list-group-item list-group-item-action">Chats</a>
+			<a href="@Url.Action("History", "History")" class="list-group-item list-group-item-action">History</a>
 		</div>
 	</div>
 </div>
 
-
-<style>
-	h1 {
-		display: flex;
-		justify-content: center;
-	}
-
-	.list-group {
-		gap: 10px
-	}
-
-	.list-group-item {
-		height: calc(33.3% - 20px/3);
-		border-radius: 20px;
-		justify-content: center;
-		background-color: #ccc;
-		display: flex;
-		align-items: center;
-		justify-content: center;
-	}
-
-		.list-group-item:first-child {
-			border-radius: 20px;
-		}
-
-		.list-group-item:last-child {
-			border-radius: 20px;
-		}
-
-		.list-group-item:hover {
-			background-color: #ddd;
-		}
-
-	.advertising-block {
-		height: 100%;
-		border-radius: 20px;
-		background-color: #ccc;
-		margin-bottom: 10px;
-	}
-</style>
+@section Styles {
+	<link rel="stylesheet" href="~/css/index.css" />
+}

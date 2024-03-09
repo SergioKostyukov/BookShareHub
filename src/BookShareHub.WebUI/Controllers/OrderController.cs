@@ -25,7 +25,8 @@ namespace BookShareHub.WebUI.Controllers
 				Author = book.Author,
 				Language = book.Language,
 				Description = book.Description,
-				Price = book.Price
+				Price = book.Price,
+				ImagePath = book.ImagePath,
 			};
 
 			return View(model);

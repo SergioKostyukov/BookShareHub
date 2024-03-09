@@ -30,7 +30,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(x => x.OrderDate)
 				.IsRequired();
 
-			builder.Property(x => x.Check)
+			builder.Property(x => x.CheckAmount)
 				.IsRequired()
 				.HasColumnType("decimal(8,2)");
 		}

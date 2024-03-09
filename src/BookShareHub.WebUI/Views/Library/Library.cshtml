@@ -7,6 +7,7 @@
 	{
 		<div class="col-md-3 mb-4">
 			<div class="card" onclick="location.href='@Url.Action("Order", "Order", new { id = book.Id })'">
+				<img src="@("~" + book.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
 				<div class="card-body">
 					<h5 class="card-title">Title: @book.Title</h5>
 					<p class="card-text">Author: @book.Author</p>
@@ -16,21 +17,6 @@
 	}
 </div>
 
-<style>
-	.card-link {
-		color: inherit;
-		text-decoration: none;
-		cursor: pointer;
-	}
-
-	.card {
-		background-color: #ccc;
-		border-radius: 10px;
-		transition: transform 0.3s ease;
-	}
-
-		.card:hover {
-			transform: scale(1.05);
-			cursor: pointer;
-		}
-</style>
+@section Styles {
+	<link rel="stylesheet" href="~/css/bookList.css" />
+}

@@ -10,10 +10,6 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 		{
             builder.HasKey(u => u.Id);
 
-			builder.Property(x => x.Balance)
-				.IsRequired()
-				.HasColumnType("decimal(18,2)");
-
 			builder.Property(x => x.Rating);
 		}
 	}

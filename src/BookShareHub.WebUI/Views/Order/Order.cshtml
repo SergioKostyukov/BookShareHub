@@ -1,12 +1,13 @@
 ﻿@model BookDto
 
-<div class="row" style="height: 80vh;">
-	<div class="col-md-6" style="height: 100%;">
+<div class="row" style="height: 90vh;">
+	<div class="col-md-8" style="height: 100%;">
 		<div class="advertising-block">
-			<h2 class="text-center">Book Details</h2>
-			<hr>
-			<div class="card-body">
+			<div class="title-block">
 				<h5 class="card-title">Title: @Model.Title</h5>
+				<img src="@("~" + Model.ImagePath)" asp-append-version="true" class="img-fluid" alt="Book Image">
+			</div>
+			<div class="card-body">
 				<p class="card-text">Author: @Model.Author</p>
 				<p class="card-text">Language: @Model.Language</p>
 				<p class="card-text">Description: @Model.Description</p>
@@ -14,21 +15,22 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-6" style="height: 100%;">
+
+	<div class="col-md-4" style="height: 100%;">
 		<div class="advertising-block">
-			<div class="text-center">
+			<div class="nested-block" style="height: 25%;">
+				<h5 class="text-center">Seller statistic</h5>
+
+			</div>
+			<div class="nested-block" style="height: 75%; margin-bottom: 10px">
+				<h5 class="card-title">Delivery info</h5>
+
 				<button type="submit" class="btn btn-primary">Order</button>
-				<a href="@Url.Action("Library", "Library")" class="btn btn-secondary">Cancel</a>
 			</div>
 		</div>
 	</div>
 </div>
 
-<style>
-	.advertising-block {
-		height: 100%;
-		border-radius: 20px;
-		background-color: #3498db;
-		margin-bottom: 10px;
-	}
-</style>
+@section Styles {
+	<link rel="stylesheet" href="~/css/order.css" asp-append-version="true" />
+}

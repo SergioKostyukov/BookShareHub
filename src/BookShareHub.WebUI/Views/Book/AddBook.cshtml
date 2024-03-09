@@ -1,4 +1,5 @@
 ﻿@model BookDto
+@using BookShareHub.Core.Domain.Enums
 
 <div class="container">
 	<div class="row justify-content-center">
@@ -18,7 +19,12 @@
 						</div>
 						<div class="form-group">
 							<label asp-for="Language" class="control-label"></label>
-							<input asp-for="Language" class="form-control" />
+							<select asp-for="Language" class="form-control">
+								@foreach (var language in Enum.GetValues(typeof(BookLanguage)))
+								{
+									<option value="@language">@language</option>
+								}
+							</select>
 						</div>
 						<div class="form-group">
 							<label asp-for="Description" class="control-label"></label>

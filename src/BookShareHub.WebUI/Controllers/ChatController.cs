@@ -2,9 +2,9 @@
 
 namespace BookShareHub.WebUI.Controllers
 {
-	public class ActiveController : Controller
+	public class ChatController : Controller
     {
-        public IActionResult Active()
+        public IActionResult Chat()
         {
             return View();
         }

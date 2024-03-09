@@ -20,7 +20,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired()
 				.HasConversion<int>();
 
-			builder.Property(x => x.AddedTime)
+			builder.Property(x => x.AddedDate)
 				.IsRequired();
 		}
 	}

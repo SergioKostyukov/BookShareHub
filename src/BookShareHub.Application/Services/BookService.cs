@@ -13,21 +13,26 @@ namespace BookShareHub.Application.Services
 
 		// ----------------------- GET METHODS -----------------------
 		// Search book by userId 
-		public async Task<List<Book>> GetBooksByUserId(string userId)
+		public async Task<IEnumerable<Book>> GetBooksByUserId(string userId)
 		{
-			return await _context.Books.Where(b => b.OwnerId == userId).ToListAsync();
+			return await _context.Books
+				.Where(b => b.OwnerId == userId)
+				.ToListAsync();
 		}
 
 		// Search all books except those owned by the user
 		public async Task<IEnumerable<Book>> GetAllBooksAsync(string userId)
 		{
-			return await _context.Books.Where(b => b.OwnerId != userId).ToListAsync();
+			return await _context.Books
+				.Where(b => b.OwnerId != userId)
+				.ToListAsync();
 		}
 
 		// Search book by bookId
 		public async Task<Book> GetBookByIdAsync(int bookId)
 		{
-			return await _context.Books.FirstOrDefaultAsync(b => b.Id == bookId);
+			return await _context.Books
+				.FirstOrDefaultAsync(b => b.Id == bookId);
 		}
 
 		// ----------------------- PATCH METHODS -----------------------
@@ -72,7 +77,6 @@ namespace BookShareHub.Application.Services
 				book.ImagePath = "/images/" + fileName;
 			}
 
-
 			_context.Books.Add(book);
 			await _context.SaveChangesAsync();
 		}
@@ -107,6 +111,10 @@ namespace BookShareHub.Application.Services
 
 				book.ImagePath = "/images/" + fileName;
 			}
+			else
+			{
+				book.ImagePath = bookDto.ImagePath;
+			}
 
 			_context.Books.Update(book);
 			await _context.SaveChangesAsync();
@@ -123,10 +131,11 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		private async Task DeleteBookImage(int id)
+		// Delete image file by bookId
+		private async Task DeleteBookImage(int bookId)
 		{
 			var oldImagePath = await _context.Books
-				.Where(b => b.Id == id)
+				.Where(b => b.Id == bookId)
 				.Select(b => b.ImagePath)
 				.FirstOrDefaultAsync();
 
@@ -141,13 +150,3 @@ namespace BookShareHub.Application.Services
 		}
 	}
 }
-
-//public Task EditBookImageAsync(EditBookImageDto book)
-//{
-//	throw new NotImplementedException();
-//}
-
-//public Task UploadBookImageAsync(EditBookImageDto book)
-//{
-//	throw new NotImplementedException();
-//}

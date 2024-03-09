@@ -3,21 +3,11 @@
 <h2>My Books</h2>
 
 <div class="row">
-	<div class="col-md-3 mb-4">
-		<a href="@Url.Action("GetAddBook", "Book")" class="card-link d-block text-decoration-none">
-			<div class="card">
-				<div class="card-body">
-					<h5 class="card-title text-center">Add Book</h5>
-					<p class="card-text text-center">Click here to add a new book</p>
-				</div>
-			</div>
-		</a>
-	</div>
-
 	@foreach (var book in Model ?? Enumerable.Empty<BookTitleDto>())
 	{
 		<div class="col-md-3 mb-4">
 			<div class="card" onclick="location.href='@Url.Action("GetEditBook", "Book", new { id = book.Id })'">
+				<img src="@("~" + book.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
 				<div class="card-body">
 					<h5 class="card-title">Title: @book.Title</h5>
 					<p class="card-text">Author: @book.Author</p>
@@ -25,23 +15,20 @@
 			</div>
 		</div>
 	}
+
+	<div class="col-md-3 mb-4">
+		<a href="@Url.Action("GetAddBook", "Book")" class="card-link d-block text-decoration-none">
+			<div class="card">
+				<div class="card-body text-center">
+					<h5 class="card-title text-center">Add Book</h5>
+					<p class="card-text text-center">Click here to add a new book</p>
+				</div>
+			</div>
+		</a>
+	</div>
 </div>
 
-<style>
-	.card-link {
-		color: inherit;
-		text-decoration: none;
-		cursor: pointer;
-	}
+@section Styles {
+	<link rel="stylesheet" href="~/css/bookList.css" />
+}
 
-	.card {
-		background-color: #ccc;
-		border-radius: 10px;
-		transition: transform 0.3s ease;
-	}
-
-		.card:hover {
-			transform: scale(1.05);
-			cursor: pointer;
-		}
-</style>

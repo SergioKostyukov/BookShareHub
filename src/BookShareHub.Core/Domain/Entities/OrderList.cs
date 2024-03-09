@@ -4,5 +4,5 @@ public class OrderList
 {
 	public int OrderId { get; set; }
 	public int BookId { get; set; }
-	public int UserID { get; set; }
+	public int UserId { get; set; }
 }

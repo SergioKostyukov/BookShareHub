@@ -8,5 +8,5 @@ public class ChatSubscribersList
 	public int ChatId { get; set; }
 	public int UserId { get; set; }
 	public UserChatStatus Status { get; set; }
-	public DateTime AddedTime { get; set; }
+	public DateTime AddedDate { get; set; }
 }
