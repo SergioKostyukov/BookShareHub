@@ -7,6 +7,6 @@ namespace BookShareHub.Application.Interfaces
 	{
 		IQueryable<Order> GetOrders();
 
-
+		Task CreateOrder();
 	}
 }

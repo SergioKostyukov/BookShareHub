@@ -10,6 +10,11 @@ namespace BookShareHub.Application.Services
 	{
 		private readonly BookShareHubDbContext _context = context;
 
+		public Task CreateOrder()
+		{
+			throw new NotImplementedException();
+		}
+
 		public IQueryable<Order> GetOrders()
 		{
 			throw new NotImplementedException();

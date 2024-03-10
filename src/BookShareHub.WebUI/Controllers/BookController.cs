@@ -14,25 +14,9 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetEditBook(int id)
 		{
-			var book = await _bookService.GetBookByIdAsync(id);
-			if (book == null)
-			{
-				return NotFound();
-			}
-
 			var model = new BookModel
 			{
-				Book = new BookDto
-				{
-					Id = book.Id,
-					OwnerId = book.OwnerId,
-					Title = book.Title,
-					Author = book.Author,
-					Language = book.Language,
-					Description = book.Description,
-					Price = book.Price,
-					ImagePath = book.ImagePath
-				}
+				Book = await _bookService.GetBookByIdAsync(id),
 			};
 
 			return View("~/Views/Book/EditBook.cshtml", model);
@@ -86,7 +70,7 @@ namespace BookShareHub.WebUI.Controllers
 }
 
 
-// Code to update image permanent()before save button activate)
+// Code to update image permanent (before save button activate)
 /* BookController.cs
 [HttpPost]
 public async Task<IActionResult> ReplaceBook(BookDto model)

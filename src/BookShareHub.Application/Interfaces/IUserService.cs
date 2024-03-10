@@ -5,6 +5,6 @@ namespace BookShareHub.Application.Interfaces
 {
 	public interface IUserService
 	{
-		Task<User> GetUserById(string userId);
+		Task<UserDto> GetUserByIdAsync(string userId);
 	}
 }

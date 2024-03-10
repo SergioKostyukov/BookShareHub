@@ -3,10 +3,10 @@
     border-radius: 20px;
     background-color: #ccc;
     margin-bottom: 10px;
-
     display: flex;
     flex-direction: column;
     align-items: center;
+    justify-content: space-between; 
 }
 
 .title-block {
@@ -33,5 +33,25 @@ img {
     padding: 10px;
     margin-top: 10px;
     border-radius: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
+.btn-container {
+    margin-top: auto; 
+}
+
+.btn-primary {
+    min-width: 150px;
+    background-color: #888; 
+    color: #fff;
+    width: 100%;
+    border-color: #777;
+    border-radius: 10px;
+}
+
+    .btn-primary:hover {
+        background-color: #777;
+        border-color: #777
+    }

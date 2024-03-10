@@ -1,5 +1,4 @@
 ﻿using System.Security.Claims;
-using BookShareHub.Application.Dto;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -7,33 +6,27 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-    [Authorize]
+	[Authorize]
 	public class MyBooksController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
 	{
-        private readonly IBookService _bookService = bookService;
-        private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+		private readonly IBookService _bookService = bookService;
+		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
-        [HttpGet]
-        public async Task<IActionResult> MyBooks()
-        {
-            string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            if (userId == null)
-            {
-                return BadRequest("UserId not found");
-            }
+		[HttpGet]
+		public async Task<IActionResult> MyBooks()
+		{
+			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (userId == null)
+			{
+				return BadRequest("UserId not found");
+			}
 
-            var books = await _bookService.GetBooksByUserId(userId);
-            var booksTitles = new MyBooksModel
-            {
-                BookTitles = books.Select(book => new BookTitleDto(
-                    Id: book.Id,
-                    Title: book.Title,
-                    Author: book.Author,
-                    ImagePath: book.ImagePath
-                )).ToList()
-            };
+			var booksTitles = new MyBooksModel
+			{
+				BookTitles = await _bookService.GetBooksByUserId(userId),
+			};
 
-            return View(booksTitles);
-        }
-    }
+			return View(booksTitles);
+		}
+	}
 }

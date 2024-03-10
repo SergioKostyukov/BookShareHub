@@ -13,3 +13,11 @@ public class OrderDto
 	public DateTime OrderDate { get; set; }
 	public decimal CheckAmount { get; set; }
 }
+
+public class OrderCreateDto
+{
+	public int CustomerId { get; set; }
+	public int OwnerId { get; set; }
+	public OrderType OrderType { get; set; }
+	public decimal CheckAmount { get; set; }
+}

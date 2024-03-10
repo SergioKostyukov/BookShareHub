@@ -1,13 +1,20 @@
-﻿using BookShareHub.Application.Interfaces;
-using BookShareHub.Core.Domain.Entities;
+﻿using AutoMapper;
+using BookShareHub.Application.Dto;
+using BookShareHub.Application.Interfaces;
+using BookShareHub.Infrastructure.Data;
 
 namespace BookShareHub.Application.Services
 {
-	internal class UserService : IUserService
+	internal class UserService(BookShareHubDbContext context, IMapper mapper) : IUserService
 	{
-		public Task<User> GetUserById(string userId)
+		private readonly BookShareHubDbContext _context = context;
+		private readonly IMapper _mapper = mapper;
+
+		public async Task<UserDto> GetUserByIdAsync(string userId)
 		{
-			throw new NotImplementedException();
+			var user = await _context.Users.FindAsync(userId);
+
+			return _mapper.Map<UserDto>(user);
 		}
 	}
 }
