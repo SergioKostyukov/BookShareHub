@@ -1,3 +1,5 @@
-﻿namespace BookShareHub.Application.Dto;
+﻿using BookShareHub.Core.Domain.Enums;
 
-public record BookTitleDto(int Id, string Title, string Author, string ImagePath);
+namespace BookShareHub.Application.Dto;
+
+public record BookTitleDto(int Id, string Title, string Author, BookGenre Genre, string ImagePath);

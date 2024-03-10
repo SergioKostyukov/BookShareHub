@@ -10,4 +10,13 @@
 		German,
 		Other
 	}
+
+	public enum BookGenre
+	{
+		Horror,
+		Triller,
+		Drama,
+		Comedy,
+		Other
+	}
 }

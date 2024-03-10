@@ -22,3 +22,19 @@
     height: 100%;
     object-fit: cover;
 }
+
+.card-body {
+    padding: 5px 10px;
+}
+
+    .card-body .genre {
+        padding: 2px 5px;
+        border-radius: 5px;
+        background-color: green;
+        color: white;
+        font-weight: bold;
+    }
+
+    .card-body h5{
+        margin-bottom: 0;
+    }

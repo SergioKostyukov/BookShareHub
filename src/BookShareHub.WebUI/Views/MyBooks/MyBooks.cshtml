@@ -11,8 +11,9 @@
 				<div class="card" onclick="location.href='@Url.Action("GetEditBook", "Book", new { id = book.Id })'">
 					<img src="@("~" + book.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
 					<div class="card-body">
-						<h5 class="card-title">Title: @book.Title</h5>
-						<p class="card-text">Author: @book.Author</p>
+						<span class="genre">@book.Genre</span>
+						<h5 class="card-title">@book.Title</h5>
+						<p class="card-text">@book.Author</p>
 					</div>
 				</div>
 			</div>
@@ -31,6 +32,6 @@
 </div>
 
 @section Styles {
-	<link rel="stylesheet" href="~/css/bookList.css" />
+	<link rel="stylesheet" href="~/css/bookList.css" asp-append-version="true" />
 }
 

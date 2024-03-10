@@ -20,6 +20,7 @@ public class Program
         builder.Services.AddHttpContextAccessor();
 
 		builder.Services.AddServices();
+		builder.Services.AddBogusServices();
 
 		builder.Services.AddControllersWithViews();
 		builder.Services.AddRazorPages();
@@ -33,6 +34,8 @@ public class Program
 		});
 
 		var app = builder.Build();
+
+		app.DatabaseEnsureCreated();
 
 		if (!app.Environment.IsDevelopment())
 		{

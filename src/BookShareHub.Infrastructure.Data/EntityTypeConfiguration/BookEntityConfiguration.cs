@@ -22,6 +22,9 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(x => x.Author)
 				.IsRequired();
 
+			builder.Property(x => x.Genre)
+				.IsRequired();
+
 			builder.Property(x => x.Language)
 				.IsRequired();
 

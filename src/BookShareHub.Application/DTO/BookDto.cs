@@ -5,9 +5,10 @@ namespace BookShareHub.Application.Dto;
 public class BookDto
 {
 	public int Id { get; set; }
-	public string OwnerId { get; set; } = string.Empty;
+	public string? OwnerId { get; set; }
 	public string Title { get; set; } = string.Empty;
 	public string Author { get; set; } = string.Empty;
+	public BookGenre Genre { get; set; }
 	public BookLanguage Language { get; set; }
 	public string? Description { get; set; }
 	public decimal? Price { get; set; }

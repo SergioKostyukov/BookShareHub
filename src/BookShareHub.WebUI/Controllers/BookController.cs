@@ -44,6 +44,15 @@ namespace BookShareHub.WebUI.Controllers
 				await _bookService.AddBookAsync(model.Book, model.ImageFile);
 				return RedirectToAction("MyBooks", "MyBooks");
 			}
+			else
+			{
+				Console.WriteLine("No valid data");
+				var errors = ModelState.Values.SelectMany(v => v.Errors);
+				foreach (var error in errors)
+				{
+					Console.WriteLine(error.ErrorMessage);
+				}
+			}
 
 			return View(model);
 		}

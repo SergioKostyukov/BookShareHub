@@ -28,6 +28,7 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{239112CB-F39B-41C2-AF31-35BDDEAD0365}"
 	ProjectSection(SolutionItems) = preProject
 		.gitignore = .gitignore
+		BookShareHub.drawio = BookShareHub.drawio
 		README.md = README.md
 	EndProjectSection
 EndProject
