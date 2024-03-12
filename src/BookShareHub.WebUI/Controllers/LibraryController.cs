@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShareHub.WebUI.Controllers
 {
 	[Authorize]
-	public class LibraryController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class LibraryController(ILibraryService libraryService, IHttpContextAccessor httpContextAccessor) : Controller
 	{
-		private readonly IBookService _bookService = bookService;
+		private readonly ILibraryService _libraryService = libraryService;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
 		[HttpGet]
@@ -21,12 +21,41 @@ namespace BookShareHub.WebUI.Controllers
 				return BadRequest("UserId not found");
 			}
 
-			var booksTitles = new LibraryModel
+			var model = new LibraryModel
 			{
-				BookTitles = await _bookService.GetAllBooksAsync(userId),
+				BookTitles = await _libraryService.GetAllBooksAsync(userId),
 			};
 
-			return View(booksTitles);
+			return View(model);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Filter(LibraryModel model)
+		{
+			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (userId == null)
+			{
+				return BadRequest("UserId not found");
+			}
+
+			model.BookTitles = await _libraryService.GetAllBooksByFilterAsync(model.FilterQuery, userId);
+
+			return View("~/Views/Library/Library.cshtml",  model);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> Search(LibraryModel model)
+		{
+			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (userId == null)
+			{
+				return BadRequest("UserId not found");
+			}
+
+			model.BookTitles = await _libraryService.GetAllBooksBySearchAsync(model.SearchQuery, userId);
+
+			return View("~/Views/Library/Library.cshtml", model);
+
 		}
 	}
 }

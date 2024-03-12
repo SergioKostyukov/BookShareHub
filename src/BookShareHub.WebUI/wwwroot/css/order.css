@@ -16,10 +16,13 @@
     align-items: center;
     border-radius: 20px;
     width: 95%;
+    max-height:70%;
 }
 
 img {
     border-radius: 10px;
+    max-height: 90%;
+    max-width: 630px;
 }
 
 .card-body {

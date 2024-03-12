@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShareHub.WebUI.Controllers
 {
 	[Authorize]
-	public class MyBooksController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class MyBooksController(ILibraryService libraryService, IHttpContextAccessor httpContextAccessor) : Controller
 	{
-		private readonly IBookService _bookService = bookService;
+		private readonly ILibraryService _libraryService = libraryService;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
 		[HttpGet]
@@ -23,10 +23,28 @@ namespace BookShareHub.WebUI.Controllers
 
 			var booksTitles = new MyBooksModel
 			{
-				BookTitles = await _bookService.GetBooksByUserId(userId),
+				BookTitles = await _libraryService.GetAllBooksByUserIdAsync(userId),
 			};
 
 			return View(booksTitles);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetEditBook(int id)
+		{
+			var model = new BookModel
+			{
+				Book = await _libraryService.GetBookByIdAsync(id),
+			};
+
+			return View("~/Views/Book/EditBook.cshtml", model);
+		}
+
+		[HttpGet]
+		public IActionResult GetAddBook()
+		{
+			var model = new BookModel();
+			return View("~/Views/Book/AddBook.cshtml", model);
 		}
 	}
 }

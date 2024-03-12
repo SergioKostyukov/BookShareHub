@@ -1,13 +1,13 @@
-﻿using BookShareHub.Application.Dto;
-using BookShareHub.Application.Interfaces;
+﻿using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
 {
-	internal class OrderService(BookShareHubDbContext context) : IOrderService
+	internal class OrderService(ILogger<OrderService> logger, BookShareHubDbContext context) : IOrderService
 	{
+		private readonly ILogger<OrderService> _logger = logger;
 		private readonly BookShareHubDbContext _context = context;
 
 		public Task CreateOrder()
@@ -15,7 +15,7 @@ namespace BookShareHub.Application.Services
 			throw new NotImplementedException();
 		}
 
-		public IQueryable<Order> GetOrders()
+		public IEnumerable<Order> GetOrders()
 		{
 			throw new NotImplementedException();
 		}

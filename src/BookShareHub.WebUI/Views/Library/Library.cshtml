@@ -1,6 +1,50 @@
 ﻿@model LibraryModel
+@using BookShareHub.Core.Domain.Enums
 
 <h2>Library</h2>
+
+<div class="row">
+	<form class="form-group col-md-7 align-items-end" method="get" action="@Url.Action("Filter", "Library")">
+		<div class="col-md-3">
+			<label for="language">Language:</label>
+			<select class="form-control" id="language" name="FilterQuery.SelectedLanguage">
+				<option value="">All</option>
+				@foreach (BookLanguage language in Enum.GetValues(typeof(BookLanguage)))
+				{
+					string selected = Model.FilterQuery?.SelectedLanguage == language ? "selected" : "";
+					<option value="@language.ToString()" selected="@selected">@language.ToString()</option>
+				}
+			</select>
+		</div>
+		<div class="col-md-3">
+			<label for="genre">Genre:</label>
+			<select class="form-control" id="genre" name="FilterQuery.SelectedGenre">
+				<option value="">All</option>
+				@foreach (BookGenre genre in Enum.GetValues(typeof(BookGenre)))
+				{
+					string selected = Model.FilterQuery?.SelectedGenre == genre ? "selected" : "";
+					<option value="@genre.ToString()" selected="@selected">@genre.ToString()</option>
+				}
+			</select>
+		</div>
+		<div class="col-md-3">
+			<label for="price">Max Price:</label>
+			<input type="number" class="form-control" id="price" name="FilterQuery.MaxPrice" min="0" value="@Model.FilterQuery?.MaxPrice">
+		</div>
+		<div class="col-md-2 align-self-end">
+			<button type="submit" class="btn btn-primary">Filter</button>
+		</div>
+	</form>
+	<form class="form-group col-md-3 offset-md-2 align-items-end" method="get" action="@Url.Action("Search", "Library")">
+		<div class="col-md-9">
+			<label for="search">Search:</label>
+			<input type="text" class="form-control" id="search" name="SearchQuery.Request" value="@Model.SearchQuery?.Request">
+		</div>
+		<div class="col-md-3 align-self-end">
+			<button type="submit" class="btn btn-primary">Find</button>
+		</div>
+	</form>
+</div>
 
 @if (Model.BookTitles != null && Model.BookTitles.Any())
 {
@@ -24,7 +68,6 @@ else
 {
 	<p>No books available.</p>
 }
-
 
 @section Styles {
 	<link rel="stylesheet" href="~/css/bookList.css" asp-append-version="true" />

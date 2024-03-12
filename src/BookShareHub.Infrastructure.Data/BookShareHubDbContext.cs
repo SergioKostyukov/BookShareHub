@@ -10,7 +10,7 @@ namespace BookShareHub.Infrastructure.Data
     {
 		public BookShareHubDbContext(DbContextOptions<BookShareHubDbContext> options) : base(options) { }
 		public BookShareHubDbContext() { }
-		public DbSet<User> Users { get; set; }
+		public DbSet<User> AspNetUsers { get; set; }
 		public DbSet<ProfileComment> ProfileComments { get; set; }
 		public DbSet<Book> Books { get; set; }
 		public DbSet<Order> Orders { get; set; }

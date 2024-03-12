@@ -8,7 +8,7 @@
 		@foreach (var book in Model.BookTitles)
 		{
 			<div class="col-md-3 mb-4">
-				<div class="card" onclick="location.href='@Url.Action("GetEditBook", "Book", new { id = book.Id })'">
+				<div class="card" onclick="location.href='@Url.Action("GetEditBook", "MyBooks", new { id = book.Id })'">
 					<img src="@("~" + book.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
 					<div class="card-body">
 						<span class="genre">@book.Genre</span>
@@ -20,7 +20,7 @@
 		}
 	}
 	<div class="col-md-3 mb-4">
-		<a href="@Url.Action("GetAddBook", "Book")" class="card-link d-block text-decoration-none">
+		<a href="@Url.Action("GetAddBook", "MyBooks")" class="card-link d-block text-decoration-none">
 			<div class="card">
 				<div class="card-body text-center">
 					<h5 class="card-title text-center">Add Book</h5>

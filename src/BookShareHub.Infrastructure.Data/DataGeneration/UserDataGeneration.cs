@@ -5,14 +5,13 @@ namespace BookShareHub.Infrastructure.Data.DataGeneration;
 
 public class UserDataGeneration
 {
-	Faker<User> userDataFake;
+	readonly Faker<User> userDataFake;
 
 	public UserDataGeneration()
 	{
 		Randomizer.Seed = new Random(20);
 
 		userDataFake = new Faker<User>()
-			.RuleFor(u => u.Id, f => Guid.NewGuid().ToString())
 				.RuleFor(u => u.Rating, f => f.Random.Float(1, 5))
 				.RuleFor(u => u.UserName, f => f.Name.FullName())
 				.RuleFor(u => u.NormalizedUserName, (f, u) => u.UserName.ToUpper())

@@ -17,6 +17,9 @@ namespace BookShareHub.Infrastructure.Data
 				//await database.EnsureDeletedAsync();
 				//await database.EnsureCreatedAsync();
 
+				dbContext.Books.RemoveRange(dbContext.Books);
+				await dbContext.SaveChangesAsync();
+
 				await dbContext.Database.MigrateAsync();
 
 				await SeedInitialUsersData(dbContext);
@@ -29,12 +32,13 @@ namespace BookShareHub.Infrastructure.Data
 		{
 			var userDataGeneration = new UserDataGeneration();
 
-			//var users = userDataGeneration.GenerateUsers().Take(10);
-			//dbContext.Users.AddRange(users);
 			var user = userDataGeneration.GenerateUser();
-			dbContext.Users.Add(user);
+			if (!(await dbContext.AspNetUsers.AnyAsync(u => u.UserName == user.UserName)))
+			{
+				dbContext.AspNetUsers.Add(user);
 
-			await dbContext.SaveChangesAsync();
+				await dbContext.SaveChangesAsync();
+			}
 		}
 
 		private static async Task SeedInitialBooksData(BookShareHubDbContext dbContext)
@@ -42,11 +46,9 @@ namespace BookShareHub.Infrastructure.Data
 			var bookDataGeneration = new BookDataGeneration();
 
 			var firstUserId = await dbContext.Users.Select(u => u.Id).FirstOrDefaultAsync();
-			var books = bookDataGeneration.GenerateBooks().Take(10);
-			foreach (var book in books)
-			{
-				book.OwnerId = firstUserId.ToString();
-			}
+
+			var books = bookDataGeneration.GenerateBooks(10, firstUserId.ToString());
+
 			dbContext.Books.AddRange(books);
 
 			await dbContext.SaveChangesAsync();

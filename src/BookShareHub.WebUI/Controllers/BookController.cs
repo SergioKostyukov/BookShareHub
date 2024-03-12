@@ -2,32 +2,14 @@
 using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
-using BookShareHub.Application.Dto;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	public class BookController(IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class BookController(ILogger<BookController> logger, IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
 	{
+		private readonly ILogger<BookController> _logger = logger;
 		private readonly IBookService _bookService = bookService;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-
-		[HttpGet]
-		public async Task<IActionResult> GetEditBook(int id)
-		{
-			var model = new BookModel
-			{
-				Book = await _bookService.GetBookByIdAsync(id),
-			};
-
-			return View("~/Views/Book/EditBook.cshtml", model);
-		}
-
-		[HttpGet]
-		public IActionResult GetAddBook()
-		{
-			var model = new BookModel();
-			return View("~/Views/Book/AddBook.cshtml", model);
-		}
 
 		[HttpPost]
 		public async Task<IActionResult> AddBook(BookModel model)
@@ -46,11 +28,11 @@ namespace BookShareHub.WebUI.Controllers
 			}
 			else
 			{
-				Console.WriteLine("No valid data");
+				_logger.LogError("No valid data");
 				var errors = ModelState.Values.SelectMany(v => v.Errors);
 				foreach (var error in errors)
 				{
-					Console.WriteLine(error.ErrorMessage);
+					_logger.LogError($"Error {error.ErrorMessage}");
 				}
 			}
 

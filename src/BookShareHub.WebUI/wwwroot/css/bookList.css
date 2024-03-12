@@ -1,4 +1,11 @@
-﻿.card-link {
+﻿form {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 20px;
+}
+
+.card-link {
     color: inherit;
     text-decoration: none;
     cursor: pointer;
@@ -19,7 +26,7 @@
 
 .img-fluid {
     width: 100%;
-    height: 100%;
+    height: 70%;
     object-fit: cover;
 }
 
@@ -35,6 +42,6 @@
         font-weight: bold;
     }
 
-    .card-body h5{
+    .card-body h5 {
         margin-bottom: 0;
     }

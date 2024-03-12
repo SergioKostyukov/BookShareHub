@@ -35,8 +35,6 @@ public class Program
 
 		var app = builder.Build();
 
-		app.DatabaseEnsureCreated();
-
 		if (!app.Environment.IsDevelopment())
 		{
 			app.UseExceptionHandler("/Home/Error");
@@ -56,6 +54,8 @@ public class Program
 			pattern: "{controller=Home}/{action=Index}/{id?}");
 
 		app.MapRazorPages();
+
+		app.DatabaseEnsureCreated();
 
 		app.Run();
 	}

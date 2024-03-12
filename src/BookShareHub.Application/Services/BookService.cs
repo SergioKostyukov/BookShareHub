@@ -5,43 +5,15 @@ using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
 using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
 {
-	internal class BookService(BookShareHubDbContext context, IMapper mapper) : IBookService
+	internal class BookService(ILogger<BookService> logger, BookShareHubDbContext context, IMapper mapper) : IBookService
 	{
 		private readonly BookShareHubDbContext _context = context;
+		private readonly ILogger<BookService> _logger = logger;
 		private readonly IMapper _mapper = mapper;
-
-		// ----------------------- GET METHODS -----------------------
-		// Search book by userId 
-		public async Task<List<BookTitleDto>> GetBooksByUserId(string userId)
-		{
-			var books = await _context.Books
-				.Where(b => b.OwnerId == userId)
-				.ToListAsync();
-
-			return _mapper.Map<List<BookTitleDto>>(books);
-		}
-
-		// Search all books except those owned by the user
-		public async Task<List<BookTitleDto>> GetAllBooksAsync(string userId)
-		{
-			var books = await _context.Books
-				.Where(b => b.OwnerId != userId)
-				.ToListAsync();
-
-			return _mapper.Map<List<BookTitleDto>>(books);
-		}
-
-		// Search book by bookId
-		public async Task<BookDto> GetBookByIdAsync(int bookId)
-		{
-			var book = await _context.Books
-				.FirstOrDefaultAsync(b => b.Id == bookId);
-
-			return _mapper.Map<BookDto>(book);
-		}
 
 		// ----------------------- PATCH METHODS -----------------------
 		// Add book to DB and save image to storage
@@ -133,18 +105,18 @@ namespace BookShareHub.Application.Services
 		}
 
 		// Create a new image directory (if it doesn't exist)
-		private static void CreateImagesDirectory(string imageFolderPath)
+		private void CreateImagesDirectory(string imageFolderPath)
 		{
 			if (!Directory.Exists(imageFolderPath))
 			{
 				try
 				{
 					Directory.CreateDirectory(imageFolderPath);
-					Console.WriteLine("Directory created successfully.");
+					_logger.LogInformation("Directory created successfully.");
 				}
 				catch (Exception ex)
 				{
-					Console.WriteLine($"Error creating directory: {ex.Message}");
+					_logger.LogError($"Error creating directory: {ex.Message}");
 				}
 			}
 		}

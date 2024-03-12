@@ -5,15 +5,15 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	public class OrderController(IBookService bookService, IUserService userService) : Controller
+	public class OrderController(ILibraryService libraryService, IUserService userService) : Controller
 	{
-		private readonly IBookService _bookService = bookService;
+		private readonly ILibraryService _libraryService = libraryService;
 		private readonly IUserService _userService = userService;
 
 		[HttpGet]
 		public async Task<IActionResult> Order(int id)
 		{
-			var book = await _bookService.GetBookByIdAsync(id);
+			var book = await _libraryService.GetBookByIdAsync(id);
 			if (book == null)
 			{
 				return NotFound();
