@@ -1,22 +1,5 @@
-﻿.advertising-block {
-    height: 100%;
-    border-radius: 20px;
-    background-color: #ccc;
-    margin-bottom: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between; 
-}
-
-.title-block {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    border-radius: 20px;
-    width: 95%;
-    max-height:70%;
+﻿row {
+    gap: 10px;
 }
 
 img {
@@ -26,35 +9,32 @@ img {
 }
 
 .card-body {
+    width: 100%;
     text-align: left;
 }
 
-.nested-block {
-    background-color: #dcdcdc;
-    width: 95%;
-    margin: 0 auto;
-    padding: 10px;
-    margin-top: 10px;
-    border-radius: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
-
 .btn-container {
-    margin-top: auto; 
+    margin-top: auto;
+    display: flex;
+    justify-content: center;
 }
 
 .btn-primary {
-    min-width: 150px;
-    background-color: #888; 
+    min-width: 300px;
+    min-height: 50px;
     color: #fff;
-    width: 100%;
-    border-color: #777;
+    background-color: #00a115;
     border-radius: 10px;
+    border-color: #005411;
+    font-size: 20px;
 }
 
     .btn-primary:hover {
-        background-color: #777;
+        background-color: #1b8e00;
         border-color: #777
     }
+
+p {
+    align-self: start;
+    font-size: 20px;
+}

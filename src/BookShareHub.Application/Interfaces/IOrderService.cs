@@ -5,8 +5,10 @@ namespace BookShareHub.Application.Interfaces
 {
 	public interface IOrderService
 	{
-		IEnumerable<Order> GetOrders();
+		Task<IEnumerable<Order>> GetOrders();
 
-		Task CreateOrder();
+		Task<int> CreateOrder(OrderCreateDto request);
+
+		Task DeleteOrder(int OrderId);
 	}
 }

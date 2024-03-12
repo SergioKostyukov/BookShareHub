@@ -1,0 +1,9 @@
+﻿.background-block {
+    border-radius: 20px;
+    background-color: #ccc;
+    margin-bottom: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}

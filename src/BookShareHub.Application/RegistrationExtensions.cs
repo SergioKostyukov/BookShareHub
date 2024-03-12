@@ -11,6 +11,7 @@ namespace BookShareHub.Application
 		{
 			services.AddAutoMapper(typeof(BookProfile));
 			services.AddAutoMapper(typeof(UserProfile));
+			services.AddAutoMapper(typeof(OrderProfile));
 
 			services.AddScoped<ILibraryService, LibraryService>();
 			services.AddScoped<IBookService, BookService>();

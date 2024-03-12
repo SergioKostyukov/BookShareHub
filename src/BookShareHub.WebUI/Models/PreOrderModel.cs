@@ -2,9 +2,8 @@
 
 namespace BookShareHub.WebUI.Models;
 
-public class OrderModel
+public class PreOrderModel
 {
-	public OrderDto Order { get; set; } 
+	public BookDto Book { get; set; }
 	public UserDto Owner { get; set; }
-	public List<BookTitleDto> OrderList { get; set; }
 }

@@ -2,9 +2,10 @@
 
 namespace BookShareHub.Application.Dto;
 
-public record BookTitleDto(
+public record BookTitleDto (
 	int Id, 
 	string Title, 
 	string Author, 
 	BookGenre Genre, 
-	string ImagePath);
+	string ImagePath
+);

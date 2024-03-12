@@ -4,6 +4,13 @@
 <div class="row justify-content-center">
 	<div class="card col-md-6">
 		<div class="card-body">
+			<form asp-controller="Book" asp-action="DeleteBook" method="post" autocomplete="off">
+				<input type="hidden" name="id" value="@Model.Book.Id" />
+				<div class="d-flex justify-content-end">
+					<button type="submit" class="btn btn-danger">Delete</button>
+				</div>
+			</form>
+
 			<form asp-controller="Book" asp-action="EditBook" method="post" autocomplete="off" enctype="multipart/form-data">
 				<input type="hidden" asp-for="Book.Id" />
 				<input type="hidden" asp-for="Book.ImagePath" value="@Model.Book.ImagePath" />
@@ -57,13 +64,6 @@
 						<button type="submit" class="btn btn-primary mr-2">Save</button>
 						<a href="@Url.Action("MyBooks", "MyBooks")" class="btn btn-secondary">Cancel</a>
 					</div>
-				</div>
-			</form>
-
-			<form asp-controller="Book" asp-action="DeleteBook" method="post" autocomplete="off">
-				<input type="hidden" name="id" value="@Model.Book.Id" />
-				<div class="d-flex justify-content-end">
-					<button type="submit" class="btn btn-danger">Delete</button>
 				</div>
 			</form>
 		</div>

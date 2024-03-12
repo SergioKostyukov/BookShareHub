@@ -16,19 +16,18 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(x => x.OwnerId)
 				.IsRequired();
 
-			builder.Property(x => x.OrderStatus)
+			builder.Property(x => x.Status)
 				.IsRequired()
 				.HasConversion<int>();
 
-			builder.Property(x => x.OrderType)
+			builder.Property(x => x.Type)
 				.IsRequired()
 				.HasConversion<int>();
 
-			builder.Property(x => x.CreatedDate)
+			builder.Property(x => x.CreateDate)
 				.IsRequired();
 
-			builder.Property(x => x.OrderDate)
-				.IsRequired();
+			builder.Property(x => x.CloseDate);
 
 			builder.Property(x => x.CheckAmount)
 				.IsRequired()

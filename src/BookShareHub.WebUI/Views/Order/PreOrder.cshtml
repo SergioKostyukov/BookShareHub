@@ -1,0 +1,62 @@
+﻿@model PreOrderModel
+
+<div class="row" style="height: 85vh;">
+	<div class="col-md-8" style="height: 100%;">
+		<div class="background-block" style="height: 100%;">
+			<div class="title-block">
+				<h2 class="card-title">@Model.Book.Title</h2>
+				<img src="@("~" + Model.Book.ImagePath)" asp-append-version="true" class="img-fluid" alt="Book Image">
+			</div>
+			<div class="card-body">
+				<p>Author: @Model.Book.Author</p>
+				<p>Description: @Model.Book.Description</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-4" style="height: 100%;">
+		<div class="background-block" style="height: 100%;">
+			<div class="nested-block" style="height: 40%;">
+				<h3>Seller statistic</h3>
+				<div class="card-body">
+					<p>Owner: @Model.Owner.UserName</p>
+					<p>
+						Rating:
+						@if (Model.Owner.Rating != null)
+						{
+							@for (int i = 0; i < (int)Model.Owner.Rating; i++)
+							{
+								<span>&#9733;</span>
+							}
+						}
+						else
+						{
+						<p>no rating</p>
+						}
+					</p>
+				</div>
+				<div class="btn-container">
+					<button type="submit" class="btn btn-primary">Write message</button>
+				</div>
+			</div>
+			<div class="nested-block" style="height: 60%; margin-bottom: 10px">
+				<h3>Additional info</h3>
+				<div class="card-body">
+					<p>Language: @Model.Book.Language</p>
+					<p>Price: @Model.Book.Price</p>
+				</div>
+				<form method="post" action="@Url.Action("AddOrder", "Order")">
+					<input type="hidden" name="OwnerId" value="@Model.Owner.Id" />
+					<input type="hidden" name="BookId" value="@Model.Book.Id" />
+					<input type="hidden" name="CheckAmount" value="@Model.Book.Price" />
+					<button type="submit" class="btn btn-primary">Add to basket</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+@section Styles {
+	<link rel="stylesheet" href="~/css/backgroundBlock.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/preOrder.css" asp-append-version="true" />
+}

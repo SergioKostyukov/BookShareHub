@@ -13,8 +13,8 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(x => x.OrderId)
 				.IsRequired();
 
-			builder.Property(x => x.UserId)
-				.IsRequired();
+			//builder.Property(x => x.UserId)
+			//	.IsRequired();
 
 			builder.Property(x => x.BookId)
 				.IsRequired();

@@ -41,4 +41,5 @@ textarea.form-control {
     background-color: #dc3545;
     border: none;
     border-radius: 10px;
+    margin-bottom: 10px;
 }

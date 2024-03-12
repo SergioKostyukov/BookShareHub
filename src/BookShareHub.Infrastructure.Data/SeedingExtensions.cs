@@ -12,44 +12,54 @@ namespace BookShareHub.Infrastructure.Data
 			using (var scope = applicationBuilder.ApplicationServices.CreateScope())
 			{
 				var dbContext = scope.ServiceProvider.GetRequiredService<BookShareHubDbContext>();
-				var database = dbContext.Database;
 
+				// Rebuild the database
+				//var database = dbContext.Database;
 				//await database.EnsureDeletedAsync();
 				//await database.EnsureCreatedAsync();
 
-				dbContext.Books.RemoveRange(dbContext.Books);
-				await dbContext.SaveChangesAsync();
+				// Remove data from the table users and books to refill them
+				//dbContext.AspNetUsers.RemoveRange(dbContext.AspNetUsers);
+				//dbContext.Books.RemoveRange(dbContext.Books);
+				//await dbContext.SaveChangesAsync();
 
-				await dbContext.Database.MigrateAsync();
+				if (!await dbContext.AspNetUsers.AnyAsync() && !await dbContext.Books.AnyAsync())
+				{
+					await dbContext.Database.MigrateAsync();
 
-				await SeedInitialUsersData(dbContext);
-				await SeedInitialBooksData(dbContext);
+					await SeedInitialUsersData(dbContext);
+					await SeedInitialBooksData(dbContext);
+				}
 			}
 		}
 
-		// initialize default data in tables
+		// Fill the user table with initial data
 		private static async Task SeedInitialUsersData(BookShareHubDbContext dbContext)
 		{
 			var userDataGeneration = new UserDataGeneration();
 
-			var user = userDataGeneration.GenerateUser();
-			if (!(await dbContext.AspNetUsers.AnyAsync(u => u.UserName == user.UserName)))
+			var users = userDataGeneration.GenerateUsers().Take(10);
+
+			foreach (var user in users)
 			{
 				dbContext.AspNetUsers.Add(user);
-
-				await dbContext.SaveChangesAsync();
 			}
+
+			await dbContext.SaveChangesAsync();
 		}
 
+		// Fill the books table with initial data
 		private static async Task SeedInitialBooksData(BookShareHubDbContext dbContext)
 		{
 			var bookDataGeneration = new BookDataGeneration();
 
-			var firstUserId = await dbContext.Users.Select(u => u.Id).FirstOrDefaultAsync();
+			var users = await dbContext.Users.Take(10).ToListAsync();
 
-			var books = bookDataGeneration.GenerateBooks(10, firstUserId.ToString());
-
-			dbContext.Books.AddRange(books);
+			foreach (var user in users)
+			{
+				var books = bookDataGeneration.GenerateBooks(5, user.Id);
+				dbContext.Books.AddRange(books);
+			}
 
 			await dbContext.SaveChangesAsync();
 		}

@@ -5,11 +5,11 @@ namespace BookShareHub.Core.Domain.Entities;
 public class Order
 {
 	public int Id { get; set; }
-	public int CustomerId { get; set; }
-	public int OwnerId { get; set; }
-	public OrderStatus OrderStatus { get; set; }
-	public OrderType OrderType { get; set; }
-	public DateTime CreatedDate { get; set; }
-	public DateTime OrderDate { get; set; }
+	public string CustomerId { get; set; }
+	public string OwnerId { get; set; }
+	public OrderStatus Status { get; set; }
+	public OrderType Type { get; set; }
+	public DateTime CreateDate { get; set; }
+	public DateTime? CloseDate { get; set; }
 	public decimal CheckAmount { get; set; }
 }
