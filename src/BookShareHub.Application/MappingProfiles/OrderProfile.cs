@@ -9,7 +9,8 @@ namespace BookShareHub.Application.MappingProfiles
 		public OrderProfile()
 		{
 			CreateMap<OrderCreateDto, Order>();
-			CreateMap<Order, DoneOrderDetailsDto>();
+			CreateMap<Order, DoneOrderTitleDto>();
+			CreateMap<Order, ActualOrderTitleDto>();
 			CreateMap<Order, OrderDto>();
 		}
 	}

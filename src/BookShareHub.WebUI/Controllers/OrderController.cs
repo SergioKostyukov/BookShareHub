@@ -1,18 +1,21 @@
 ﻿using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
-using BookShareHub.Core.Domain.Entities;
 using BookShareHub.WebUI.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	public class OrderController(IOrderService orderService, ILibraryService libraryService, IUserService userService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class OrderController(ILogger<OrderController> logger, 
+								 IHttpContextAccessor httpContextAccessor,
+								 ILibraryService libraryService,
+								 IOrderService orderService,
+								 IUserService userService) : Controller
 	{
+		private readonly ILogger<OrderController> _logger = logger;
+		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 		private readonly ILibraryService _libraryService = libraryService;
 		private readonly IOrderService _orderService = orderService;
 		private readonly IUserService _userService = userService;
-		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 
 		[HttpGet]
 		public async Task<IActionResult> PreOrder(int id)
@@ -38,6 +41,25 @@ namespace BookShareHub.WebUI.Controllers
 			return View("~/Views/Order/PreOrder.cshtml", model);
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> Order(int orderId)
+		{
+			var model = new OrderModel
+			{
+				Id = orderId,
+			};
+
+			return View("~/Views/Order/Order.cshtml", model);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> ConfirmOrder()
+		{
+
+
+			return RedirectToAction("Library", "Library");
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> AddOrder([FromForm] string ownerId, [FromForm] int bookId, [FromForm] decimal checkAmount)
 		{
@@ -59,25 +81,6 @@ namespace BookShareHub.WebUI.Controllers
 			var orderId = await _orderService.CreateOrderAsync(OrderCreate);
 
 			return RedirectToAction("Order", "Order", new { orderId });
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> Order(int orderId)
-		{
-			var model = new OrderModel
-			{
-				Id = orderId,
-			};
-
-			return View("~/Views/Order/Order.cshtml", model);
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> ConfirmOrder()
-		{
-
-
-			return RedirectToAction("Library", "Library");
 		}
 
 		[HttpPost]

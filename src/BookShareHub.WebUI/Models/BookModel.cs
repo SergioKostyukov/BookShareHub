@@ -4,7 +4,7 @@ namespace BookShareHub.WebUI.Models;
 
 public class BookModel
 {
-	public BookDto Book { get; set; } = new BookDto();
+	public required BookDto Book { get; init; }
 
 	public IFormFile? ImageFile { get; set; }
 }

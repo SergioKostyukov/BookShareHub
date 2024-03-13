@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using BookShareHub.Application.Dto;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -7,10 +8,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShareHub.WebUI.Controllers
 {
 	[Authorize]
-	public class MyBooksController(ILibraryService libraryService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class MyBooksController(IHttpContextAccessor httpContextAccessor,
+								   ILibraryService libraryService) : Controller
 	{
-		private readonly ILibraryService _libraryService = libraryService;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+		private readonly ILibraryService _libraryService = libraryService;
 
 		[HttpGet]
 		public async Task<IActionResult> MyBooks()
@@ -26,7 +28,7 @@ namespace BookShareHub.WebUI.Controllers
 				BookTitles = await _libraryService.GetAllBooksByUserIdAsync(userId),
 			};
 
-			return View(booksTitles);
+			return View("~/Views/Library/MyBooks.cshtml", booksTitles);
 		}
 
 		[HttpGet]
@@ -43,8 +45,7 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpGet]
 		public IActionResult GetAddBook()
 		{
-			var model = new BookModel();
-			return View("~/Views/Book/AddBook.cshtml", model);
+			return View("~/Views/Book/AddBook.cshtml", new BookModel { Book = new BookDto() });
 		}
 	}
 }

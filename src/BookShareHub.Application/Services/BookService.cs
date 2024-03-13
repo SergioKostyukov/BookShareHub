@@ -11,17 +11,18 @@ namespace BookShareHub.Application.Services
 {
 	internal class BookService(ILogger<BookService> logger, BookShareHubDbContext context, IMapper mapper) : IBookService
 	{
-		private readonly BookShareHubDbContext _context = context;
 		private readonly ILogger<BookService> _logger = logger;
+		private readonly BookShareHubDbContext _context = context;
 		private readonly IMapper _mapper = mapper;
 
-		// ----------------------- PATCH METHODS -----------------------
-		// Add book to DB and save image to storage
-		public async Task AddBookAsync(BookDto bookDto, IFormFile? imageFile)
+		/* ----------------------- PATCH METHODS ----------------------- */
+		// Add book to storage and save image to storage
+		public async Task AddBookAsync(BookDto bookDto, ImageFileDto? imageFile)
 		{
 			var book = _mapper.Map<Book>(bookDto);
 
-			if (imageFile?.Length > 0)
+			// Add image to storage
+			if (imageFile?.ImageFile?.Length > 0)
 			{
 				string imageFolderPath = "wwwroot/images";
 				CreateImagesDirectory(imageFolderPath);
@@ -33,14 +34,15 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		// Edit book data in DB and image file in storage
-		public async Task EditBookAsync(BookDto bookDto, IFormFile? imageFile)
+		// Edit book data in storage and image file in storage
+		public async Task EditBookAsync(BookDto bookDto, ImageFileDto? imageFile)
 		{
 			var book = _mapper.Map<Book>(bookDto);
 
-			if (imageFile?.Length > 0)
+			// Update image in storage
+			if (imageFile?.ImageFile?.Length > 0)
 			{
-				await DeleteBookImage(book.Id);
+				DeleteBookImage(book.ImagePath);
 
 				string imageFolderPath = "wwwroot/images";
 				await CopyImageAsync(book, imageFile, imageFolderPath);
@@ -54,17 +56,18 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		// Delete book from DB
+		// Delete book from storage
 		public async Task DeleteBookAsync(int bookId)
 		{
 			var book = await _context.Books.FindAsync(bookId) ?? throw new InvalidOperationException("Book not found");
 
-			await DeleteBookImage(bookId);
+			DeleteBookImage(book.ImagePath);
 
 			_context.Books.Remove(book);
 			await _context.SaveChangesAsync();
 		}
 
+		/* ----------------------- PRIVATE METHODS ----------------------- */
 		/// <summary>
 		/// Copy image to server storage folder
 		/// </summary>
@@ -72,28 +75,23 @@ namespace BookShareHub.Application.Services
 		/// <param name="imageFile">The actual image file object.</param>
 		/// <param name="imageFolderPath">The path where the image should be saved on the server.</param>
 		/// <returns></returns>
-		private static async Task CopyImageAsync(Book book, IFormFile? imageFile, string imageFolderPath)
+		private static async Task CopyImageAsync(Book book, ImageFileDto? imageFile, string imageFolderPath)
 		{
-			string extension = Path.GetExtension(imageFile.FileName);
+			string extension = Path.GetExtension(imageFile.ImageFile.FileName);
 			string fileName = book.OwnerId + DateTime.Now.ToString("yymmssfff") + extension;
 			string path = Path.Combine(imageFolderPath, fileName);
 
 			using (var fileStream = new FileStream(path, FileMode.Create))
 			{
-				await imageFile.CopyToAsync(fileStream);
+				await imageFile.ImageFile.CopyToAsync(fileStream);
 			}
 
 			book.ImagePath = "/images/" + fileName;
 		}
 
 		// Delete image file by bookId
-		private async Task DeleteBookImage(int bookId)
+		private static void DeleteBookImage(string oldImagePath)
 		{
-			var oldImagePath = await _context.Books
-				.Where(b => b.Id == bookId)
-				.Select(b => b.ImagePath)
-				.FirstOrDefaultAsync();
-
 			if (!string.IsNullOrEmpty(oldImagePath))
 			{
 				string oldImagePathPhysical = Path.Combine("wwwroot", oldImagePath.TrimStart('/'));

@@ -3,4 +3,5 @@
 public record UserDto(
 	string Id, 
 	string UserName, 
-	float? Rating);
+	float? Rating
+);

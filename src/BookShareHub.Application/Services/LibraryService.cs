@@ -2,23 +2,20 @@
 using BookShareHub.Application.Dto;
 using BookShareHub.Application.Filters;
 using BookShareHub.Application.Interfaces;
-using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
-using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
 {
-	internal class LibraryService(ILogger<BookService> logger, BookShareHubDbContext context, IMapper mapper) : ILibraryService
+	internal class LibraryService(ILogger<LibraryService> logger, BookShareHubDbContext context, IMapper mapper) : ILibraryService
 	{
+		private readonly ILogger<LibraryService> _logger = logger;
 		private readonly BookShareHubDbContext _context = context;
-		private readonly ILogger<BookService> _logger = logger;
 		private readonly IMapper _mapper = mapper;
 
-		// ----------------------- GET METHODS -----------------------
-
-		// Search all books except those owned by the user
+		/* ----------------------- GET METHODS ----------------------- */
+		// Get all books except those owned by the user
 		public async Task<List<BookTitleDto>> GetAllBooksAsync(string userId)
 		{
 			var books = await _context.Books
@@ -28,7 +25,7 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		// Search book by userId 
+		// Get all books owned by this user
 		public async Task<List<BookTitleDto>> GetAllBooksByUserIdAsync(string userId)
 		{
 			var books = await _context.Books
@@ -38,10 +35,9 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		// 
-		async public Task<List<BookTitleDto>> GetAllBooksByFilterAsync(LibraryFilter filter, string userId)
+		// Get all books by filter except those owned by the user
+		public async Task<List<BookTitleDto>> GetAllBooksByFilterAsync(LibraryFilter filter, string userId)
 		{
-			//_logger.LogInformation("{0} {1}", filter.SelectedLanguage, filter.SelectedGenre);
 			var query = _context.Books.AsQueryable();
 
 			if (filter.SelectedLanguage.HasValue)
@@ -69,9 +65,9 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		async public Task<List<BookTitleDto>> GetAllBooksBySearchAsync(LibrarySearch request, string userId)
+		// Get all books by search parameter except those owned by the user
+		public async Task<List<BookTitleDto>> GetAllBooksBySearchAsync(LibrarySearch request, string userId)
 		{
-			//_logger.LogInformation("{0}", request.Request);
 			var query = _context.Books.AsQueryable();
 
 			if (!string.IsNullOrEmpty(request.Request))
@@ -93,7 +89,7 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		// Find book by bookId
+		// Get book details by bookId
 		public async Task<BookDto> GetBookByIdAsync(int bookId)
 		{
 			var book = await _context.Books

@@ -1,7 +1,7 @@
+using BookShareHub.Application;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
-using BookShareHub.Application;
 
 namespace BookShareHub;
 public class Program

@@ -4,5 +4,5 @@ namespace BookShareHub.WebUI.Models;
 
 public class MyBooksModel
 {
-    public List<BookTitleDto> BookTitles { get; set; }
+    public required List<BookTitleDto> BookTitles { get; init; }
 }

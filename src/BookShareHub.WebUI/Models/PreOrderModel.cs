@@ -4,6 +4,6 @@ namespace BookShareHub.WebUI.Models;
 
 public class PreOrderModel
 {
-	public BookDto Book { get; set; }
-	public UserDto Owner { get; set; }
+	public required BookDto Book { get; init; }
+	public required UserDto Owner { get; init; }
 }

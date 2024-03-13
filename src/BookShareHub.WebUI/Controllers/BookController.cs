@@ -1,15 +1,18 @@
 ﻿using System.Security.Claims;
+using BookShareHub.Application.Dto;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	public class BookController(ILogger<BookController> logger, IBookService bookService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class BookController(ILogger<BookController> logger,
+								IHttpContextAccessor httpContextAccessor,
+								IBookService bookService) : Controller
 	{
 		private readonly ILogger<BookController> _logger = logger;
-		private readonly IBookService _bookService = bookService;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+		private readonly IBookService _bookService = bookService;
 
 		[HttpPost]
 		public async Task<IActionResult> AddBook(BookModel model)
@@ -23,16 +26,16 @@ namespace BookShareHub.WebUI.Controllers
 				}
 				model.Book.OwnerId = userId;
 
-				await _bookService.AddBookAsync(model.Book, model.ImageFile);
+				await _bookService.AddBookAsync(model.Book, new ImageFileDto { ImageFile = model.ImageFile });
 				return RedirectToAction("MyBooks", "MyBooks");
 			}
 			else
 			{
-				_logger.LogError("No valid data");
+				_logger.LogError("Error. No valid data");
 				var errors = ModelState.Values.SelectMany(v => v.Errors);
 				foreach (var error in errors)
 				{
-					_logger.LogError($"Error {error.ErrorMessage}");
+					_logger.LogError($"Error. {error.ErrorMessage}");
 				}
 			}
 
@@ -44,8 +47,17 @@ namespace BookShareHub.WebUI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				await _bookService.EditBookAsync(model.Book, model.ImageFile);
+				await _bookService.EditBookAsync(model.Book, new ImageFileDto { ImageFile = model.ImageFile });
 				return RedirectToAction("MyBooks", "MyBooks");
+			}
+			else
+			{
+				_logger.LogError("Error.No valid data");
+				var errors = ModelState.Values.SelectMany(v => v.Errors);
+				foreach (var error in errors)
+				{
+					_logger.LogError($"Error. {error.ErrorMessage}");
+				}
 			}
 
 			return View("~/Views/Book/EditBook.cshtml", model);

@@ -7,10 +7,13 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShareHub.WebUI.Controllers
 {
 	[Authorize]
-	public class LibraryController(ILibraryService libraryService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class LibraryController(ILogger<LibraryController> logger,
+								   IHttpContextAccessor httpContextAccessor,
+								   ILibraryService libraryService) : Controller
 	{
-		private readonly ILibraryService _libraryService = libraryService;
+		private readonly ILogger<LibraryController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
+		private readonly ILibraryService _libraryService = libraryService;
 
 		[HttpGet]
 		public async Task<IActionResult> Library()
@@ -23,39 +26,29 @@ namespace BookShareHub.WebUI.Controllers
 
 			var model = new LibraryModel
 			{
+				UserId = userId,
 				BookTitles = await _libraryService.GetAllBooksAsync(userId),
 			};
 
-			return View(model);
+			return View("~/Views/Library/Library.cshtml", model);
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Filter(LibraryModel model)
+		public async Task<IActionResult> Filter(LibraryModel model, string userId)
 		{
-			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			if (userId == null)
-			{
-				return BadRequest("UserId not found");
-			}
-
-			model.BookTitles = await _libraryService.GetAllBooksByFilterAsync(model.FilterQuery, userId);
-
-			return View("~/Views/Library/Library.cshtml",  model);
-		}
-
-		[HttpGet]
-		public async Task<IActionResult> Search(LibraryModel model)
-		{
-			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			if (userId == null)
-			{
-				return BadRequest("UserId not found");
-			}
-
-			model.BookTitles = await _libraryService.GetAllBooksBySearchAsync(model.SearchQuery, userId);
+			model.UserId = userId;
+			model.BookTitles = await _libraryService.GetAllBooksByFilterAsync(model.FilterQuery, model.UserId);
 
 			return View("~/Views/Library/Library.cshtml", model);
+		}
 
+		[HttpGet]
+		public async Task<IActionResult> Search(LibraryModel model, string userId)
+		{
+			model.UserId = userId;
+			model.BookTitles = await _libraryService.GetAllBooksBySearchAsync(model.SearchQuery, model.UserId);
+
+			return View("~/Views/Library/Library.cshtml", model);
 		}
 	}
 }

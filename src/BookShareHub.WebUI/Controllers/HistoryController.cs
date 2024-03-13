@@ -1,12 +1,13 @@
-﻿using BookShareHub.Application.Interfaces;
+﻿using System.Security.Claims;
+using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
-using System.Security.Claims;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	public class HistoryController(ILogger<BookController> logger, IOrderService orderService, IHttpContextAccessor httpContextAccessor) : Controller
+	public class HistoryController(ILogger<BookController> logger,
+								   IHttpContextAccessor httpContextAccessor,
+								   IOrderService orderService) : Controller
 	{
 		private readonly ILogger<BookController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
@@ -26,15 +27,13 @@ namespace BookShareHub.WebUI.Controllers
 				OrderTitles = await _orderService.GetDoneOrdersAsync(userId),
 			};
 
-			return View(model);
+			return View("~/Views/Contracts/History.cshtml", model);
 		}
 
 		[HttpGet]
 		public async Task<IActionResult> GetOrderDetails(int orderId)
 		{
 			var orderDetails = await _orderService.GetOrderDetailsAsync(orderId);
-
-			_logger.LogInformation("{0} {1} {2}", orderDetails.OwnerId, orderDetails.CustomerId, orderDetails.CheckAmount);
 
 			return Json(orderDetails);
 		}

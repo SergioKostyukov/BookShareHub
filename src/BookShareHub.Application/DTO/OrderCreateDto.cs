@@ -2,13 +2,10 @@
 
 namespace BookShareHub.Application.Dto;
 
-public record OrderDto(
-	int Id,
+public record OrderCreateDto(
 	string CustomerId,
 	string OwnerId,
-	OrderStatus Status,
-	OrderType Type,
-	DateTime CreateDate,
-	DateTime CloseDate,
+	int BookId,
+	OrderType? Type,
 	decimal CheckAmount
 );

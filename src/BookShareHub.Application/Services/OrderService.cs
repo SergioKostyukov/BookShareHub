@@ -14,24 +14,27 @@ namespace BookShareHub.Application.Services
 		private readonly BookShareHubDbContext _context = context;
 		private readonly IMapper _mapper = mapper;
 
-		// ----------------------- GET METHODS -----------------------
-		async public Task<List<OrderDto>> GetActualOrdersAsync(string userId)
+		/* ----------------------- GET METHODS ----------------------- */
+		// Get all orders that were not fulfilled or canceled
+		public async Task<List<ActualOrderTitleDto>> GetActualOrdersAsync(string userId)
 		{
 			var orders = await _context.Orders
-				.Where(b => b.CustomerId == userId)
+				.Where(b => b.CustomerId == userId &&
+							b.Status != Core.Domain.Enums.OrderStatus.Done)
 				.ToListAsync();
 
-			return _mapper.Map<List<OrderDto>>(orders);
+			return _mapper.Map<List<ActualOrderTitleDto>>(orders);
 		}
 
-		async public Task<List<DoneOrderDetailsDto>> GetDoneOrdersAsync(string userId)
+		// Get all orders that were fulfilled or canceled
+		public async Task<List<DoneOrderTitleDto>> GetDoneOrdersAsync(string userId)
 		{
 			var orders = await _context.Orders
 				.Where(b => b.CustomerId == userId &&
 							b.Status == Core.Domain.Enums.OrderStatus.Done)
 				.ToListAsync();
 
-			return _mapper.Map<List<DoneOrderDetailsDto>>(orders);
+			return _mapper.Map<List<DoneOrderTitleDto>>(orders);
 		}
 
 		public async Task<OrderDto> GetOrderDetailsAsync(int orderId)
@@ -42,9 +45,9 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<OrderDto>(order);
 		}
 
-
-		// ----------------------- PATCH METHODS -----------------------
-		async public Task<int> CreateOrderAsync(OrderCreateDto request)
+		/* ----------------------- PATCH METHODS ----------------------- */
+		// Create a new basket with seller`s items or get an existing one and add selected book to it
+		public async Task<int> CreateOrderAsync(OrderCreateDto request)
 		{
 			var id = await _context.Orders
 				.Where(ol => ol.CustomerId == request.CustomerId && ol.OwnerId == request.OwnerId)
@@ -63,14 +66,15 @@ namespace BookShareHub.Application.Services
 			return id;
 		}
 
-		async public Task DeleteOrderAsync(int orderId)
+		// Remove all records from the 'Orders' and 'OrderLists' tables
+		public async Task DeleteOrderAsync(int orderId)
 		{
 			var order = await _context.Orders
 				.Where(o => o.Id == orderId)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
 
 			var orderLists = _context.OrdersLists.Where(ol => ol.OrderId == order.Id);
-			
+
 			_context.OrdersLists.RemoveRange(orderLists);
 			_logger.LogInformation("OrderList cleared");
 
@@ -80,7 +84,9 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		async private Task<int> CreateOrderRecordAsync(OrderCreateDto request)
+		/* ----------------------- PRIVATE METHODS ----------------------- */
+		// Create new record in 'Orders' table
+		private async Task<int> CreateOrderRecordAsync(OrderCreateDto request)
 		{
 			var order = _mapper.Map<Order>(request);
 			order.Status = Core.Domain.Enums.OrderStatus.Request;
@@ -93,7 +99,8 @@ namespace BookShareHub.Application.Services
 			return order.Id;
 		}
 
-		async private Task CreateOrderListRecordAsync(OrderCreateDto request, int orderId)
+		// Create new record in 'OrdersLists' table. Add selected book to order list
+		private async Task CreateOrderListRecordAsync(OrderCreateDto request, int orderId)
 		{
 			// If there is no such book in basket yet
 			var existingOrderList = await _context.OrdersLists
