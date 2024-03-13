@@ -1,7 +1,7 @@
 ﻿@model OrderModel
 
 <div class="row" style="height: 85vh;">
-	<div class="col-md-6">
+	<div class="col-md-6" style="height: 100%;">
 		<div class="background-block" style="height: 35%;">
 			<h4>Delivery parameters</h4>
 		</div>
@@ -16,15 +16,47 @@
 		</div>
 	</div>
 
-	<div class="col-md-6">
+	<div class="col-md-6" style="height: 100%;">
 		<div class="background-block" style="height: calc(45% + 5px);">
 			<h4>Basket items</h4>
+			<div class="items" style="height:85%; width:90%; overflow-y: auto;">
+				@if (Model.OrderList != null && Model.OrderList.Any())
+				{
+					@foreach (var orderItem in Model.OrderList)
+					{
+						<div class="row col-md-6 order-item">
+							<p>@orderItem.Title</p>
+							<p>@orderItem.Price</p>
+						</div>
+					}
+				}
+				else
+				{
+					<p>No books available.</p>
+				}
+			</div>
 		</div>
 		<div class="background-block" style="height: calc(45% + 5px);">
 			<h4>Other seller items</h4>
+			<div class="items" style="height:85%; width:90%; overflow-y: auto;">
+				@if (Model.OtherSellerItems != null && Model.OtherSellerItems.Any())
+				{
+					@foreach (var orderItem in Model.OtherSellerItems)
+					{
+						<div class="row col-md-6 order-item" onclick="location.href='@Url.Action("PreOrder", "Order", new { id = orderItem.Id })'">
+							<p>@orderItem.Title</p>
+							<p>@orderItem.Price</p>
+						</div>
+					}
+				}
+				else
+				{
+					<p>No books available.</p>
+				}
+			</div>
 		</div>
 		<form asp-controller="Order" asp-action="DeleteOrder" method="post" autocomplete="off">
-			<input type="hidden" name="id" value="@Model.Id" />
+			<input type="hidden" name="id" value="@Model.Order.Id" />
 			<div class="btn-container">
 				<button type="submit" class="btn btn-danger">Delete order</button>
 			</div>
@@ -35,4 +67,5 @@
 @section Styles {
 	<link rel="stylesheet" href="~/css/backgroundBlock.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/order.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/history.css" asp-append-version="true" />
 }

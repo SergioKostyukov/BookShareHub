@@ -9,6 +9,7 @@ namespace BookShareHub.Application.Interfaces
 		Task<List<BookTitleDto>> GetAllBooksByUserIdAsync(string userId);
 		Task<List<BookTitleDto>> GetAllBooksByFilterAsync(LibraryFilter filter, string userId);
 		Task<List<BookTitleDto>> GetAllBooksBySearchAsync(LibrarySearch request, string userId);
+		Task<List<BookTitleDto>> GetAllBooksByOrderIdAsync(int orderId);
 		Task<BookDto> GetBookByIdAsync(int id);
 	}
 }

@@ -16,7 +16,7 @@
 	{
 		@foreach (var orderTitle in Model.OrderTitles)
 		{
-			<div class="row col-md-6 order-item" onclick="location.href='@Url.Action("Order", "Order", new { id = orderTitle.Id })'">
+			<div class="row col-md-6 order-item" onclick="location.href='@Url.Action("Order", "Order", new { orderId = orderTitle.Id })'">
 				<p>@orderTitle.OwnerId - @orderTitle.CustomerId</p>
 				<p>@orderTitle.CreateDate</p>
 			</div>

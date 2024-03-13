@@ -89,7 +89,7 @@ namespace BookShareHub.Application.Services
 		private async Task<int> CreateOrderRecordAsync(OrderCreateDto request)
 		{
 			var order = _mapper.Map<Order>(request);
-			order.Status = Core.Domain.Enums.OrderStatus.Request;
+			order.Status = Core.Domain.Enums.OrderStatus.Template;
 			order.CreateDate = DateTime.Now;
 			order.CheckAmount = 0;
 

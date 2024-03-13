@@ -34,6 +34,21 @@ img {
         border-color: #777
     }
 
+.btn-danger {
+    min-width: 300px;
+    min-height: 50px;
+    color: #fff;
+    background-color: #ff2828;
+    border-radius: 10px;
+    border-color: #005411;
+    font-size: 20px;
+}
+
+    .btn-danger:hover {
+        background-color: #cc0000;
+        border-color: #777
+    }
+
 p {
     align-self: start;
     font-size: 20px;

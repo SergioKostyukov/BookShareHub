@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
+using BookShareHub.Core.Domain.Entities;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -44,9 +45,24 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Order(int orderId)
 		{
+			var orderDetails = await _orderService.GetOrderDetailsAsync(orderId);
+			if (orderDetails == null)
+			{
+				return NotFound();
+			}
+
+			var ownerInfo = await _userService.GetUserByIdAsync(orderDetails.OwnerId);
+			if (ownerInfo == null)
+			{
+				return NotFound();
+			}
+
 			var model = new OrderModel
 			{
-				Id = orderId,
+				Order = orderDetails,
+				Owner = ownerInfo,
+				OrderList = await _libraryService.GetAllBooksByOrderIdAsync(orderId),
+				OtherSellerItems = await _libraryService.GetAllBooksByUserIdAsync(orderDetails.OwnerId)
 			};
 
 			return View("~/Views/Order/Order.cshtml", model);

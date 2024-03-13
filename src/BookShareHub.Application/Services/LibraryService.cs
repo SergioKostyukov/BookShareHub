@@ -97,5 +97,20 @@ namespace BookShareHub.Application.Services
 
 			return _mapper.Map<BookDto>(book);
 		}
+
+		// Get book details by bookId
+		public async Task<List<BookTitleDto>> GetAllBooksByOrderIdAsync(int orderId)
+		{
+			var orderList = await _context.OrdersLists
+				.Where(b => b.OrderId == orderId)
+				.Select(x => x.BookId)
+				.ToListAsync();
+
+			var books = await _context.Books
+				.Where(book => orderList.Contains(book.Id))
+				.ToListAsync();
+
+			return _mapper.Map<List<BookTitleDto>>(books);
+		}
 	}
 }

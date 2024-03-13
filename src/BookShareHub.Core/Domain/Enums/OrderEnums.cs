@@ -2,6 +2,7 @@
 {
 	public enum OrderStatus
 	{
+		Template,
 		Request,
 		Agreed,
 		Done,

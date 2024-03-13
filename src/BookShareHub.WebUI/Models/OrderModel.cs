@@ -4,8 +4,8 @@ namespace BookShareHub.WebUI.Models;
 
 public class OrderModel
 {
-	public required int Id { get; init; }	
-	public OrderDto? Order { get; set; } 
-	public UserDto? Owner { get; set; }
-	public List<BookTitleDto>? OrderList { get; set; }
+	public required OrderDto Order { get; set; } 
+	public required UserDto Owner { get; init; }
+	public required List<BookTitleDto> OrderList { get; init; }
+	public required List<BookTitleDto> OtherSellerItems { get; init; }
 }
