@@ -7,5 +7,6 @@ public record BookTitleDto (
 	string Title, 
 	string Author, 
 	BookGenre Genre, 
-	string ImagePath
+	string ImagePath,
+	decimal? Price
 );

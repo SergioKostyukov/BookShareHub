@@ -1,5 +1,6 @@
 ﻿using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
+using BookShareHub.Core.Domain.Entities;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -55,7 +56,7 @@ namespace BookShareHub.WebUI.Controllers
 				CheckAmount: checkAmount
 			);
 
-			var orderId = await _orderService.CreateOrder(OrderCreate);
+			var orderId = await _orderService.CreateOrderAsync(OrderCreate);
 
 			return RedirectToAction("Order", "Order", new { orderId });
 		}
@@ -63,9 +64,12 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpGet]
 		public async Task<IActionResult> Order(int orderId)
 		{
+			var model = new OrderModel
+			{
+				Id = orderId,
+			};
 
-
-			return View("~/Views/Order/Order.cshtml");
+			return View("~/Views/Order/Order.cshtml", model);
 		}
 
 		[HttpGet]
@@ -77,9 +81,9 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> DeleteOrder()
+		public async Task<IActionResult> DeleteOrder(int id)
 		{
-
+			await _orderService.DeleteOrderAsync(id);
 
 			return RedirectToAction("Library", "Library");
 		}

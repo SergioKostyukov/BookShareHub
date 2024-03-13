@@ -23,9 +23,12 @@
 		<div class="background-block" style="height: calc(45% + 5px);">
 			<h4>Other seller items</h4>
 		</div>
-		<div class="btn-container" onclick="location.href='@Url.Action("DeleteOrder", "Order")'">
-			<button type="submit" class="btn btn-primary">Delete order</button>
-		</div>
+		<form asp-controller="Order" asp-action="DeleteOrder" method="post" autocomplete="off">
+			<input type="hidden" name="id" value="@Model.Id" />
+			<div class="btn-container">
+				<button type="submit" class="btn btn-danger">Delete order</button>
+			</div>
+		</form>
 	</div>
 </div>
 

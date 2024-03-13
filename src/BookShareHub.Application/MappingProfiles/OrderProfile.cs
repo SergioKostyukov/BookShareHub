@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using BookShareHub.Application.Dto;
 using BookShareHub.Core.Domain.Entities;
-using BookShareHub.Core.Domain.Enums;
 
 namespace BookShareHub.Application.MappingProfiles
 {
@@ -10,6 +9,8 @@ namespace BookShareHub.Application.MappingProfiles
 		public OrderProfile()
 		{
 			CreateMap<OrderCreateDto, Order>();
+			CreateMap<Order, DoneOrderDetailsDto>();
+			CreateMap<Order, OrderDto>();
 		}
 	}
 }

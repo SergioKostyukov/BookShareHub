@@ -55,11 +55,11 @@ namespace BookShareHub.Application.Services
 		}
 
 		// Delete book from DB
-		public async Task DeleteBookAsync(int id)
+		public async Task DeleteBookAsync(int bookId)
 		{
-			var book = await _context.Books.FindAsync(id) ?? throw new InvalidOperationException("Book not found");
+			var book = await _context.Books.FindAsync(bookId) ?? throw new InvalidOperationException("Book not found");
 
-			await DeleteBookImage(id);
+			await DeleteBookImage(bookId);
 
 			_context.Books.Remove(book);
 			await _context.SaveChangesAsync();

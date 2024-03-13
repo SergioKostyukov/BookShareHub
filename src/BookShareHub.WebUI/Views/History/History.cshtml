@@ -1,17 +1,56 @@
-﻿@* @model OrderModel *@
+﻿@model HistoryModel
 
 <div class="row" style="height: 85vh;">
 	<div class="col-md-4">
 		<div class="background-block" style="height: 100%;">
+			@if (Model.OrderTitles != null && Model.OrderTitles.Any())
+			{
+				@foreach (var orderTitle in Model.OrderTitles)
+				{
+					<div class="order-item" onclick="fetchOrderDetails(@orderTitle.Id)">
+						<p>@orderTitle.OwnerId - @orderTitle.CustomerId</p>
+						<p>@orderTitle.CloseDate</p>
+					</div>
+				}
+			}
+			else
+			{
+				<p>No orders available.</p>
+			}
+
 		</div>
 	</div>
 
 	<div class="col-md-8">
-		<div class="background-block" style="height: 100%;">
+		<div class="background-block" id="order-details-block" style="height: 100%;">
 		</div>
 	</div>
 </div>
 
 @section Styles {
 	<link rel="stylesheet" href="~/css/backgroundBlock.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/history.css" asp-append-version="true" />
+}
+
+@section Scripts {
+	<script>
+		function fetchOrderDetails(orderId) {
+			fetch('@Url.Action("GetOrderDetails", "History")?orderId=' + orderId)
+				.then(response => response.json())
+				.then(data => {
+					updateOrderDetailsBlock(data);
+				})
+				.catch(error => console.error('Error fetching order details:', error));
+		}
+
+		function updateOrderDetailsBlock(orderDetails) {
+			console.log(orderDetails);
+
+			var orderDetailsBlock = document.getElementById('order-details-block');
+			orderDetailsBlock.innerHTML = `
+								<h2>Order Details</h2>
+								<p>Owner ID: ${orderDetails.ownerId}</p>
+							`;
+		}
+	</script>
 }

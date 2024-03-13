@@ -2,17 +2,16 @@
 
 namespace BookShareHub.Application.Dto;
 
-public class OrderDto
-{
-	public int Id { get; set; }
-	public string CustomerId { get; set; }
-	public string OwnerId { get; set; }
-	public OrderStatus Status { get; set; }
-	public OrderType Type { get; set; }
-	public DateTime CreatedDate { get; set; }
-	public DateTime CloseDate { get; set; }
-	public decimal CheckAmount { get; set; }
-}
+public record OrderDto(
+	int Id,
+	string CustomerId,
+	string OwnerId,
+	OrderStatus Status,
+	OrderType Type,
+	DateTime CreateDate,
+	DateTime CloseDate,
+	decimal CheckAmount
+);
 
 public record OrderCreateDto (
 	string CustomerId,
@@ -20,4 +19,11 @@ public record OrderCreateDto (
 	int BookId,
 	OrderType? Type,
 	decimal CheckAmount
+);
+
+public record DoneOrderDetailsDto(
+	int Id,
+	string CustomerId,
+	string OwnerId,
+	DateTime CloseDate
 );
