@@ -9,6 +9,6 @@ namespace BookShareHub.Application.Interfaces
 		Task<OrderDto> GetOrderDetailsAsync(int orderId);
 		Task<int> CreateOrderAsync(OrderCreateDto request);
 		Task DeleteOrderAsync(int orderId);
-		Task<bool> DeleteBookFromOrderAsync(int bookId, int orderId);
+		Task<bool> DeleteBookFromOrderAsync(BookDeleteDto book);
 	}
 }

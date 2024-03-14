@@ -20,7 +20,8 @@ public class BookDataGeneration
 			.RuleFor(b => b.Language, f => f.PickRandom<BookLanguage>())
 			.RuleFor(b => b.Description, f => f.Lorem.Paragraph())
 			.RuleFor(b => b.Price, f => f.Random.Decimal(100, 800))
-			.RuleFor(b => b.ImagePath, f => DefaultImagePath);
+			.RuleFor(b => b.ImagePath, f => DefaultImagePath)
+			.RuleFor(b => b.IsActive, true);
 	}
 
 	public IEnumerable<Book> GenerateBooks(int count, string ownerId)

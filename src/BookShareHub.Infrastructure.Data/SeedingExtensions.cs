@@ -21,13 +21,20 @@ namespace BookShareHub.Infrastructure.Data
 				// Remove data from the table users and books to refill them
 				//dbContext.AspNetUsers.RemoveRange(dbContext.AspNetUsers);
 				//dbContext.Books.RemoveRange(dbContext.Books);
-				//await dbContext.SaveChangesAsync();
+				//dbContext.Orders.RemoveRange(dbContext.Orders);
+				//dbContext.OrdersLists.RemoveRange(dbContext.OrdersLists);
 
-				if (!await dbContext.AspNetUsers.AnyAsync() && !await dbContext.Books.AnyAsync())
+				await dbContext.SaveChangesAsync();
+
+				await dbContext.Database.MigrateAsync();
+
+				if (!await dbContext.AspNetUsers.AnyAsync())
 				{
-					await dbContext.Database.MigrateAsync();
-
 					await SeedInitialUsersData(dbContext);
+				}
+
+				if (!await dbContext.Books.AnyAsync())
+				{
 					await SeedInitialBooksData(dbContext);
 				}
 			}

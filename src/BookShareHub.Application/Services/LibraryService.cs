@@ -18,7 +18,7 @@ namespace BookShareHub.Application.Services
 		public async Task<List<BookTitleDto>> GetAllBooksAsync(string userId)
 		{
 			var books = await _context.Books
-				.Where(b => b.OwnerId != userId)
+				.Where(b => b.OwnerId != userId && b.IsActive == true)
 				.ToListAsync();
 
 			return _mapper.Map<List<BookTitleDto>>(books);

@@ -96,30 +96,34 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task<bool> DeleteBookFromOrderAsync(int bookId, int orderId)
+		public async Task<bool> DeleteBookFromOrderAsync(BookDeleteDto book)
 		{
 			var orderLine = await _context.OrdersLists
-				.Where(o => o.OrderId == orderId && o.BookId == bookId)
+				.Where(o => o.OrderId == book.OrderId && o.BookId == book.Id)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order list element not found");
 
 			_context.OrdersLists.Remove(orderLine);
 			_logger.LogInformation("Book deleted from 'OrderList'");
 
-			await _context.SaveChangesAsync();
-
-			if (await _context.OrdersLists.AnyAsync(ol => ol.OrderId == orderId) == false)
-			{
-				var order = await _context.Orders
-				.Where(o => o.Id == orderId)
+			// decrease order CheckAmount
+			var order = await _context.Orders
+				.Where(o => o.Id == book.OrderId)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
+			
+			order.CheckAmount -= book.Price;
 
+			if (order.CheckAmount <= 0)
+			{
 				_context.Orders.Remove(order);
 				_logger.LogInformation("Order deleted");
-
-				await _context.SaveChangesAsync();
-
 				return true;
 			}
+			else
+			{
+				_context.Orders.Update(order);
+			}
+
+			await _context.SaveChangesAsync();
 
 			return false;
 		}

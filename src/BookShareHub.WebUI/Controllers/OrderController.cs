@@ -108,9 +108,9 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> DeleteBookFromOrder(int orderId, int bookId)
+		public async Task<IActionResult> DeleteBookFromOrder(OrderModel model)
 		{
-			var isLast = await _orderService.DeleteBookFromOrderAsync(bookId, orderId);
+			var isLast = await _orderService.DeleteBookFromOrderAsync(model.DeleteBookDetails);
 
 			if (isLast)
 			{
@@ -118,7 +118,7 @@ namespace BookShareHub.WebUI.Controllers
 			}
 			else
 			{
-				return RedirectToAction("Order", "Order", new { orderId });
+				return RedirectToAction("Order", "Order", new { model.DeleteBookDetails.OrderId });
 			}
 		}
 	}
