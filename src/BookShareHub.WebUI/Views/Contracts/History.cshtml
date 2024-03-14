@@ -8,7 +8,7 @@
 				@foreach (var orderTitle in Model.OrderTitles)
 				{
 					<div class="order-item" onclick="fetchOrderDetails(@orderTitle.Id)">
-						<p>@orderTitle.OwnerId - @orderTitle.CustomerId</p>
+						<p>@orderTitle.OwnerName - @orderTitle.CustomerName</p>
 						<p>@orderTitle.CloseDate</p>
 					</div>
 				}

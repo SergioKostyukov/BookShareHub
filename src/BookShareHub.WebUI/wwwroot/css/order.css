@@ -1,55 +1,110 @@
-﻿row {
-    gap: 10px;
+﻿.background-block {
+    justify-content: flex-start;
 }
 
-img {
+h2 {
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    padding-top: 10px;
+}
+
+h4 {
+    margin: 10px 0 5px 0;
+}
+
+.form-control {
+    width: 95%;
     border-radius: 10px;
-    max-height: 90%;
-    max-width: 630px;
 }
 
-.card-body {
-    width: 100%;
-    text-align: left;
+textarea.form-control {
+    resize: none;
+    margin-bottom: 15px;
 }
 
-.btn-container {
-    margin-top: auto;
+.items {
+    height: 85%;
+    width: 90%;
+    overflow-y: auto;
+}
+
+.order-item {
+    width: 99%;
+    padding: 10px 20px;
+    margin: 5px 0;
+    background-color: #dcdcdc;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+    .order-item p {
+        font-size: 20px;
+        margin: 0;
+    }
+
+    .order-item.item-ref {
+        cursor: pointer;
+    }
+
+        .order-item.item-ref:hover {
+            background-color: #bbb;
+        }
+
+/* Buttons */
+.btn-remove-container {
+    display: flex;
+    justify-content: end;
+    padding: 0;
+}
+
+.btn-remove {
+    background-color: #ff2828;
+    min-height: 50px;
+    min-width: 50px;
+    color: #fff;
+    border-radius: 15px;
+    border-color: #005411;
+    font-size: 20px;
+}
+
+    .btn-remove:hover {
+        color: #fff;
+        background-color: #cc0000;
+    }
+
+.btn-confirm-container {
     display: flex;
     justify-content: center;
 }
 
+    .btn-confirm-container .btn {
+        min-width: 300px;
+        min-height: 50px;
+        color: #fff;
+        border-radius: 10px;
+        border-color: #005411;
+        font-size: 20px;
+    }
+
+        .btn-confirm-container .btn:hover {
+            border-color: #777
+        }
+
 .btn-primary {
-    min-width: 300px;
-    min-height: 50px;
-    color: #fff;
     background-color: #00a115;
-    border-radius: 10px;
-    border-color: #005411;
-    font-size: 20px;
 }
 
     .btn-primary:hover {
         background-color: #1b8e00;
-        border-color: #777
     }
 
 .btn-danger {
-    min-width: 300px;
-    min-height: 50px;
-    color: #fff;
     background-color: #ff2828;
-    border-radius: 10px;
-    border-color: #005411;
-    font-size: 20px;
 }
 
     .btn-danger:hover {
         background-color: #cc0000;
-        border-color: #777
     }
-
-p {
-    align-self: start;
-    font-size: 20px;
-}

@@ -15,8 +15,6 @@ namespace BookShareHub.Application.Services
 		private readonly BookShareHubDbContext _context = context;
 		private readonly IMapper _mapper = mapper;
 
-		/* ----------------------- PATCH METHODS ----------------------- */
-		// Add book to storage and save image to storage
 		public async Task AddBookAsync(BookDto bookDto, ImageFileDto? imageFile)
 		{
 			var book = _mapper.Map<Book>(bookDto);
@@ -34,7 +32,6 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		// Edit book data in storage and image file in storage
 		public async Task EditBookAsync(BookDto bookDto, ImageFileDto? imageFile)
 		{
 			var book = _mapper.Map<Book>(bookDto);
@@ -56,7 +53,6 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		// Delete book from storage
 		public async Task DeleteBookAsync(int bookId)
 		{
 			var book = await _context.Books.FindAsync(bookId) ?? throw new InvalidOperationException("Book not found");
@@ -67,7 +63,6 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		/* ----------------------- PRIVATE METHODS ----------------------- */
 		/// <summary>
 		/// Copy image to server storage folder
 		/// </summary>
@@ -89,7 +84,6 @@ namespace BookShareHub.Application.Services
 			book.ImagePath = "/images/" + fileName;
 		}
 
-		// Delete image file by bookId
 		private static void DeleteBookImage(string oldImagePath)
 		{
 			if (!string.IsNullOrEmpty(oldImagePath))
@@ -102,7 +96,6 @@ namespace BookShareHub.Application.Services
 			}
 		}
 
-		// Create a new image directory (if it doesn't exist)
 		private void CreateImagesDirectory(string imageFolderPath)
 		{
 			if (!Directory.Exists(imageFolderPath))

@@ -11,6 +11,6 @@ public class Book
 	public BookGenre Genre { get; set; } 
 	public BookLanguage Language { get; set; }
 	public string? Description { get; set; }
-	public decimal? Price { get; set; }
-	public string? ImagePath { get; set; }
+	public decimal Price { get; set; }
+	public string ImagePath { get; set; } = string.Empty;
 }

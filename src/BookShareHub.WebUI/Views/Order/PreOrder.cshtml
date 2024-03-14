@@ -43,12 +43,12 @@
 				<h3>Additional info</h3>
 				<div class="card-body">
 					<p>Language: @Model.Book.Language</p>
-					<p>Price: @Model.Book.Price</p>
+					<p>Price: @Model.Book.Price.ToString("C")</p>
 				</div>
 				<form method="post" action="@Url.Action("AddOrder", "Order")">
-					<input type="hidden" name="OwnerId" value="@Model.Owner.Id" />
-					<input type="hidden" name="BookId" value="@Model.Book.Id" />
-					<input type="hidden" name="CheckAmount" value="@Model.Book.Price" />
+					<input type="hidden" asp-for="Owner.Id" />
+					<input type="hidden" asp-for="Book.Id" />
+					<input type="hidden" asp-for="Book.Price" />
 					<button type="submit" class="btn btn-primary">Add to basket</button>
 				</form>
 			</div>

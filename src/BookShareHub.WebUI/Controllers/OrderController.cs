@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	public class OrderController(ILogger<OrderController> logger, 
+	public class OrderController(ILogger<OrderController> logger,
 								 IHttpContextAccessor httpContextAccessor,
 								 ILibraryService libraryService,
 								 IOrderService orderService,
@@ -77,7 +77,7 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddOrder([FromForm] string ownerId, [FromForm] int bookId, [FromForm] decimal checkAmount)
+		public async Task<IActionResult> AddOrder(PreOrderModel model)
 		{
 			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			if (userId == null)
@@ -88,10 +88,10 @@ namespace BookShareHub.WebUI.Controllers
 			var OrderCreate = new Application.Dto.OrderCreateDto
 			(
 				CustomerId: userId,
-				OwnerId: ownerId,
-				BookId: bookId,
+				OwnerId: model.Owner.Id,
+				BookId: model.Book.Id,
 				Type: Core.Domain.Enums.OrderType.Sale,
-				CheckAmount: checkAmount
+				CheckAmount: model.Book.Price
 			);
 
 			var orderId = await _orderService.CreateOrderAsync(OrderCreate);
@@ -105,6 +105,21 @@ namespace BookShareHub.WebUI.Controllers
 			await _orderService.DeleteOrderAsync(id);
 
 			return RedirectToAction("Library", "Library");
+		}
+
+		[HttpPost]
+		public async Task<IActionResult> DeleteBookFromOrder(int orderId, int bookId)
+		{
+			var isLast = await _orderService.DeleteBookFromOrderAsync(bookId, orderId);
+
+			if (isLast)
+			{
+				return RedirectToAction("Library", "Library");
+			}
+			else
+			{
+				return RedirectToAction("Order", "Order", new { orderId });
+			}
 		}
 	}
 }

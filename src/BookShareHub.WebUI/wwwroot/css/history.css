@@ -3,13 +3,12 @@
 }
 
 .order-item {
-    width: 95%;
-    padding: 10px;
+    width: 100%;
+    padding: 10px 20px;
     margin: 5px 0;
     background-color: #dcdcdc;
     border-radius: 20px;
     display: flex;
-    flex-direction: column;
     align-items: start;
     cursor: pointer;
 }
@@ -20,4 +19,34 @@
 
     .order-item p {
         margin: 0;
+        padding: 0;
+    }
+
+    .order-item .type {
+        width: auto;
+        padding: 2px 5px;
+        border-radius: 5px;
+        background-color: green;
+        color: white;
+        font-weight: bold;
+    }
+
+.btn-container {
+    display: flex;
+    justify-content: end;
+}
+
+.btn-primary {
+    min-width: 100px;
+    min-height: 30px;
+    color: #fff;
+    background-color: #00a115;
+    border-radius: 10px;
+    border-color: #005411;
+    font-size: 20px;
+}
+
+    .btn-primary:hover {
+        background-color: #1b8e00;
+        border-color: #777
     }

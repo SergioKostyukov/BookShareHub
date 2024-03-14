@@ -8,14 +8,16 @@ using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
 {
-	internal class OrderService(ILogger<OrderService> logger, BookShareHubDbContext context, IMapper mapper) : IOrderService
+	internal class OrderService(ILogger<OrderService> logger,
+								BookShareHubDbContext context,
+								IMapper mapper,
+								IUserService userService) : IOrderService
 	{
 		private readonly ILogger<OrderService> _logger = logger;
 		private readonly BookShareHubDbContext _context = context;
 		private readonly IMapper _mapper = mapper;
+		private readonly IUserService _userService = userService;
 
-		/* ----------------------- GET METHODS ----------------------- */
-		// Get all orders that were not fulfilled or canceled
 		public async Task<List<ActualOrderTitleDto>> GetActualOrdersAsync(string userId)
 		{
 			var orders = await _context.Orders
@@ -23,10 +25,16 @@ namespace BookShareHub.Application.Services
 							b.Status != Core.Domain.Enums.OrderStatus.Done)
 				.ToListAsync();
 
-			return _mapper.Map<List<ActualOrderTitleDto>>(orders);
+			var orderTitleList = _mapper.Map<List<ActualOrderTitleDto>>(orders);
+			foreach (var order in orderTitleList)
+			{
+				order.OwnerName = await _userService.GetUserNameByIdAsync(order.OwnerId);
+				order.CustomerName = await _userService.GetUserNameByIdAsync(order.CustomerId);
+			}
+
+			return orderTitleList;
 		}
 
-		// Get all orders that were fulfilled or canceled
 		public async Task<List<DoneOrderTitleDto>> GetDoneOrdersAsync(string userId)
 		{
 			var orders = await _context.Orders
@@ -34,7 +42,14 @@ namespace BookShareHub.Application.Services
 							b.Status == Core.Domain.Enums.OrderStatus.Done)
 				.ToListAsync();
 
-			return _mapper.Map<List<DoneOrderTitleDto>>(orders);
+			var orderTitleList = _mapper.Map<List<DoneOrderTitleDto>>(orders);
+			foreach (var order in orderTitleList)
+			{
+				order.OwnerName = await _userService.GetUserNameByIdAsync(order.OwnerId);
+				order.CustomerName = await _userService.GetUserNameByIdAsync(order.CustomerId);
+			}
+
+			return orderTitleList;
 		}
 
 		public async Task<OrderDto> GetOrderDetailsAsync(int orderId)
@@ -45,8 +60,6 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<OrderDto>(order);
 		}
 
-		/* ----------------------- PATCH METHODS ----------------------- */
-		// Create a new basket with seller`s items or get an existing one and add selected book to it
 		public async Task<int> CreateOrderAsync(OrderCreateDto request)
 		{
 			var id = await _context.Orders
@@ -66,7 +79,6 @@ namespace BookShareHub.Application.Services
 			return id;
 		}
 
-		// Remove all records from the 'Orders' and 'OrderLists' tables
 		public async Task DeleteOrderAsync(int orderId)
 		{
 			var order = await _context.Orders
@@ -84,8 +96,34 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		/* ----------------------- PRIVATE METHODS ----------------------- */
-		// Create new record in 'Orders' table
+		public async Task<bool> DeleteBookFromOrderAsync(int bookId, int orderId)
+		{
+			var orderLine = await _context.OrdersLists
+				.Where(o => o.OrderId == orderId && o.BookId == bookId)
+				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order list element not found");
+
+			_context.OrdersLists.Remove(orderLine);
+			_logger.LogInformation("Book deleted from 'OrderList'");
+
+			await _context.SaveChangesAsync();
+
+			if (await _context.OrdersLists.AnyAsync(ol => ol.OrderId == orderId) == false)
+			{
+				var order = await _context.Orders
+				.Where(o => o.Id == orderId)
+				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
+
+				_context.Orders.Remove(order);
+				_logger.LogInformation("Order deleted");
+
+				await _context.SaveChangesAsync();
+
+				return true;
+			}
+
+			return false;
+		}
+
 		private async Task<int> CreateOrderRecordAsync(OrderCreateDto request)
 		{
 			var order = _mapper.Map<Order>(request);
@@ -99,7 +137,6 @@ namespace BookShareHub.Application.Services
 			return order.Id;
 		}
 
-		// Create new record in 'OrdersLists' table. Add selected book to order list
 		private async Task CreateOrderListRecordAsync(OrderCreateDto request, int orderId)
 		{
 			// If there is no such book in basket yet

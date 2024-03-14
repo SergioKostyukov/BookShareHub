@@ -16,9 +16,14 @@
 	{
 		@foreach (var orderTitle in Model.OrderTitles)
 		{
-			<div class="row col-md-6 order-item" onclick="location.href='@Url.Action("Order", "Order", new { orderId = orderTitle.Id })'">
-				<p>@orderTitle.OwnerId - @orderTitle.CustomerId</p>
-				<p>@orderTitle.CreateDate</p>
+			<div class="row order-item" onclick="location.href='@Url.Action("Order", "Order", new { orderId = orderTitle.Id })'">
+				<p>
+					@orderTitle.OwnerName
+					<span class="arrow">&rarr;</span>
+					@orderTitle.CustomerName
+				</p>
+				<span class="type">@orderTitle.Type</span>
+				<p>Created: @orderTitle.CreateDate</p>
 			</div>
 		}
 	}

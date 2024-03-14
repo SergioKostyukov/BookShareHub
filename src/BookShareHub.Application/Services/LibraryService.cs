@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System.Globalization;
+using AutoMapper;
 using BookShareHub.Application.Dto;
 using BookShareHub.Application.Filters;
 using BookShareHub.Application.Interfaces;
@@ -14,8 +15,6 @@ namespace BookShareHub.Application.Services
 		private readonly BookShareHubDbContext _context = context;
 		private readonly IMapper _mapper = mapper;
 
-		/* ----------------------- GET METHODS ----------------------- */
-		// Get all books except those owned by the user
 		public async Task<List<BookTitleDto>> GetAllBooksAsync(string userId)
 		{
 			var books = await _context.Books
@@ -25,7 +24,6 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		// Get all books owned by this user
 		public async Task<List<BookTitleDto>> GetAllBooksByUserIdAsync(string userId)
 		{
 			var books = await _context.Books
@@ -35,7 +33,6 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		// Get all books by filter except those owned by the user
 		public async Task<List<BookTitleDto>> GetAllBooksByFilterAsync(LibraryFilter filter, string userId)
 		{
 			var query = _context.Books.AsQueryable();
@@ -65,7 +62,6 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		// Get all books by search parameter except those owned by the user
 		public async Task<List<BookTitleDto>> GetAllBooksBySearchAsync(LibrarySearch request, string userId)
 		{
 			var query = _context.Books.AsQueryable();
@@ -89,7 +85,6 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		// Get book details by bookId
 		public async Task<BookDto> GetBookByIdAsync(int bookId)
 		{
 			var book = await _context.Books
@@ -98,7 +93,6 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<BookDto>(book);
 		}
 
-		// Get book details by bookId
 		public async Task<List<BookTitleDto>> GetAllBooksByOrderIdAsync(int orderId)
 		{
 			var orderList = await _context.OrdersLists

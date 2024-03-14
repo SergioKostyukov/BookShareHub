@@ -2,31 +2,54 @@
 
 <div class="row" style="height: 85vh;">
 	<div class="col-md-6" style="height: 100%;">
-		<div class="background-block" style="height: 35%;">
+		<div class="background-block" style="height: 40%;">
 			<h4>Delivery parameters</h4>
 		</div>
-		<div class="background-block" style="height: 30%;">
+		<div class="background-block" style="height: 35%;">
 			<h4>Pay variants</h4>
 		</div>
-		<div class="background-block" style="height: 25%;">
+		<div class="background-block" style="height: 15%;">
 			<h4>Comment</h4>
+			<textarea class="form-control" rows="3" name="comment" placeholder="Enter your comment"></textarea>
 		</div>
-		<div class="btn-container" onclick="location.href='@Url.Action("ConfirmOrder", "Order")'">
-			<button type="submit" class="btn btn-primary">Confirm order</button>
+		<div class="row d-flex justify-content-center">
+			<div class="col-md-4">
+				<h2 style="color: red;">@Model.Order.CheckAmount.ToString("C")</h2>
+			</div>
+			<div class="col-md-8">
+				<div class="btn-confirm-container" onclick="location.href='@Url.Action("ConfirmOrder", "Order")'">
+					<button type="submit" class="btn btn-primary">Confirm order</button>
+				</div>
+			</div>
 		</div>
 	</div>
 
 	<div class="col-md-6" style="height: 100%;">
 		<div class="background-block" style="height: calc(45% + 5px);">
 			<h4>Basket items</h4>
-			<div class="items" style="height:85%; width:90%; overflow-y: auto;">
+			<div class="items">
 				@if (Model.OrderList != null && Model.OrderList.Any())
 				{
 					@foreach (var orderItem in Model.OrderList)
 					{
-						<div class="row col-md-6 order-item">
-							<p>@orderItem.Title</p>
-							<p>@orderItem.Price</p>
+						<div class="row order-item">
+							<div class="col-md-2">
+								<img src="@("~" + orderItem.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
+							</div>
+							<div class="col-md-8">
+								<p style="font-weight: bold;">@orderItem.Title</p>
+								<p>@orderItem.Author</p>
+								<p>@orderItem.Price.ToString("C")</p>
+							</div>
+							<div class="col-md-2 btn-remove-container">
+								<form asp-controller="Order" asp-action="DeleteBookFromOrder" method="post" autocomplete="off">
+									<input type="hidden" name="orderId" value="@Model.Order.Id" />
+									<input type="hidden" name="bookId" value="@orderItem.Id" />
+									<button type="submit" class="btn btn-remove">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</form>
+							</div>
 						</div>
 					}
 				}
@@ -37,15 +60,21 @@
 			</div>
 		</div>
 		<div class="background-block" style="height: calc(45% + 5px);">
-			<h4>Other seller items</h4>
-			<div class="items" style="height:85%; width:90%; overflow-y: auto;">
+			<h4>Other books by @Model.Owner.UserName</h4>
+			<div class="items">
 				@if (Model.OtherSellerItems != null && Model.OtherSellerItems.Any())
 				{
 					@foreach (var orderItem in Model.OtherSellerItems)
 					{
-						<div class="row col-md-6 order-item" onclick="location.href='@Url.Action("PreOrder", "Order", new { id = orderItem.Id })'">
-							<p>@orderItem.Title</p>
-							<p>@orderItem.Price</p>
+						<div class="row order-item item-ref" onclick="location.href='@Url.Action("PreOrder", "Order", new { id = orderItem.Id })'">
+							<div class="col-md-2">
+								<img src="@("~" + orderItem.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
+							</div>
+							<div class="col-md-8">
+								<p style="font-weight: bold;">@orderItem.Title</p>
+								<p>@orderItem.Author</p>
+								<p>@orderItem.Price.ToString("C")</p>
+							</div>
 						</div>
 					}
 				}
@@ -57,7 +86,7 @@
 		</div>
 		<form asp-controller="Order" asp-action="DeleteOrder" method="post" autocomplete="off">
 			<input type="hidden" name="id" value="@Model.Order.Id" />
-			<div class="btn-container">
+			<div class="btn-confirm-container">
 				<button type="submit" class="btn btn-danger">Delete order</button>
 			</div>
 		</form>
@@ -67,5 +96,4 @@
 @section Styles {
 	<link rel="stylesheet" href="~/css/backgroundBlock.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/order.css" asp-append-version="true" />
-	<link rel="stylesheet" href="~/css/history.css" asp-append-version="true" />
 }
