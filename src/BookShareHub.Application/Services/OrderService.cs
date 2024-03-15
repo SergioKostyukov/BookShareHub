@@ -25,7 +25,7 @@ namespace BookShareHub.Application.Services
 		public async Task<List<ActualOrderTitleDto>> GetActualOrdersAsync(string userId)
 		{
 			var orders = await _context.Orders
-				.Where(b => b.CustomerId == userId &&
+				.Where(b => (b.CustomerId == userId || b.OwnerId == userId) &&
 							b.Status != Core.Domain.Enums.OrderStatus.Done)
 				.ToListAsync();
 
@@ -85,6 +85,26 @@ namespace BookShareHub.Application.Services
 
 		public async Task ConfirmOrderAsync(OrderConfirmDto request)
 		{
+			var order = await _context.Orders
+				.Where(o => o.Id == request.OrderId)
+				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
+
+			order.Status = Core.Domain.Enums.OrderStatus.Confirmed;
+			order.CreateDate = DateTime.Now;
+			// Update other order parameters (delivery, pay options) here soon
+
+			// Set 'IsActive' to selected books as false
+			var booksList = await _context.OrdersLists
+						.Where(ol => ol.OrderId == order.Id)
+						.Select(ol => ol.BookId)
+						.ToListAsync();
+
+			await SetBooksListActiveValue(booksList, false);
+
+			_context.Orders.Update(order);
+			await _context.SaveChangesAsync();
+
+			// Sending email
 			var ownerEmail = await _context.AspNetUsers
 								 .Where(x => x.Id == request.OwnerId)
 								 .Select(x => x.Email)
@@ -99,7 +119,17 @@ namespace BookShareHub.Application.Services
 				.Where(o => o.Id == orderId)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
 
-			var orderLists = _context.OrdersLists.Where(ol => ol.OrderId == order.Id);
+			var orderLists = _context.OrdersLists
+				.Where(ol => ol.OrderId == order.Id);
+
+			if (order.Status == Core.Domain.Enums.OrderStatus.Confirmed)
+			{
+				var booksList = orderLists
+					.Select(x => x.BookId)
+					.ToList();
+
+				await SetBooksListActiveValue(booksList, true);
+			}
 
 			_context.OrdersLists.RemoveRange(orderLists);
 			_logger.LogInformation("OrderList cleared");
@@ -123,7 +153,7 @@ namespace BookShareHub.Application.Services
 			var order = await _context.Orders
 				.Where(o => o.Id == book.OrderId)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
-			
+
 			order.CheckAmount -= book.Price;
 
 			if (order.CheckAmount <= 0)
@@ -180,6 +210,31 @@ namespace BookShareHub.Application.Services
 					await _context.SaveChangesAsync();
 				}
 			}
+		}
+
+		private async Task SetBookActiveValue(int bookId, bool isActive)
+		{
+			var book = await _context.Books
+						.Where(book => book.Id == bookId)
+						.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Book not found");
+
+			book.IsActive = isActive;
+
+			_context.Books.Update(book);
+		}
+
+		private async Task SetBooksListActiveValue(IEnumerable<int> booksList, bool isActive)
+		{
+			var books = await _context.Books
+						.Where(book => booksList.Contains(book.Id))
+						.ToListAsync();
+
+			foreach (var book in books)
+			{
+				book.IsActive = isActive;
+			}
+
+			_context.Books.UpdateRange(books);
 		}
 	}
 }

@@ -1,10 +1,12 @@
 ﻿using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
+	[Authorize]
 	public class HistoryController(ILogger<BookController> logger,
 								   IHttpContextAccessor httpContextAccessor,
 								   IOrderService orderService) : Controller

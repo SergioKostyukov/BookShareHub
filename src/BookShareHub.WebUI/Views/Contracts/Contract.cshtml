@@ -11,10 +11,53 @@
 			</div>
 		</div>
 	</div>
-
-	@if (Model.OrderTitles != null && Model.OrderTitles.Any())
+	
+	<h2>Confirmed to me</h2>
+	@if (Model.OrdersToMeConfirmed != null && Model.OrdersToMeConfirmed.Any())
 	{
-		@foreach (var orderTitle in Model.OrderTitles)
+		@foreach (var orderTitle in Model.OrdersToMeConfirmed)
+		{
+			<div class="row order-item" onclick="location.href='@Url.Action("ConfirmedOrder", "Order", new { orderId = orderTitle.Id })'">
+				<p>
+					@orderTitle.OwnerName
+					<span class="arrow">&rarr;</span>
+					@orderTitle.CustomerName
+				</p>
+				<span class="type">@orderTitle.Type</span>
+				<p>Created: @orderTitle.CreateDate</p>
+			</div>
+		}
+	}
+	else
+	{
+		<p>No orders available.</p>
+	}
+
+	<h2>Confirmed by me</h2>
+	@if (Model.OrdersByMeConfirmed != null && Model.OrdersByMeConfirmed.Any())
+	{
+		@foreach (var orderTitle in Model.OrdersByMeConfirmed)
+		{
+			<div class="row order-item" onclick="location.href='@Url.Action("ConfirmedOrder", "Order", new { orderId = orderTitle.Id })'">
+				<p>
+					@orderTitle.OwnerName
+					<span class="arrow">&rarr;</span>
+					@orderTitle.CustomerName
+				</p>
+				<span class="type">@orderTitle.Type</span>
+				<p>Created: @orderTitle.CreateDate</p>
+			</div>
+		}
+	}
+	else
+	{
+		<p>No orders available.</p>
+	}
+
+	<h2>Templdated</h2>
+	@if (Model.OrdersTemplated != null && Model.OrdersTemplated.Any())
+	{
+		@foreach (var orderTitle in Model.OrdersTemplated)
 		{
 			<div class="row order-item" onclick="location.href='@Url.Action("Order", "Order", new { orderId = orderTitle.Id })'">
 				<p>

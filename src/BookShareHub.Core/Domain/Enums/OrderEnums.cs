@@ -3,8 +3,8 @@
 	public enum OrderStatus
 	{
 		Template,
-		Request,
-		Agreed,
+		Confirmed,
+		Sended,
 		Done,
 		Canceled
 	}

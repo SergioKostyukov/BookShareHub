@@ -1,10 +1,13 @@
-﻿using System.Security.Claims;
+﻿using System.Linq;
+using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
+	[Authorize]
 	public class ContractController(ILogger<ContractController> logger, 
 								    IHttpContextAccessor httpContextAccessor, 
 									IOrderService orderService) : Controller
@@ -22,9 +25,17 @@ namespace BookShareHub.WebUI.Controllers
 				return BadRequest("UserId not found");
 			}
 
+			var orderTitles = await _orderService.GetActualOrdersAsync(userId);
 			var model = new ContractModel
 			{
-				OrderTitles = await _orderService.GetActualOrdersAsync(userId),
+				OrdersTemplated = orderTitles
+										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Template).ToList(),
+				OrdersByMeConfirmed = orderTitles
+										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Confirmed &&
+													x.CustomerId == userId).ToList(),
+				OrdersToMeConfirmed = orderTitles
+										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Confirmed &&
+													x.OwnerId == userId).ToList()
 			};
 
 			return View("~/Views/Contracts/Contract.cshtml", model);

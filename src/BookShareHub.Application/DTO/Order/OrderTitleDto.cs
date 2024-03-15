@@ -19,6 +19,7 @@ public class ActualOrderTitleDto
     public string OwnerId { get; init; }
     public string CustomerName { get; set; }
     public string OwnerName { get; set; }
-    public OrderType Type { get; init; }
+    public OrderStatus Status { get; init; }
+	public OrderType Type { get; init; }
     public DateTime CreateDate { get; init; }
 }

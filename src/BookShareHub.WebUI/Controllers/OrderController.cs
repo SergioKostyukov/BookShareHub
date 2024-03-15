@@ -1,11 +1,12 @@
 ﻿using System.Security.Claims;
 using BookShareHub.Application.Interfaces;
-using BookShareHub.Core.Domain.Entities;
 using BookShareHub.WebUI.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
+	[Authorize]
 	public class OrderController(ILogger<OrderController> logger,
 								 IHttpContextAccessor httpContextAccessor,
 								 ILibraryService libraryService,
@@ -68,6 +69,38 @@ namespace BookShareHub.WebUI.Controllers
 			return View("~/Views/Order/Order.cshtml", model);
 		}
 
+		[HttpGet]
+		public async Task<IActionResult> ConfirmedOrder(int orderId)
+		{
+			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (userId == null)
+			{
+				return BadRequest("UserId not found");
+			}
+
+			var orderDetails = await _orderService.GetOrderDetailsAsync(orderId);
+			if (orderDetails == null)
+			{
+				return NotFound();
+			}
+
+			var ownerInfo = await _userService.GetUserByIdAsync(orderDetails.OwnerId);
+			if (ownerInfo == null)
+			{
+				return NotFound();
+			}
+
+			var model = new ConfirmedOrderModel
+			{
+				Order = orderDetails,
+				User = ownerInfo,
+				OrderList = await _libraryService.GetAllBooksByOrderIdAsync(orderId),
+				UserId = userId
+			};
+
+			return View("~/Views/Order/ConfirmedOrder.cshtml", model);
+		}
+
 		[HttpPost]
 		public async Task<IActionResult> AddOrder(PreOrderModel model)
 		{
@@ -99,6 +132,7 @@ namespace BookShareHub.WebUI.Controllers
 				OrderId: model.Order.Id,
 				OwnerId: model.Owner.Id,
 				OwnerName: model.Owner.UserName
+				// Other order parameters(delivery, pay options)
 			);
 
 			await _orderService.ConfirmOrderAsync(OrderConfirm);
