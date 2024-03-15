@@ -9,31 +9,35 @@ namespace BookShareHub.Infrastructure.Data
 	{
 		public static async Task DatabaseEnsureCreated(this IApplicationBuilder applicationBuilder)
 		{
-			using (var scope = applicationBuilder.ApplicationServices.CreateScope())
+			using var scope = applicationBuilder.ApplicationServices.CreateScope();
+			var dbContext = scope.ServiceProvider.GetRequiredService<BookShareHubDbContext>();
+
+			// Rebuild the database
+			//var database = dbContext.Database;
+			//await database.EnsureDeletedAsync();
+			//await database.EnsureCreatedAsync();
+
+			// Remove data from the table users and books to refill them
+			//dbContext.AspNetUsers.RemoveRange(dbContext.AspNetUsers);
+			//dbContext.Books.RemoveRange(dbContext.Books);
+			//dbContext.Orders.RemoveRange(dbContext.Orders);
+			//dbContext.OrdersLists.RemoveRange(dbContext.OrdersLists);
+
+			//await dbContext.SaveChangesAsync();
+
+			await dbContext.Database.MigrateAsync();
+
+			if (!await dbContext.AspNetUsers.AnyAsync())
 			{
-				var dbContext = scope.ServiceProvider.GetRequiredService<BookShareHubDbContext>();
+				await SeedInitialUsersData(dbContext);
+			}
 
-				// Rebuild the database
-				//var database = dbContext.Database;
-				//await database.EnsureDeletedAsync();
-				//await database.EnsureCreatedAsync();
-
-				// Remove data from the table users and books to refill them
-				//dbContext.AspNetUsers.RemoveRange(dbContext.AspNetUsers);
-				//dbContext.Books.RemoveRange(dbContext.Books);
-				//await dbContext.SaveChangesAsync();
-
-				if (!await dbContext.AspNetUsers.AnyAsync() && !await dbContext.Books.AnyAsync())
-				{
-					await dbContext.Database.MigrateAsync();
-
-					await SeedInitialUsersData(dbContext);
-					await SeedInitialBooksData(dbContext);
-				}
+			if (!await dbContext.Books.AnyAsync())
+			{
+				await SeedInitialBooksData(dbContext);
 			}
 		}
 
-		// Fill the user table with initial data
 		private static async Task SeedInitialUsersData(BookShareHubDbContext dbContext)
 		{
 			var userDataGeneration = new UserDataGeneration();
@@ -48,7 +52,6 @@ namespace BookShareHub.Infrastructure.Data
 			await dbContext.SaveChangesAsync();
 		}
 
-		// Fill the books table with initial data
 		private static async Task SeedInitialBooksData(BookShareHubDbContext dbContext)
 		{
 			var bookDataGeneration = new BookDataGeneration();

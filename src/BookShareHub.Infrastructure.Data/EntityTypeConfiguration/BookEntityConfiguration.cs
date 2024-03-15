@@ -34,7 +34,11 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired()
 				.HasColumnType("decimal(18,2)");
 
-			builder.Property(x => x.ImagePath);
+			builder.Property(x => x.ImagePath)
+				.IsRequired();
+
+			builder.Property(x => x.IsActive)
+				.IsRequired();
 		}
 	}
 }

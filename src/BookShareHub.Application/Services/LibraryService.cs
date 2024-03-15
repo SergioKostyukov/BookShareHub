@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 using AutoMapper;
-using BookShareHub.Application.Dto;
+using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Filters;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Infrastructure.Data;
@@ -9,7 +9,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
 {
-	internal class LibraryService(ILogger<LibraryService> logger, BookShareHubDbContext context, IMapper mapper) : ILibraryService
+    internal class LibraryService(ILogger<LibraryService> logger, BookShareHubDbContext context, IMapper mapper) : ILibraryService
 	{
 		private readonly ILogger<LibraryService> _logger = logger;
 		private readonly BookShareHubDbContext _context = context;
@@ -18,7 +18,7 @@ namespace BookShareHub.Application.Services
 		public async Task<List<BookTitleDto>> GetAllBooksAsync(string userId)
 		{
 			var books = await _context.Books
-				.Where(b => b.OwnerId != userId)
+				.Where(b => b.OwnerId != userId && b.IsActive == true)
 				.ToListAsync();
 
 			return _mapper.Map<List<BookTitleDto>>(books);

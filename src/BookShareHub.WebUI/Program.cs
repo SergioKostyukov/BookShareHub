@@ -1,6 +1,7 @@
 using BookShareHub.Application;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
+using BookShareHub.Infrastructure.EmailSender;
 using Microsoft.AspNetCore.Identity;
 
 namespace BookShareHub;
@@ -17,10 +18,11 @@ public class Program
 		builder.Services.AddDefaultIdentity<User>()
 			.AddEntityFrameworkStores<BookShareHubDbContext>();
 
-        builder.Services.AddHttpContextAccessor();
+		builder.Services.AddHttpContextAccessor();
 
 		builder.Services.AddServices();
 		builder.Services.AddBogusServices();
+		builder.Services.AddInfrastructure(builder.Configuration);
 
 		builder.Services.AddControllersWithViews();
 		builder.Services.AddRazorPages();

@@ -1,4 +1,4 @@
-﻿using BookShareHub.Application.Dto;
+﻿using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Filters;
 
 namespace BookShareHub.WebUI.Models;

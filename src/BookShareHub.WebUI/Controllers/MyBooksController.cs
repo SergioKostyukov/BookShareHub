@@ -1,5 +1,5 @@
 ﻿using System.Security.Claims;
-using BookShareHub.Application.Dto;
+using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;

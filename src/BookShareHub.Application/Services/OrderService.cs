@@ -1,22 +1,26 @@
 ﻿using AutoMapper;
-using BookShareHub.Application.Dto;
+using BookShareHub.Application.Dto.Book;
+using BookShareHub.Application.Dto.Order;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using BookShareHub.Infrastructure.EmailSender.Interfaces;
 
 namespace BookShareHub.Application.Services
 {
 	internal class OrderService(ILogger<OrderService> logger,
 								BookShareHubDbContext context,
 								IMapper mapper,
-								IUserService userService) : IOrderService
+								IUserService userService,
+								IEmailSender emailSender) : IOrderService
 	{
 		private readonly ILogger<OrderService> _logger = logger;
 		private readonly BookShareHubDbContext _context = context;
 		private readonly IMapper _mapper = mapper;
 		private readonly IUserService _userService = userService;
+		private readonly IEmailSender _emailSender = emailSender;
 
 		public async Task<List<ActualOrderTitleDto>> GetActualOrdersAsync(string userId)
 		{
@@ -79,6 +83,16 @@ namespace BookShareHub.Application.Services
 			return id;
 		}
 
+		public async Task ConfirmOrderAsync(OrderConfirmDto request)
+		{
+			var ownerEmail = await _context.AspNetUsers
+								 .Where(x => x.Id == request.OwnerId)
+								 .Select(x => x.Email)
+								 .FirstOrDefaultAsync();
+
+			_emailSender.SendEmail(ownerEmail, request.OwnerName, "Book Share Hub notification", "Order Confirmed!");
+		}
+
 		public async Task DeleteOrderAsync(int orderId)
 		{
 			var order = await _context.Orders
@@ -96,30 +110,34 @@ namespace BookShareHub.Application.Services
 			await _context.SaveChangesAsync();
 		}
 
-		public async Task<bool> DeleteBookFromOrderAsync(int bookId, int orderId)
+		public async Task<bool> DeleteBookFromOrderAsync(BookDeleteDto book)
 		{
 			var orderLine = await _context.OrdersLists
-				.Where(o => o.OrderId == orderId && o.BookId == bookId)
+				.Where(o => o.OrderId == book.OrderId && o.BookId == book.Id)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order list element not found");
 
 			_context.OrdersLists.Remove(orderLine);
 			_logger.LogInformation("Book deleted from 'OrderList'");
 
-			await _context.SaveChangesAsync();
-
-			if (await _context.OrdersLists.AnyAsync(ol => ol.OrderId == orderId) == false)
-			{
-				var order = await _context.Orders
-				.Where(o => o.Id == orderId)
+			// decrease order CheckAmount
+			var order = await _context.Orders
+				.Where(o => o.Id == book.OrderId)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
+			
+			order.CheckAmount -= book.Price;
 
+			if (order.CheckAmount <= 0)
+			{
 				_context.Orders.Remove(order);
 				_logger.LogInformation("Order deleted");
-
-				await _context.SaveChangesAsync();
-
 				return true;
 			}
+			else
+			{
+				_context.Orders.Update(order);
+			}
+
+			await _context.SaveChangesAsync();
 
 			return false;
 		}

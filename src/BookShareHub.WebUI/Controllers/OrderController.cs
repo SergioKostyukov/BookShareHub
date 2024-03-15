@@ -68,14 +68,6 @@ namespace BookShareHub.WebUI.Controllers
 			return View("~/Views/Order/Order.cshtml", model);
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> ConfirmOrder()
-		{
-
-
-			return RedirectToAction("Library", "Library");
-		}
-
 		[HttpPost]
 		public async Task<IActionResult> AddOrder(PreOrderModel model)
 		{
@@ -85,7 +77,7 @@ namespace BookShareHub.WebUI.Controllers
 				return BadRequest("UserId not found");
 			}
 
-			var OrderCreate = new Application.Dto.OrderCreateDto
+			var OrderCreate = new Application.Dto.Order.OrderCreateDto
 			(
 				CustomerId: userId,
 				OwnerId: model.Owner.Id,
@@ -100,6 +92,21 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpPost]
+		public async Task<IActionResult> ConfirmOrder(OrderModel model)
+		{
+			var OrderConfirm = new Application.Dto.Order.OrderConfirmDto
+			(
+				OrderId: model.Order.Id,
+				OwnerId: model.Owner.Id,
+				OwnerName: model.Owner.UserName
+			);
+
+			await _orderService.ConfirmOrderAsync(OrderConfirm);
+
+			return RedirectToAction("Library", "Library");
+		}
+
+		[HttpPost]
 		public async Task<IActionResult> DeleteOrder(int id)
 		{
 			await _orderService.DeleteOrderAsync(id);
@@ -108,9 +115,9 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> DeleteBookFromOrder(int orderId, int bookId)
+		public async Task<IActionResult> DeleteBookFromOrder(OrderModel model)
 		{
-			var isLast = await _orderService.DeleteBookFromOrderAsync(bookId, orderId);
+			var isLast = await _orderService.DeleteBookFromOrderAsync(model.DeleteBookDetails);
 
 			if (isLast)
 			{
@@ -118,7 +125,7 @@ namespace BookShareHub.WebUI.Controllers
 			}
 			else
 			{
-				return RedirectToAction("Order", "Order", new { orderId });
+				return RedirectToAction("Order", "Order", new { model.DeleteBookDetails.OrderId });
 			}
 		}
 	}

@@ -16,10 +16,13 @@
 			<div class="col-md-4">
 				<h2 style="color: red;">@Model.Order.CheckAmount.ToString("C")</h2>
 			</div>
-			<div class="col-md-8">
-				<div class="btn-confirm-container" onclick="location.href='@Url.Action("ConfirmOrder", "Order")'">
+			<div class="col-md-8 btn-confirm-container">
+				<form method="post" action="@Url.Action("ConfirmOrder", "Order")">
+					<input type="hidden" asp-for="Order.Id" value="@Model.Order.Id" />
+					<input type="hidden" asp-for="Owner.Id" value="@Model.Owner.Id" />
+					<input type="hidden" asp-for="Owner.UserName" value="@Model.Owner.UserName" />
 					<button type="submit" class="btn btn-primary">Confirm order</button>
-				</div>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -42,9 +45,10 @@
 								<p>@orderItem.Price.ToString("C")</p>
 							</div>
 							<div class="col-md-2 btn-remove-container">
-								<form asp-controller="Order" asp-action="DeleteBookFromOrder" method="post" autocomplete="off">
-									<input type="hidden" name="orderId" value="@Model.Order.Id" />
-									<input type="hidden" name="bookId" value="@orderItem.Id" />
+								<form method="post" action="@Url.Action("DeleteBookFromOrder", "Order")">
+									<input type="hidden" asp-for="DeleteBookDetails.OrderId" value="@Model.Order.Id" />
+									<input type="hidden" asp-for="DeleteBookDetails.Id" value="@orderItem.Id" />
+									<input type="hidden" asp-for="DeleteBookDetails.Price" value="@orderItem.Price" />
 									<button type="submit" class="btn btn-remove">
 										<span aria-hidden="true">&times;</span>
 									</button>

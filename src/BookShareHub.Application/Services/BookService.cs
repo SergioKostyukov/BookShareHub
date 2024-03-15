@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using BookShareHub.Application.Dto;
+using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
@@ -9,7 +10,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
 {
-	internal class BookService(ILogger<BookService> logger, BookShareHubDbContext context, IMapper mapper) : IBookService
+    internal class BookService(ILogger<BookService> logger, BookShareHubDbContext context, IMapper mapper) : IBookService
 	{
 		private readonly ILogger<BookService> _logger = logger;
 		private readonly BookShareHubDbContext _context = context;

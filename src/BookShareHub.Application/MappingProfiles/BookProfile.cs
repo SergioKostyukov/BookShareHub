@@ -1,11 +1,11 @@
 ﻿using System.Globalization;
 using AutoMapper;
-using BookShareHub.Application.Dto;
+using BookShareHub.Application.Dto.Book;
 using BookShareHub.Core.Domain.Entities;
 
 namespace BookShareHub.Application.MappingProfiles
 {
-	internal class BookProfile : Profile
+    internal class BookProfile : Profile
 	{
 		public BookProfile()
 		{

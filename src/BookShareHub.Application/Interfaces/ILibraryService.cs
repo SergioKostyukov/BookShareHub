@@ -1,9 +1,9 @@
-﻿using BookShareHub.Application.Dto;
+﻿using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Filters;
 
 namespace BookShareHub.Application.Interfaces
 {
-	public interface ILibraryService
+    public interface ILibraryService
 	{
 		Task<List<BookTitleDto>> GetAllBooksAsync(string userId);
 		Task<List<BookTitleDto>> GetAllBooksByUserIdAsync(string userId);
