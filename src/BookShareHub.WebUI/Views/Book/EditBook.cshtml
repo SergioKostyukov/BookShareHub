@@ -16,10 +16,10 @@
 				<input type="hidden" asp-for="Book.ImagePath" value="@Model.Book.ImagePath" />
 
 				<div class="position-relative">
-					<img src="@("~" + Model.Book.ImagePath)" asp-append-version="true" class="img-fluid" alt="Book Image">
+					<img src="@Model.Book.ImagePath" asp-append-version="true" class="img-fluid" alt="Book Image">
 					<div class="form-group position-absolute bottom-0 end-0 me-2 mb-2">
 						<label asp-for="ImageFile" class="btn btn-info mt-2">Replace Image</label>
-						<input asp-for="ImageFile" class="d-none" , accept="image/*" />
+						<input asp-for="ImageFile" class="d-none", accept="image/*" />
 						<span asp-validation-for="ImageFile" class="text-danger"></span>
 					</div>
 				</div>

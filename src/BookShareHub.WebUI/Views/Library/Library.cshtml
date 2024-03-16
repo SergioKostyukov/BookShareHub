@@ -55,7 +55,7 @@
 		{
 			<div class="col-md-3 mb-4">
 				<div class="card" onclick="location.href='@Url.Action("PreOrder", "PreOrder", new { id = book.Id })'">
-					<img src="@("~" + book.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
+					<img src="@book.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
 					<div class="card-body">
 						<span class="genre">@book.Genre</span>
 						<h5 class="card-title">@book.Title</h5>

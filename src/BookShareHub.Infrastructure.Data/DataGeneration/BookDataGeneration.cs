@@ -7,7 +7,7 @@ namespace BookShareHub.Infrastructure.Data.DataGeneration;
 public class BookDataGeneration
 {
 	readonly Faker<Book> bookDataFake;
-	private const string DefaultImagePath = "/images/photo.jpg";
+	private const string DefaultImagePath = "https://storage.googleapis.com/book_share_hub_books_images/photo.jpg";
 
 	public BookDataGeneration()
 	{

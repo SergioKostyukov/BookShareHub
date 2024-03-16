@@ -85,7 +85,7 @@ namespace BookShareHub.WebUI.Controllers
 				OrderId: model.Order.Id,
 				OwnerId: model.Owner.Id,
 				OwnerName: model.Owner.UserName,
-				Comment: model.Order.Comment
+				Comment: model.Order.Comment ?? string.Empty
 				// Other order parameters(delivery, pay options)
 			);
 

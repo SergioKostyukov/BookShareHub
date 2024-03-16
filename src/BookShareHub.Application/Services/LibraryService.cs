@@ -70,10 +70,12 @@ namespace BookShareHub.Application.Services
 
 			if (!string.IsNullOrEmpty(request.Request))
 			{
+				string searchTerm = request.Request.ToLower();
+
 				// Filter books where either Author or Name contains the search term
 				query = query
-					.Where(b => b.Author.Contains(request.Request, StringComparison.OrdinalIgnoreCase) ||
-								b.Title.Contains(request.Request, StringComparison.OrdinalIgnoreCase));
+					.Where(b => b.Author.ToLower().Contains(searchTerm) ||
+								b.Title.ToLower().Contains(searchTerm));
 			}
 
 			// Exclude books owned by the user
