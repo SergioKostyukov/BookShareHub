@@ -10,5 +10,6 @@ public record OrderDto(
     OrderType Type,
     DateTime CreateDate,
     DateTime CloseDate,
-    decimal CheckAmount
+	string Comment,
+	decimal CheckAmount
 );

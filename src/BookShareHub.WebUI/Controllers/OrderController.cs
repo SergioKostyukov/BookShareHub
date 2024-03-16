@@ -20,30 +20,6 @@ namespace BookShareHub.WebUI.Controllers
 		private readonly IUserService _userService = userService;
 
 		[HttpGet]
-		public async Task<IActionResult> PreOrder(int id)
-		{
-			var book = await _libraryService.GetBookByIdAsync(id);
-			if (book == null)
-			{
-				return NotFound();
-			}
-
-			var ownerInfo = await _userService.GetUserByIdAsync(book.OwnerId);
-			if (ownerInfo == null)
-			{
-				return NotFound();
-			}
-
-			var model = new PreOrderModel
-			{
-				Book = book,
-				Owner = ownerInfo
-			};
-
-			return View("~/Views/Order/PreOrder.cshtml", model);
-		}
-
-		[HttpGet]
 		public async Task<IActionResult> Order(int orderId)
 		{
 			var orderDetails = await _orderService.GetOrderDetailsAsync(orderId);
@@ -73,7 +49,7 @@ namespace BookShareHub.WebUI.Controllers
 		public async Task<IActionResult> ConfirmedOrder(int orderId)
 		{
 			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			if (userId == null)
+			if (string.IsNullOrEmpty(userId))
 			{
 				return BadRequest("UserId not found");
 			}
@@ -102,36 +78,14 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddOrder(PreOrderModel model)
-		{
-			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-			if (userId == null)
-			{
-				return BadRequest("UserId not found");
-			}
-
-			var OrderCreate = new Application.Dto.Order.OrderCreateDto
-			(
-				CustomerId: userId,
-				OwnerId: model.Owner.Id,
-				BookId: model.Book.Id,
-				Type: Core.Domain.Enums.OrderType.Sale,
-				CheckAmount: model.Book.Price
-			);
-
-			var orderId = await _orderService.CreateOrderAsync(OrderCreate);
-
-			return RedirectToAction("Order", "Order", new { orderId });
-		}
-
-		[HttpPost]
 		public async Task<IActionResult> ConfirmOrder(OrderModel model)
 		{
 			var OrderConfirm = new Application.Dto.Order.OrderConfirmDto
 			(
 				OrderId: model.Order.Id,
 				OwnerId: model.Owner.Id,
-				OwnerName: model.Owner.UserName
+				OwnerName: model.Owner.UserName,
+				Comment: model.Order.Comment
 				// Other order parameters(delivery, pay options)
 			);
 

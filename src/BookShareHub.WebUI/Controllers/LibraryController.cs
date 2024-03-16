@@ -34,18 +34,16 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Filter(LibraryModel model, string userId)
+		public async Task<IActionResult> Filter(LibraryModel model)
 		{
-			model.UserId = userId;
 			model.BookTitles = await _libraryService.GetAllBooksByFilterAsync(model.FilterQuery, model.UserId);
 
 			return View("~/Views/Library/Library.cshtml", model);
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Search(LibraryModel model, string userId)
+		public async Task<IActionResult> Search(LibraryModel model)
 		{
-			model.UserId = userId;
 			model.BookTitles = await _libraryService.GetAllBooksBySearchAsync(model.SearchQuery, model.UserId);
 
 			return View("~/Views/Library/Library.cshtml", model);

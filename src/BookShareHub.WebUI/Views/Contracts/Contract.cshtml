@@ -12,7 +12,7 @@
 		</div>
 	</div>
 	
-	<h2>Confirmed to me</h2>
+	<h3>Confirmed to me</h3>
 	@if (Model.OrdersToMeConfirmed != null && Model.OrdersToMeConfirmed.Any())
 	{
 		@foreach (var orderTitle in Model.OrdersToMeConfirmed)
@@ -33,7 +33,7 @@
 		<p>No orders available.</p>
 	}
 
-	<h2>Confirmed by me</h2>
+	<h3>Confirmed by me</h3>
 	@if (Model.OrdersByMeConfirmed != null && Model.OrdersByMeConfirmed.Any())
 	{
 		@foreach (var orderTitle in Model.OrdersByMeConfirmed)
@@ -54,7 +54,7 @@
 		<p>No orders available.</p>
 	}
 
-	<h2>Templdated</h2>
+	<h3>Templated</h3>
 	@if (Model.OrdersTemplated != null && Model.OrdersTemplated.Any())
 	{
 		@foreach (var orderTitle in Model.OrdersTemplated)

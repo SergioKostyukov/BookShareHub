@@ -18,39 +18,31 @@ namespace BookShareHub.Application.Services
 
 		public async Task AddBookAsync(BookDto bookDto, ImageFileDto? imageFile)
 		{
-			var book = _mapper.Map<Book>(bookDto);
-
 			// Add image to storage
 			if (imageFile?.ImageFile?.Length > 0)
 			{
 				string imageFolderPath = "wwwroot/images";
 				CreateImagesDirectory(imageFolderPath);
 
-				await CopyImageAsync(book, imageFile, imageFolderPath);
+				await CopyImageAsync(bookDto, imageFile, imageFolderPath);
 			}
 
-			_context.Books.Add(book);
+			_context.Books.Add(_mapper.Map<Book>(bookDto));
 			await _context.SaveChangesAsync();
 		}
 
 		public async Task EditBookAsync(BookDto bookDto, ImageFileDto? imageFile)
 		{
-			var book = _mapper.Map<Book>(bookDto);
-
 			// Update image in storage
 			if (imageFile?.ImageFile?.Length > 0)
 			{
-				DeleteBookImage(book.ImagePath);
+				DeleteBookImage(bookDto.ImagePath);
 
 				string imageFolderPath = "wwwroot/images";
-				await CopyImageAsync(book, imageFile, imageFolderPath);
-			}
-			else
-			{
-				book.ImagePath = bookDto.ImagePath;
+				await CopyImageAsync(bookDto, imageFile, imageFolderPath);
 			}
 
-			_context.Books.Update(book);
+			_context.Books.Update(_mapper.Map<Book>(bookDto));
 			await _context.SaveChangesAsync();
 		}
 
@@ -71,7 +63,7 @@ namespace BookShareHub.Application.Services
 		/// <param name="imageFile">The actual image file object.</param>
 		/// <param name="imageFolderPath">The path where the image should be saved on the server.</param>
 		/// <returns></returns>
-		private static async Task CopyImageAsync(Book book, ImageFileDto? imageFile, string imageFolderPath)
+		private static async Task CopyImageAsync(BookDto book, ImageFileDto? imageFile, string imageFolderPath)
 		{
 			string extension = Path.GetExtension(imageFile.ImageFile.FileName);
 			string fileName = book.OwnerId + DateTime.Now.ToString("yymmssfff") + extension;

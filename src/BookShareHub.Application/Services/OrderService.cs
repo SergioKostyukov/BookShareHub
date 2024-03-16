@@ -59,7 +59,8 @@ namespace BookShareHub.Application.Services
 		public async Task<OrderDto> GetOrderDetailsAsync(int orderId)
 		{
 			var order = await _context.Orders
-				.FirstOrDefaultAsync(b => b.Id == orderId);
+				.Where(b => b.Id == orderId)
+				.FirstOrDefaultAsync();
 
 			return _mapper.Map<OrderDto>(order);
 		}
@@ -91,6 +92,8 @@ namespace BookShareHub.Application.Services
 
 			order.Status = Core.Domain.Enums.OrderStatus.Confirmed;
 			order.CreateDate = DateTime.Now;
+			order.Comment = request.Comment;
+
 			// Update other order parameters (delivery, pay options) here soon
 
 			// Set 'IsActive' to selected books as false
@@ -108,7 +111,7 @@ namespace BookShareHub.Application.Services
 			var ownerEmail = await _context.AspNetUsers
 								 .Where(x => x.Id == request.OwnerId)
 								 .Select(x => x.Email)
-								 .FirstOrDefaultAsync();
+								 .FirstOrDefaultAsync() ?? throw new InvalidOperationException("User not found");
 
 			_emailSender.SendEmail(ownerEmail, request.OwnerName, "Book Share Hub notification", "Order Confirmed!");
 		}
@@ -155,11 +158,14 @@ namespace BookShareHub.Application.Services
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
 
 			order.CheckAmount -= book.Price;
+			_logger.LogWarning("{0}", order.CheckAmount);
 
 			if (order.CheckAmount <= 0)
 			{
 				_context.Orders.Remove(order);
 				_logger.LogInformation("Order deleted");
+
+				await _context.SaveChangesAsync();
 				return true;
 			}
 			else
@@ -168,7 +174,6 @@ namespace BookShareHub.Application.Services
 			}
 
 			await _context.SaveChangesAsync();
-
 			return false;
 		}
 
@@ -189,7 +194,8 @@ namespace BookShareHub.Application.Services
 		{
 			// If there is no such book in basket yet
 			var existingOrderList = await _context.OrdersLists
-				.FirstOrDefaultAsync(ol => ol.BookId == request.BookId && ol.OrderId == orderId);
+				.Where(ol => ol.BookId == request.BookId && ol.OrderId == orderId)
+				.FirstOrDefaultAsync();
 
 			if (existingOrderList == null)
 			{

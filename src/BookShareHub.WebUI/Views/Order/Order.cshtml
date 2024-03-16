@@ -2,29 +2,30 @@
 
 <div class="row" style="height: 85vh;">
 	<div class="col-md-6" style="height: 100%;">
-		<div class="background-block" style="height: 40%;">
-			<h4>Delivery parameters</h4>
-		</div>
-		<div class="background-block" style="height: 35%;">
-			<h4>Pay variants</h4>
-		</div>
-		<div class="background-block" style="height: 15%;">
-			<h4>Comment</h4>
-			<textarea class="form-control" rows="3" name="comment" placeholder="Enter your comment"></textarea>
-		</div>
-		<div class="row d-flex justify-content-center">
-			<div class="col-md-4">
-				<h2 style="color: red;">@Model.Order.CheckAmount.ToString("C")</h2>
+		<form style="height: 100%;" method="post" action="@Url.Action("ConfirmOrder", "Order")">
+			<div class="background-block" style="height: 40%;">
+				<h4>Delivery parameters</h4>
 			</div>
-			<div class="col-md-8 btn-confirm-container">
-				<form method="post" action="@Url.Action("ConfirmOrder", "Order")">
+			<div class="background-block" style="height: 35%;">
+				<h4>Pay variants</h4>
+			</div>
+			<div class="background-block" style="height: 15%;">
+				<h4>Comment</h4>
+				<label asp-for="Order.Comment" class="control-label"></label>
+				<textarea asp-for="Order.Comment" class="form-control" rows="3" placeholder="Enter your comment"></textarea>
+			</div>
+			<div class="row d-flex justify-content-center">
+				<div class="col-md-4">
+					<h2 style="color: red;">@Model.Order.CheckAmount.ToString("C")</h2>
+				</div>
+				<div class="col-md-8 btn-confirm-container">
 					<input type="hidden" asp-for="Order.Id" value="@Model.Order.Id" />
 					<input type="hidden" asp-for="Owner.Id" value="@Model.Owner.Id" />
 					<input type="hidden" asp-for="Owner.UserName" value="@Model.Owner.UserName" />
 					<button type="submit" class="btn btn-primary">Confirm order</button>
-				</form>
+				</div>
 			</div>
-		</div>
+		</form>
 	</div>
 
 	<div class="col-md-6" style="height: 100%;">
@@ -70,7 +71,7 @@
 				{
 					@foreach (var orderItem in Model.OtherSellerItems)
 					{
-						<div class="row order-item item-ref" onclick="location.href='@Url.Action("PreOrder", "Order", new { id = orderItem.Id })'">
+						<div class="row order-item item-ref" onclick="location.href='@Url.Action("PreOrder", "PreOrder", new { id = orderItem.Id })'">
 							<div class="col-md-2">
 								<img src="@("~" + orderItem.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
 							</div>

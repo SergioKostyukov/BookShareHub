@@ -25,7 +25,7 @@ namespace BookShareHub.Application.Services
 			var userName = await _context.AspNetUsers
 								 .Where(x => x.Id == userId)
 								 .Select(x => x.UserName)
-								 .FirstOrDefaultAsync();
+								 .FirstOrDefaultAsync() ?? throw new InvalidOperationException("User not found");
 
 			return userName;
 		}

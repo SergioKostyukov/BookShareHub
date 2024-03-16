@@ -32,7 +32,7 @@
 			<input type="number" class="form-control" id="price" name="FilterQuery.MaxPrice" min="0" value="@Model.FilterQuery?.MaxPrice">
 		</div>
 		<div class="col-md-2 align-self-end">
-			<input type="hidden" name="userId" value="@Model.UserId">
+			<input type="hidden" name="@Model.UserId" value="@Model.UserId">
 			<button type="submit" class="btn btn-primary">Filter</button>
 		</div>
 	</form>
@@ -42,7 +42,7 @@
 			<input type="text" class="form-control" id="search" name="SearchQuery.Request" value="@Model.SearchQuery?.Request">
 		</div>
 		<div class="col-md-3 align-self-end">
-			<input type="hidden" name="userId" value="@Model.UserId">
+			<input type="hidden" name="@Model.UserId" value="@Model.UserId">
 			<button type="submit" class="btn btn-primary">Find</button>
 		</div>
 	</form>
@@ -54,7 +54,7 @@
 		@foreach (var book in Model.BookTitles)
 		{
 			<div class="col-md-3 mb-4">
-				<div class="card" onclick="location.href='@Url.Action("PreOrder", "Order", new { id = book.Id })'">
+				<div class="card" onclick="location.href='@Url.Action("PreOrder", "PreOrder", new { id = book.Id })'">
 					<img src="@("~" + book.ImagePath)" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
 					<div class="card-body">
 						<span class="genre">@book.Genre</span>

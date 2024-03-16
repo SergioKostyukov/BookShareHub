@@ -45,7 +45,7 @@
 					<p>Language: @Model.Book.Language</p>
 					<p>Price: @Model.Book.Price.ToString("C")</p>
 				</div>
-				<form method="post" action="@Url.Action("AddOrder", "Order")">
+				<form method="post" action="@Url.Action("AddOrder", "PreOrder")">
 					<input type="hidden" asp-for="Owner.Id" />
 					<input type="hidden" asp-for="Book.Id" />
 					<input type="hidden" asp-for="Book.Price" />
