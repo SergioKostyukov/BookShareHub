@@ -38,7 +38,7 @@ namespace BookShareHub.WebUI.Controllers
 													x.OwnerId == userId).ToList()
 			};
 
-			return View("~/Views/Contracts/Contract.cshtml", model);
+			return View("~/Views/Contract/Contract.cshtml", model);
 		}
 	}
 }

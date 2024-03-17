@@ -1,6 +1,6 @@
-﻿namespace BookShareHub.Infrastructure.EmailSender;
+﻿namespace BookShareHub.Infrastructure.Settings;
 
-public class EmailSettings
+public class EmailSenderSettings
 {
 	public string Email { get; set; } = string.Empty;
 	public string Password { get; set; } = string.Empty;

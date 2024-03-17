@@ -29,7 +29,7 @@ namespace BookShareHub.WebUI.Controllers
 				OrderTitles = await _orderService.GetDoneOrdersAsync(userId),
 			};
 
-			return View("~/Views/Contracts/History.cshtml", model);
+			return View("~/Views/Contract/History.cshtml", model);
 		}
 
 		[HttpGet]

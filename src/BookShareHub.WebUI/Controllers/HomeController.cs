@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Localization;
 
 namespace BookShareHub.WebUI.Controllers
 {
@@ -7,7 +8,7 @@ namespace BookShareHub.WebUI.Controllers
 	public class HomeController : Controller
 	{
 		[HttpGet]
-        public IActionResult Index()
+		public IActionResult Index()
 		{
 			return View();
 		}

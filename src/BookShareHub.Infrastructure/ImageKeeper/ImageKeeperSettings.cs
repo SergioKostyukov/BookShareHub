@@ -1,4 +1,4 @@
-﻿namespace BookShareHub.Infrastructure.ImageKeeper;
+﻿namespace BookShareHub.Infrastructure.Settings;
 
 public class ImageKeeperSettings
 {

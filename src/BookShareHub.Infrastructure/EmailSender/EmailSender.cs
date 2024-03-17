@@ -1,15 +1,16 @@
-﻿using BookShareHub.Infrastructure.EmailSender.Interfaces;
+﻿using BookShareHub.Infrastructure.Interfaces;
+using BookShareHub.Infrastructure.Settings;
 using MailKit.Net.Smtp;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using MimeKit;
 
-namespace BookShareHub.Infrastructure.EmailSender
+namespace BookShareHub.Infrastructure.Services
 {
-	internal class EmailSender(ILogger<EmailSender> logger, IOptions<EmailSettings> emailSettings) : IEmailSender
+	internal class EmailSender(ILogger<EmailSender> logger, IOptions<EmailSenderSettings> emailSettings) : IEmailSender
 	{
 		private readonly ILogger<EmailSender> _logger = logger;
-		private readonly IOptions<EmailSettings> _emailSettings = emailSettings;
+		private readonly IOptions<EmailSenderSettings> _emailSettings = emailSettings;
 
 		public void SendEmail(string receiver, string receiverName, string subject, string body)
 		{

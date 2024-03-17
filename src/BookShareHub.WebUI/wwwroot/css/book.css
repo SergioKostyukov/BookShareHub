@@ -6,7 +6,7 @@
     border-radius: 20px;
     background-color: #ccc;
     border: none;
-    padding: 10px 20px
+    padding: 20px 30px
 }
 
 .form-control {
@@ -37,5 +37,4 @@ textarea.form-control {
     background-color: #dc3545;
     border: none;
     border-radius: 10px;
-    margin-bottom: 10px;
 }

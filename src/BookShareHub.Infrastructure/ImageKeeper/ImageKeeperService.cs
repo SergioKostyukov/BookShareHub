@@ -1,4 +1,5 @@
-﻿using BookShareHub.Infrastructure.ImageKeeper;
+﻿using BookShareHub.Infrastructure.Interfaces;
+using BookShareHub.Infrastructure.Settings;
 using Google.Apis.Auth.OAuth2;
 using Google.Cloud.Storage.V1;
 using Microsoft.Extensions.Logging;

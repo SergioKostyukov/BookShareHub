@@ -8,8 +8,8 @@
 				<img src="@Model.Book.ImagePath" asp-append-version="true" class="img-fluid" alt="Book Image">
 			</div>
 			<div class="card-body">
-				<p>Author: @Model.Book.Author</p>
-				<p>Description: @Model.Book.Description</p>
+				<p>@Localizer["Author"]: @Model.Book.Author</p>
+				<p>@Localizer["Description"]: @Model.Book.Description</p>
 			</div>
 		</div>
 	</div>
@@ -17,11 +17,11 @@
 	<div class="col-md-4" style="height: 100%;">
 		<div class="background-block" style="height: 100%;">
 			<div class="nested-block" style="height: 40%;">
-				<h3>Seller statistic</h3>
+				<h3>@Localizer["Seller statistic"]</h3>
 				<div class="card-body">
-					<p>Owner: @Model.Owner.UserName</p>
+					<p>@Localizer["OwnerName"]: @Model.Owner.UserName</p>
 					<p>
-						Rating:
+						@Localizer["Rating"]:
 						@if (Model.Owner.Rating != null)
 						{
 							@for (int i = 0; i < (int)Model.Owner.Rating; i++)
@@ -31,25 +31,25 @@
 						}
 						else
 						{
-						<p>no rating</p>
+							@Localizer["no rating"]
 						}
 					</p>
 				</div>
 				<form class="btn-container" method="post" action="@Url.Action("Chat", "Chat")">
-					<button type="submit" class="btn btn-primary">Write message</button>
+					<button type="submit" class="btn btn-primary">@Localizer["Write message"]</button>
 				</form>
 			</div>
 			<div class="nested-block" style="height: 60%; margin-bottom: 10px">
-				<h3>Additional info</h3>
+				<h3>@Localizer["Additional info"]</h3>
 				<div class="card-body">
-					<p>Language: @Model.Book.Language</p>
-					<p>Price: @Model.Book.Price.ToString("C")</p>
+					<p>@Localizer["Language"]: @Model.Book.Language</p>
+					<p>@Localizer["Price"]: @Model.Book.Price.ToString("C")</p>
 				</div>
 				<form method="post" action="@Url.Action("AddOrder", "PreOrder")">
 					<input type="hidden" asp-for="Owner.Id" />
 					<input type="hidden" asp-for="Book.Id" />
 					<input type="hidden" asp-for="Book.Price" />
-					<button type="submit" class="btn btn-primary">Add to basket</button>
+					<button type="submit" class="btn btn-primary">@Localizer["Add to basket"]</button>
 				</form>
 			</div>
 		</div>

@@ -4,9 +4,9 @@ using BookShareHub.Application.Dto.Order;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
+using BookShareHub.Infrastructure.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using BookShareHub.Infrastructure.EmailSender.Interfaces;
 
 namespace BookShareHub.Application.Services
 {

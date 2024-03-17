@@ -1,4 +1,4 @@
-﻿namespace BookShareHub.Infrastructure.EmailSender.Interfaces
+﻿namespace BookShareHub.Infrastructure.Interfaces
 {
 	public interface IEmailSender
 	{

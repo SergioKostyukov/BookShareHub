@@ -4,15 +4,15 @@
 	<div class="col-md-6" style="height: 100%;">
 		<form style="height: 100%;" method="post" action="@Url.Action("ConfirmOrder", "Order")">
 			<div class="background-block" style="height: 40%;">
-				<h4>Delivery parameters</h4>
+				<h4>@Localizer["Delivery params"]</h4>
 			</div>
 			<div class="background-block" style="height: 35%;">
-				<h4>Pay variants</h4>
+				<h4>@Localizer["Pay vars"]</h4>
 			</div>
 			<div class="background-block" style="height: 15%;">
-				<h4>Comment</h4>
-				<label asp-for="Order.Comment" class="control-label"></label>
-				<textarea asp-for="Order.Comment" class="form-control" rows="3" placeholder="Enter your comment"></textarea>
+				<h4>@Localizer["Comment"]</h4>
+				<label asp-for="Order.Comment" class="control-label" hidden></label>
+				<textarea asp-for="Order.Comment" class="form-control" rows="3" placeholder="@Localizer["Comment placeholder"]"></textarea>
 			</div>
 			<div class="row d-flex justify-content-center">
 				<div class="col-md-4">
@@ -22,7 +22,7 @@
 					<input type="hidden" asp-for="Order.Id" value="@Model.Order.Id" />
 					<input type="hidden" asp-for="Owner.Id" value="@Model.Owner.Id" />
 					<input type="hidden" asp-for="Owner.UserName" value="@Model.Owner.UserName" />
-					<button type="submit" class="btn btn-primary">Confirm order</button>
+					<button type="submit" class="btn btn-primary">@Localizer["Confirm order"]</button>
 				</div>
 			</div>
 		</form>
@@ -30,7 +30,7 @@
 
 	<div class="col-md-6" style="height: 100%;">
 		<div class="background-block" style="height: calc(45% + 5px);">
-			<h4>Basket items</h4>
+			<h4>@Localizer["Basket items"]</h4>
 			<div class="items">
 				@if (Model.OrderList != null && Model.OrderList.Any())
 				{
@@ -60,12 +60,12 @@
 				}
 				else
 				{
-					<p>No books available.</p>
+					<p>@Localizer["No available"]</p>
 				}
 			</div>
 		</div>
 		<div class="background-block" style="height: calc(45% + 5px);">
-			<h4>Other books by @Model.Owner.UserName</h4>
+			<h4>@Localizer["Other books by"] @Model.Owner.UserName</h4>
 			<div class="items">
 				@if (Model.OtherSellerItems != null && Model.OtherSellerItems.Any())
 				{
@@ -85,14 +85,14 @@
 				}
 				else
 				{
-					<p>No books available.</p>
+						<p>@Localizer["No available"]</p>
 				}
 			</div>
 		</div>
 		<form asp-controller="Order" asp-action="DeleteOrder" method="post" autocomplete="off">
 			<input type="hidden" name="id" value="@Model.Order.Id" />
 			<div class="btn-confirm-container">
-				<button type="submit" class="btn btn-danger">Delete order</button>
+				<button type="submit" class="btn btn-danger">@Localizer["Delete order"]</button>
 			</div>
 		</form>
 	</div>

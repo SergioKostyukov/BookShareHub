@@ -1,6 +1,6 @@
 ﻿@model MyBooksModel
 
-<h2>My Books</h2>
+<h2>@Localizer["Title"]</h2>
 
 <div class="row">
 	@if (Model.BookTitles != null && Model.BookTitles.Any())
@@ -20,12 +20,10 @@
 		}
 	}
 	<div class="col-md-3 mb-4">
-		<a href="@Url.Action("GetAddBook", "MyBooks")" class="card-link d-block text-decoration-none">
-			<div class="card">
-				<div class="card-body text-center">
-					<h5 class="card-title text-center">Add Book</h5>
-					<p class="card-text text-center">Click here to add a new book</p>
-				</div>
+		<a href="@Url.Action("GetAddBook", "MyBooks")" class="card card-link">
+			<div class="card-body">
+				<h5 class="card-title">@Localizer["Add book"]</h5>
+				<p class="card-text">@Localizer["Add book text"]</p>
 			</div>
 		</a>
 	</div>

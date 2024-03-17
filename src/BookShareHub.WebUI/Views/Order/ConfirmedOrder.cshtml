@@ -3,21 +3,21 @@
 <div class="row justify-content-center" style="height: 85vh;">
 	<div class="col-md-6" style="height: 100%;">
 		<div class="background-block" style="height: 20%;">
-			<h4>Delivery parameters</h4>
+			<h4>@Localizer["Delivery params"]</h4>
 		</div>
 		<div class="background-block" style="height: 20%;">
-			<h4>Pay options</h4>
+			<h4>@Localizer["Pay opt"]</h4>
 			<div class="row d-flex justify-content-center">
 				<h2 style="color: red;">@Model.Order.CheckAmount.ToString("C")</h2>
 			</div>
 		</div>
 		<div class="background-block" style="height: 15%;">
-			<h4>Comment</h4>
-			<p>Comment by @Model.Order.CustomerId: @Model.Order.Comment</p>
+			<h4>@Localizer["Comment"]</h4>
+			<p>@Localizer["Comment by"] @Model.Order.CustomerId: @Model.Order.Comment</p>
 		</div>
 
 		<div class="background-block" style="height: 35%;">
-			<h4>Basket items</h4>
+			<h4>@Localizer["Basket items"]</h4>
 			<div class="items">
 				@foreach (var orderItem in Model.OrderList)
 				{
@@ -39,7 +39,7 @@
 			<div class="col-md-6 btn-confirm-container">
 				<form method="post" action="@Url.Action("Chat", "Chat")">
 					<input type="hidden" asp-for="User.Id" value="@Model.User.Id" />
-					<button type="submit" class="btn btn-primary">Open chat</button>
+					<button type="submit" class="btn btn-primary">@Localizer["Open chat"]</button>
 				</form>
 			</div>
 			@if (@Model.Order.OwnerId == @Model.UserId)
@@ -48,7 +48,7 @@
 					<form asp-controller="Order" asp-action="DeleteOrder" method="post" autocomplete="off">
 						<input type="hidden" name="id" value="@Model.Order.Id" />
 						<div class="btn-confirm-container">
-							<button type="submit" class="btn btn-danger">Cancel order</button>
+							<button type="submit" class="btn btn-danger">@Localizer["Cancel order"]</button>
 						</div>
 					</form>
 				</div>

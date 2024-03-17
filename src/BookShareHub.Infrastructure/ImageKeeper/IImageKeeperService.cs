@@ -1,4 +1,4 @@
-﻿namespace BookShareHub.Infrastructure.Services;
+﻿namespace BookShareHub.Infrastructure.Interfaces;
 
 public interface IImageKeeperService
 {

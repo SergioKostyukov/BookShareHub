@@ -4,7 +4,7 @@ using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
-using BookShareHub.Infrastructure.Services;
+using BookShareHub.Infrastructure.Interfaces;
 using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services

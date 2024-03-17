@@ -3,16 +3,16 @@
 <div class="col-md-6">
 	<div class="row">
 		<div class="col-md-6">
-			<h2>Actual contracts</h2>
+			<h2>@Localizer["Actual"]</h2>
 		</div>
 		<div class="col-md-6">
 			<div class="btn-container" onclick="location.href='@Url.Action("History", "History")'">
-				<button type="submit" class="btn btn-primary">History</button>
+				<button type="submit" class="btn btn-primary">@Localizer["History"]</button>
 			</div>
 		</div>
 	</div>
 	
-	<h3>Confirmed to me</h3>
+	<h3>@Localizer["Confirmed to me"]</h3>
 	@if (Model.OrdersToMeConfirmed != null && Model.OrdersToMeConfirmed.Any())
 	{
 		@foreach (var orderTitle in Model.OrdersToMeConfirmed)
@@ -24,16 +24,16 @@
 					@orderTitle.CustomerName
 				</p>
 				<span class="type">@orderTitle.Type</span>
-				<p>Created: @orderTitle.CreateDate</p>
+				<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
 			</div>
 		}
 	}
 	else
 	{
-		<p>No orders available.</p>
+		<p>@Localizer["No available"]</p>
 	}
 
-	<h3>Confirmed by me</h3>
+	<h3>@Localizer["Confirmed by me"]</h3>
 	@if (Model.OrdersByMeConfirmed != null && Model.OrdersByMeConfirmed.Any())
 	{
 		@foreach (var orderTitle in Model.OrdersByMeConfirmed)
@@ -45,16 +45,16 @@
 					@orderTitle.CustomerName
 				</p>
 				<span class="type">@orderTitle.Type</span>
-				<p>Created: @orderTitle.CreateDate</p>
+				<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
 			</div>
 		}
 	}
 	else
 	{
-		<p>No orders available.</p>
+		<p>@Localizer["No available"]</p>
 	}
 
-	<h3>Templated</h3>
+	<h3>@Localizer["Wish list"]</h3>
 	@if (Model.OrdersTemplated != null && Model.OrdersTemplated.Any())
 	{
 		@foreach (var orderTitle in Model.OrdersTemplated)
@@ -66,13 +66,13 @@
 					@orderTitle.CustomerName
 				</p>
 				<span class="type">@orderTitle.Type</span>
-				<p>Created: @orderTitle.CreateDate</p>
+				<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
 			</div>
 		}
 	}
 	else
 	{
-		<p>No orders available.</p>
+		<p>@Localizer["No available"]</p>
 	}
 </div>
 

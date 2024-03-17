@@ -1,22 +1,18 @@
-﻿@{
-	ViewData["Title"] = "Home Page";
-}
-
-<h1>@ViewData["Title"]</h1>
+﻿<h1>@Localizer["Title"]</h1>
 
 <div class="row" style="height: 80vh;">
 	<div class="col-md-6" style="height: 100%;">
 		<div class="list-group" style="height: 100%;">
-			<a href="@Url.Action("Library", "Library")" class="list-group-item list-group-item-action">Library</a>
-			<a href="@Url.Action("Raffle", "Raffle")" class="list-group-item list-group-item-action">Raffles</a>
-			<a href="@Url.Action("Auction", "Auction")" class="list-group-item list-group-item-action">Auctions</a>
+			<a href="@Url.Action("Library", "Library")" class="list-group-item list-group-item-action">@Localizer["Library"]</a>
+			<a href="@Url.Action("Raffle", "Raffle")" class="list-group-item list-group-item-action">@Localizer["Raffles"]</a>
+			<a href="@Url.Action("Auction", "Auction")" class="list-group-item list-group-item-action">@Localizer["Auctions"]</a>
 		</div>
 	</div>
 	<div class="col-md-6" style="height: 100%;">
 		<div class="list-group" style="height: 100%;">
-			<a href="@Url.Action("MyBooks", "MyBooks")" class="list-group-item list-group-item-action">MyBooks</a>
-			<a href="@Url.Action("Chat", "Chat")" class="list-group-item list-group-item-action">Chats</a>
-			<a href="@Url.Action("Contract", "Contract")" class="list-group-item list-group-item-action">Contracts</a>
+			<a href="@Url.Action("MyBooks", "MyBooks")" class="list-group-item list-group-item-action">@Localizer["MyBooks"]</a>
+			<a href="@Url.Action("Chat", "Chat")" class="list-group-item list-group-item-action">@Localizer["Chats"]</a>
+			<a href="@Url.Action("Contract", "Contract")" class="list-group-item list-group-item-action">@Localizer["Contracts"]</a>
 		</div>
 	</div>
 </div>
