@@ -10,6 +10,7 @@ public class DoneOrderTitleDto
     public string? CustomerName { get; set; }
     public string? OwnerName { get; set; }
     public DateTime CloseDate { get; init; }
+	public OrderStatus Status { get; init; }
 }
 
 public class ActualOrderTitleDto

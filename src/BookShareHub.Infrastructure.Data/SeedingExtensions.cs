@@ -23,6 +23,16 @@ namespace BookShareHub.Infrastructure.Data
 			//dbContext.Orders.RemoveRange(dbContext.Orders);
 			//dbContext.OrdersLists.RemoveRange(dbContext.OrdersLists);
 
+			//var books = await dbContext.Books
+			//	.Where(x => x.IsActive == false)
+			//	.ToListAsync();	
+
+			//foreach ( var book in books )
+			//{
+			//	book.IsActive = true;
+			//}
+			//dbContext.Books.UpdateRange(books);
+
 			//await dbContext.SaveChangesAsync();
 
 			await dbContext.Database.MigrateAsync();

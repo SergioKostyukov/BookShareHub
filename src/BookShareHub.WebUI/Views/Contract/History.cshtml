@@ -8,16 +8,24 @@
 				@foreach (var orderTitle in Model.OrderTitles)
 				{
 					<div class="order-item" onclick="fetchOrderDetails(@orderTitle.Id)">
-						<p>@orderTitle.OwnerName - @orderTitle.CustomerName</p>
-						<p>@orderTitle.CloseDate</p>
+						<div class="col-md-10">
+							<p>
+								@orderTitle.OwnerName
+								<span class="arrow">&rarr;</span>
+								@orderTitle.CustomerName
+							</p>
+							<p>@orderTitle.CloseDate</p>
+						</div>
+						<div class="col-md-2">
+							<p class="status">@orderTitle.Status</p>
+						</div>
 					</div>
 				}
 			}
 			else
 			{
-				<p>No orders available.</p>
+				<p>@Localizer["No orders available."]</p>
 			}
-
 		</div>
 	</div>
 
@@ -45,12 +53,37 @@
 
 		function updateOrderDetailsBlock(orderDetails) {
 			console.log(orderDetails);
-
 			var orderDetailsBlock = document.getElementById('order-details-block');
 			orderDetailsBlock.innerHTML = `
-								<h2>Order Details</h2>
-								<p>Owner ID: ${orderDetails.ownerId}</p>
+						<div class="order-info-block">
+							<h3>@Localizer["Order information"]:</h3>
+							<p>@Localizer["Seller name"]: ${orderDetails.user.userName}</p>
+							<p>@Localizer["Create date"]: ${orderDetails.order.createDate}</p>
+							<p>@Localizer["Order check"]: ${orderDetails.order.checkAmount}</p>
+							<h3>@Localizer["Order list"]:</h3>
+						</div>
+					`;
+
+			var orderList = orderDetails.orderList;
+			if (orderList && orderList.length > 0) {
+				orderList.forEach(book => {
+					var bookBlock = `
+								<div class="row order-book">
+									<div class="col-md-2">
+										<img src="${book.imagePath}" asp-append-version="true" class="img-fluid rounded" alt="${book.title}">
+									</div>
+									<div class="col-md-10">
+										<p style="font-weight: bold;">${book.title}</p>
+										<p>${book.author}</p>
+										<p>${book.price}</p>
+									</div>
+								</div>
 							`;
+					orderDetailsBlock.innerHTML += bookBlock;
+				});
+			} else {
+				orderDetailsBlock.innerHTML += '<p>There are no books in order</p>';
+			}
 		}
 	</script>
 }

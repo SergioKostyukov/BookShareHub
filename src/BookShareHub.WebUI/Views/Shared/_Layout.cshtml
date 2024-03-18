@@ -3,7 +3,8 @@
 <head>
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-	<title>@ViewData["Title"] - BookShareHub.WebUI</title>
+	<title>BookShareHub</title>
+	<link rel="icon" type="image/png" href="~/favicon.png" />
 	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
 	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
 	@await RenderSectionAsync("Styles", required: false)
@@ -12,7 +13,10 @@
 	<header>
 		<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
 			<div class="container-fluid">
-				<a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">BookShareHub</a>
+				<a class="navbar-brand d-flex align-items-center" asp-area="" asp-controller="Home" asp-action="Index">
+					<img src="~/favicon.png" alt="Favicon" class="mr-1">
+					<span class="ml-1">BookShareHub</span>
+				</a>
 				<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
 						aria-expanded="false" aria-label="Toggle navigation">
 					<span class="navbar-toggler-icon"></span>
@@ -53,5 +57,12 @@
 	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="~/js/site.js" asp-append-version="true"></script>
 	@await RenderSectionAsync("Scripts", required: false)
+
+	<script>
+		$(document).ready(function () {
+			var path = window.location.pathname;
+			$('a[href="' + path + '"]').closest('li').addClass('active-page');
+		});
+	</script>
 </body>
 </html>

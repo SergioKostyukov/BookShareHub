@@ -55,7 +55,6 @@ namespace BookShareHub.Application.Services
 					.Where(b => b.Price <= filter.MaxPrice.Value);
 			}
 
-			// Exclude books owned by the user
 			query = query
 				.Where(b => b.OwnerId != userId && b.IsActive == true);
 
@@ -72,15 +71,14 @@ namespace BookShareHub.Application.Services
 			{
 				string searchTerm = request.Request.ToLower();
 
-				// Filter books where either Author or Name contains the search term
 				query = query
 					.Where(b => b.Author.ToLower().Contains(searchTerm) ||
 								b.Title.ToLower().Contains(searchTerm));
 			}
 
-			// Exclude books owned by the user
 			query = query
-				.Where(b => b.OwnerId != userId && b.IsActive == true);
+				.Where(b => b.OwnerId != userId)
+				.Where(b => b.IsActive == true);
 
 			var books = await query.ToListAsync();
 

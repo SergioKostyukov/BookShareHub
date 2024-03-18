@@ -68,7 +68,9 @@ namespace BookShareHub.Application.Services
 		public async Task<int> CreateOrderAsync(OrderCreateDto request)
 		{
 			var id = await _context.Orders
-				.Where(ol => ol.CustomerId == request.CustomerId && ol.OwnerId == request.OwnerId)
+				.Where(ol => ol.CustomerId == request.CustomerId && 
+							 ol.OwnerId == request.OwnerId && 
+							 ol.Status == Core.Domain.Enums.OrderStatus.Template)
 				.Select(ol => ol.Id)
 				.FirstOrDefaultAsync();
 
@@ -91,9 +93,8 @@ namespace BookShareHub.Application.Services
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
 
 			order.Status = Core.Domain.Enums.OrderStatus.Confirmed;
-			order.CreateDate = DateTime.Now;
+			order.CreateDate = DateTime.UtcNow;
 			order.Comment = request.Comment;
-
 			// Update other order parameters (delivery, pay options) here soon
 
 			// Set 'IsActive' to selected books as false

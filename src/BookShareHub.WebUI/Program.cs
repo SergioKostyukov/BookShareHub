@@ -77,7 +77,7 @@ public class Program
 
 		app.MapRazorPages();
 
-		_ = app.DatabaseEnsureCreated();
+		app.DatabaseEnsureCreated();
 
 		app.Run();
 	}

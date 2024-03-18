@@ -1,8 +1,6 @@
 ﻿@model LibraryModel
 @using BookShareHub.Core.Domain.Enums
 
-<h2>@Localizer["Title"]</h2>
-
 <div class="row">
 	<form class="form-group col-md-7 align-items-end" method="get" action="@Url.Action("Filter", "Library")">
 		<div class="col-md-3">
@@ -32,7 +30,7 @@
 			<input type="number" class="form-control" id="price" name="FilterQuery.MaxPrice" min="0" value="@Model.FilterQuery?.MaxPrice">
 		</div>
 		<div class="col-md-2 align-self-end">
-			<input type="hidden" name="@Model.UserId" value="@Model.UserId">
+			<input type="hidden" name="UserId" value="@Model.UserId">
 			<button type="submit" class="btn btn-primary">@Localizer["Filter"]</button>
 		</div>
 	</form>
@@ -42,7 +40,7 @@
 			<input type="text" class="form-control" id="search" name="SearchQuery.Request" value="@Model.SearchQuery?.Request">
 		</div>
 		<div class="col-md-4">
-			<input type="hidden" name="@Model.UserId" value="@Model.UserId">
+			<input type="hidden" name="UserId" value="@Model.UserId">
 			<button type="submit" class="btn btn-primary">@Localizer["Find"]</button>
 		</div>
 	</form>

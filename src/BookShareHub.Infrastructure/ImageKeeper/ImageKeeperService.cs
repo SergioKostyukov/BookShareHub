@@ -13,6 +13,8 @@ internal class ImageKeeperService : IImageKeeperService
 	private readonly IOptions<ImageKeeperSettings> _imageKeeperSettings;
 	private readonly StorageClient _storageClient;
 
+	private const string storageUrlBace = "https://storage.googleapis.com/";
+
 	public ImageKeeperService(ILogger<ImageKeeperService> logger, IOptions<ImageKeeperSettings> imageKeeperSettings)
 	{
 		_logger = logger;
@@ -34,7 +36,7 @@ internal class ImageKeeperService : IImageKeeperService
 			await _storageClient.UploadObjectAsync(_imageKeeperSettings.Value.CloudStorageBucket, objectName, null, memoryStream);
 		}
 
-		return $"https://storage.googleapis.com/{_imageKeeperSettings.Value.CloudStorageBucket}/{objectName}";
+		return storageUrlBace + $"{_imageKeeperSettings.Value.CloudStorageBucket}/{objectName}";
 	}
 
 	public async Task DeleteImageAsync(string imageUrl)

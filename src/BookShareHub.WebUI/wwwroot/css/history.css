@@ -1,15 +1,16 @@
 ﻿.background-block {
     justify-content: flex-start;
+    overflow-y: auto;
 }
 
 .order-item {
-    width: 100%;
+    width: 95%;
     padding: 10px 20px;
-    margin: 5px 0;
+    margin: 10px 0;
     background-color: #dcdcdc;
     border-radius: 20px;
     display: flex;
-    align-items: start;
+    align-items: center;
     cursor: pointer;
 }
 
@@ -31,6 +32,10 @@
         font-weight: bold;
     }
 
+    .order-item .status{
+        color: green;
+    }
+
 .btn-container {
     display: flex;
     justify-content: end;
@@ -49,4 +54,45 @@
     .btn-primary:hover {
         background-color: #1b8e00;
         border-color: #777
+    }
+
+img {
+    max-height: 300px;
+    max-width: 400px;
+}
+
+.order-info-block {
+    width: 100%;
+    padding: 10px 20px 0 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-content: start;
+}
+
+    .order-info-block p {
+        margin: 0;
+        padding: 0 15px;
+        font-size: 20px;
+    }
+
+.books {
+    height: 85%;
+    width: 90%;
+}
+
+.order-book {
+    width: 90%;
+    padding: 10px 20px;
+    margin: 0;
+    background-color: #dcdcdc;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: start;
+}
+
+    .order-book p {
+        font-size: 20px;
+        margin: 0;
     }
