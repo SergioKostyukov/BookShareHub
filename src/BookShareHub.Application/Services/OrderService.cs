@@ -146,11 +146,9 @@ namespace BookShareHub.Application.Services
 
 		public async Task<bool> DeleteBookFromOrderAsync(BookDeleteDto book)
 		{
-			var orderLine = await _context.OrdersLists
+			await _context.OrdersLists
 				.Where(o => o.OrderId == book.OrderId && o.BookId == book.Id)
-				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order list element not found");
-
-			_context.OrdersLists.Remove(orderLine);
+				.ExecuteDeleteAsync();
 			_logger.LogInformation("Book deleted from 'OrderList'");
 
 			// decrease order CheckAmount
@@ -159,7 +157,6 @@ namespace BookShareHub.Application.Services
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
 
 			order.CheckAmount -= book.Price;
-			_logger.LogWarning("{0}", order.CheckAmount);
 
 			if (order.CheckAmount <= 0)
 			{

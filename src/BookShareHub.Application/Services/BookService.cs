@@ -19,13 +19,8 @@ namespace BookShareHub.Application.Services
 		private readonly IMapper _mapper = mapper;
 		private readonly IImageKeeperService _imageKeeperService = imageKeeperService;
 
-		public async Task AddBookAsync(BookDto bookDto, ImageFileDto? imageFile)
+		public async Task AddBookAsync(BookDto bookDto, ImageFileDto imageFile)
 		{
-			if (imageFile?.ImageFile == null || imageFile.ImageFile.Length == 0)
-			{
-				throw new ArgumentException("Error! Empty image file!");
-			}
-
 			using (var stream = imageFile.ImageFile.OpenReadStream())
 			{
 				bookDto.ImagePath = await _imageKeeperService.UploadImageAsync(stream, imageFile.ImageFile.FileName);
@@ -57,7 +52,6 @@ namespace BookShareHub.Application.Services
 
 			await _imageKeeperService.DeleteImageAsync(book.ImagePath);
 			_logger.LogInformation("Image deleted");
-
 
 			_context.Books.Remove(book);
 			await _context.SaveChangesAsync();

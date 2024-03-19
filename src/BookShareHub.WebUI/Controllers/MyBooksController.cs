@@ -34,7 +34,7 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpGet]
 		public async Task<IActionResult> GetEditBook(int id)
 		{
-			var model = new BookModel
+			var model = new EditBookModel
 			{
 				Book = await _libraryService.GetBookByIdAsync(id),
 			};
@@ -45,7 +45,7 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpGet]
 		public IActionResult GetAddBook()
 		{
-			return View("~/Views/Book/AddBook.cshtml", new BookModel { Book = new BookDto() });
+			return View("~/Views/Book/AddBook.cshtml", new AddBookModel { Book = new BookDto(), ImageFile = new FormFile(null, 0, 0, null, null) });
 		}
 	}
 }

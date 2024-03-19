@@ -2,7 +2,7 @@
 
 namespace BookShareHub.WebUI.Models;
 
-public class BookModel
+public class EditBookModel
 {
 	public required BookDto Book { get; init; }
 

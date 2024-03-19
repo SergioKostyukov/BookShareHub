@@ -1,5 +1,4 @@
-﻿using System.Globalization;
-using AutoMapper;
+﻿using AutoMapper;
 using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Filters;
 using BookShareHub.Application.Interfaces;
@@ -9,7 +8,7 @@ using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
 {
-    internal class LibraryService(ILogger<LibraryService> logger, 
+	internal class LibraryService(ILogger<LibraryService> logger, 
 								  BookShareHubDbContext context, 
 								  IMapper mapper) : ILibraryService
 	{

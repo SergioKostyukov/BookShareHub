@@ -7,7 +7,9 @@ using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
 {
-	internal class UserService(ILogger<UserService> logger, BookShareHubDbContext context, IMapper mapper) : IUserService
+	internal class UserService(ILogger<UserService> logger,
+							   BookShareHubDbContext context, 
+							   IMapper mapper) : IUserService
 	{
 		private readonly ILogger<UserService> _logger = logger;
 		private readonly BookShareHubDbContext _context = context;

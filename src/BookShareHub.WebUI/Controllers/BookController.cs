@@ -17,7 +17,7 @@ namespace BookShareHub.WebUI.Controllers
 		private readonly IBookService _bookService = bookService;
 
 		[HttpPost]
-		public async Task<IActionResult> AddBook(BookModel model)
+		public async Task<IActionResult> AddBook(AddBookModel model)
 		{
 			if (ModelState.IsValid)
 			{
@@ -41,11 +41,11 @@ namespace BookShareHub.WebUI.Controllers
 				}
 			}
 
-			return View(model);
+			return View("~/Views/Book/AddBook.cshtml", model);
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> EditBook(BookModel model)
+		public async Task<IActionResult> EditBook(EditBookModel model)
 		{
 			if (ModelState.IsValid)
 			{
