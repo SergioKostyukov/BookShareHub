@@ -29,7 +29,7 @@ namespace BookShareHub.WebUI.Controllers
 				model.Book.OwnerId = userId;
 
 				await _bookService.AddBookAsync(model.Book, new ImageFileDto { ImageFile = model.ImageFile });
-				return RedirectToAction("MyBooks", "MyBooks");
+				return RedirectToAction("MyBooksLibrary", "MyBooksLibrary");
 			}
 			else
 			{
@@ -50,7 +50,7 @@ namespace BookShareHub.WebUI.Controllers
 			if (ModelState.IsValid)
 			{
 				await _bookService.EditBookAsync(model.Book, new ImageFileDto { ImageFile = model.ImageFile });
-				return RedirectToAction("MyBooks", "MyBooks");
+				return RedirectToAction("MyBooksLibrary", "MyBooksLibrary");
 			}
 			else
 			{
@@ -69,7 +69,7 @@ namespace BookShareHub.WebUI.Controllers
 		public async Task<IActionResult> DeleteBook(int id)
 		{
 			await _bookService.DeleteBookAsync(id);
-			return RedirectToAction("MyBooks", "MyBooks");
+			return RedirectToAction("MyBooksLibrary", "MyBooksLibrary");
 		}
 	}
 }

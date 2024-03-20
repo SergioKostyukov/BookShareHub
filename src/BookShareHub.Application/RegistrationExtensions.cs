@@ -14,11 +14,11 @@ namespace BookShareHub.Application
 			services.AddAutoMapper(typeof(OrderProfile));
 			services.AddAutoMapper(typeof(RaffleProfile));
 
-			services.AddScoped<ILibraryService, LibraryService>();
+			services.AddScoped<IBooksLibraryService, BooksLibraryService>();
 			services.AddScoped<IBookService, BookService>();
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IOrderService, OrderService>();
-			services.AddScoped<IRaffleService, RaffleService>();
+			services.AddScoped<IRafflesLibraryService, RafflesLibraryService>();
 
 			return services;
 		}

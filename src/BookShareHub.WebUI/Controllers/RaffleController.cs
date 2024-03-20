@@ -6,7 +6,7 @@ namespace BookShareHub.WebUI.Controllers
 	{
 		public IActionResult Raffle()
 		{
-			return View("~/Views/Active/Raffle.cshtml");
+			return View("~/Views/Raffle/Raffle.cshtml");
 		}
 	}
 }

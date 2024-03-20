@@ -16,4 +16,9 @@
     <ProjectReference Include="..\BookShareHub.Infrastructure\BookShareHub.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Dto\Auction\" />
+    <Folder Include="Dto\Chat\" />
+  </ItemGroup>
+
 </Project>

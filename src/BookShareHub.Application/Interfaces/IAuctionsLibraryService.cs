@@ -1,6 +1,6 @@
 ﻿namespace BookShareHub.Application.Interfaces
 {
-	public interface IRaffleService
-    {
-    }
+	public interface IAuctionsLibraryService
+	{
+	}
 }

@@ -6,16 +6,16 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-	[Authorize]
+    [Authorize]
 	public class OrderController(ILogger<OrderController> logger,
 								 IHttpContextAccessor httpContextAccessor,
-								 ILibraryService libraryService,
+								 IBooksLibraryService libraryService,
 								 IOrderService orderService,
 								 IUserService userService) : Controller
 	{
 		private readonly ILogger<OrderController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-		private readonly ILibraryService _libraryService = libraryService;
+		private readonly IBooksLibraryService _libraryService = libraryService;
 		private readonly IOrderService _orderService = orderService;
 		private readonly IUserService _userService = userService;
 
@@ -91,7 +91,7 @@ namespace BookShareHub.WebUI.Controllers
 
 			await _orderService.ConfirmOrderAsync(OrderConfirm);
 
-			return RedirectToAction("Library", "Library");
+			return RedirectToAction("BooksLibrary", "BooksLibrary");
 		}
 
 		[HttpPost]
@@ -99,7 +99,7 @@ namespace BookShareHub.WebUI.Controllers
 		{
 			await _orderService.DeleteOrderAsync(id);
 
-			return RedirectToAction("Library", "Library");
+			return RedirectToAction("BooksLibrary", "BooksLibrary");
 		}
 
 		[HttpPost]
@@ -109,7 +109,7 @@ namespace BookShareHub.WebUI.Controllers
 
 			if (isLast)
 			{
-				return RedirectToAction("Library", "Library");
+				return RedirectToAction("BooksLibrary", "BooksLibrary");
 			}
 			else
 			{

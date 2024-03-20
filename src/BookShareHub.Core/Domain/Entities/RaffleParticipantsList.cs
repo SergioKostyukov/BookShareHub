@@ -6,4 +6,5 @@ public class RaffleParticipantsList
 	public string RaffleUserId { get; set; } = string.Empty;
 	public int TicketsCount { get; set; }
 	public DateTime ParticipationTime { get; set; }
+	// delivery parameters
 }

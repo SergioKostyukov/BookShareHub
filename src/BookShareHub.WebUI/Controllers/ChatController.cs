@@ -8,7 +8,7 @@ namespace BookShareHub.WebUI.Controllers
     {
         public IActionResult Chat()
         {
-            return View();
+            return View("~/Views/Chat/Chat.cshtml");
         }
     }
 }

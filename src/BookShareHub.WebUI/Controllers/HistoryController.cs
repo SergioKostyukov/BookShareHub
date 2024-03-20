@@ -3,20 +3,19 @@ using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Org.BouncyCastle.Asn1.X9;
 
 namespace BookShareHub.WebUI.Controllers
 {
 	[Authorize]
 	public class HistoryController(ILogger<BookController> logger,
 								   IHttpContextAccessor httpContextAccessor,
-								   ILibraryService libraryService,
+								   IBooksLibraryService libraryService,
 								   IOrderService orderService,
 								   IUserService userService) : Controller
 	{
 		private readonly ILogger<BookController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-		private readonly ILibraryService _libraryService = libraryService;
+		private readonly IBooksLibraryService _libraryService = libraryService;
 		private readonly IOrderService _orderService = orderService;
 		private readonly IUserService _userService = userService;
 

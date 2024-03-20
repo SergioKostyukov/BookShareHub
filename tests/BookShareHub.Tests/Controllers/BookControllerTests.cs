@@ -39,8 +39,8 @@ namespace BookShareHub.Tests.Controllers
 
 			// Assert
 			var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-			Assert.Equal("MyBooks", redirectToActionResult.ActionName);
-			Assert.Equal("MyBooks", redirectToActionResult.ControllerName);
+			Assert.Equal("MyBooksLibrary", redirectToActionResult.ActionName);
+			Assert.Equal("MyBooksLibrary", redirectToActionResult.ControllerName);
 			_bookServiceMock.Verify(x => x.AddBookAsync(It.IsAny<BookDto>(), It.IsAny<ImageFileDto>()), Times.Once);
 		}
 
@@ -81,8 +81,8 @@ namespace BookShareHub.Tests.Controllers
 
 			// Assert
 			var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-			Assert.Equal("MyBooks", redirectToActionResult.ActionName);
-			Assert.Equal("MyBooks", redirectToActionResult.ControllerName);
+			Assert.Equal("MyBooksLibrary", redirectToActionResult.ActionName);
+			Assert.Equal("MyBooksLibrary", redirectToActionResult.ControllerName);
 			_bookServiceMock.Verify(x => x.EditBookAsync(It.IsAny<BookDto>(), It.IsAny<ImageFileDto>()), Times.Once);
 		}
 
@@ -122,8 +122,8 @@ namespace BookShareHub.Tests.Controllers
 
 			// Assert
 			var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-			Assert.Equal("MyBooks", redirectToActionResult.ActionName);
-			Assert.Equal("MyBooks", redirectToActionResult.ControllerName);
+			Assert.Equal("MyBooksLibrary", redirectToActionResult.ActionName);
+			Assert.Equal("MyBooksLibrary", redirectToActionResult.ControllerName);
 			_bookServiceMock.Verify(x => x.DeleteBookAsync(It.IsAny<int>()), Times.Once);
 		}
 
