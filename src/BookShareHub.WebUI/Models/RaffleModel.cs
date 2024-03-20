@@ -1,7 +1,6 @@
-﻿using BookShareHub.Application.Dto;
-
-namespace BookShareHub.WebUI.Models;
-
-public class RaffleModel
+﻿namespace BookShareHub.WebUI.Models
 {
+	public class RaffleModel
+	{
+	}
 }

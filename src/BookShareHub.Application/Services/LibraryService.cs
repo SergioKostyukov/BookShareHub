@@ -62,7 +62,7 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<List<BookTitleDto>>(books);
 		}
 
-		public async Task<List<BookTitleDto>> GetAllBooksBySearchAsync(LibrarySearch request, string userId)
+		public async Task<List<BookTitleDto>> GetAllBooksBySearchAsync(SearchFilter request, string userId)
 		{
 			var query = _context.Books.AsQueryable();
 

@@ -1,0 +1,74 @@
+﻿@model RafflesListModel
+@using BookShareHub.Core.Domain.Enums
+
+<div class="row">
+	<form class="form-group col-md-7 align-items-end" method="get" action="@Url.Action("Filter", "Raffle")">
+		<div class="col-md-3">
+			<label for="language">@Localizer["Book language"]:</label>
+			<select class="form-control" id="language" name="FilterQuery.SelectedLanguage">
+				<option value="">All</option>
+				@foreach (BookLanguage language in Enum.GetValues(typeof(BookLanguage)))
+				{
+					string selected = Model.FilterQuery?.SelectedLanguage == language ? "selected" : "";
+					<option value="@language.ToString()" selected="@selected">@language.ToString()</option>
+				}
+			</select>
+		</div>
+		<div class="col-md-3">
+			<label for="genre">@Localizer["Raffle type"]:</label>
+			<select class="form-control" id="genre" name="FilterQuery.SelectedType">
+				<option value="">All</option>
+				@foreach (RaffleType genre in Enum.GetValues(typeof(RaffleType)))
+				{
+					string selected = Model.FilterQuery?.SelectedType == genre ? "selected" : "";
+					<option value="@genre.ToString()" selected="@selected">@genre.ToString()</option>
+				}
+			</select>
+		</div>
+		<div class="col-md-3">
+			<label for="price">@Localizer["Max ticket price"]:</label>
+			<input type="number" class="form-control" id="price" name="FilterQuery.MaxPrice" min="0" value="@Model.FilterQuery?.SelectedMaxTicketPrice">
+		</div>
+		<div class="col-md-2 align-self-end">
+			<input type="hidden" name="UserId" value="@Model.UserId">
+			<button type="submit" class="btn btn-primary">@Localizer["Filter"]</button>
+		</div>
+	</form>
+	<form class="form-group col-md-3 offset-md-2 align-items-end" method="get" action="@Url.Action("Search", "Raffle")">
+		<div class="col-md-8">
+			<label for="search">@Localizer["Search"]:</label>
+			<input type="text" class="form-control" id="search" name="SearchQuery.Request" value="@Model.SearchQuery?.Request">
+		</div>
+		<div class="col-md-4">
+			<input type="hidden" name="UserId" value="@Model.UserId">
+			<button type="submit" class="btn btn-primary">@Localizer["Find"]</button>
+		</div>
+	</form>
+</div>
+
+@if (Model.RaffleTitles != null && Model.RaffleTitles.Any())
+{
+	<div class="row">
+		@foreach (var book in Model.RaffleTitles)
+		{
+			<div class="col-md-3 mb-4">
+				<div class="card" onclick="location.href='@Url.Action("Raffle", "Raffle", new { id = book.Id })'">
+					<img src="@book.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
+					<div class="card-body">
+						<span class="genre">@book.Type</span>
+						<h5 class="card-title">@book.Title</h5>
+						<p class="card-text">@book.EndDateTime</p>
+					</div>
+				</div>
+			</div>
+		}
+	</div>
+}
+else
+{
+	<p>@Localizer["No available"]</p>
+}
+
+@section Styles {
+	<link rel="stylesheet" href="~/css/bookList.css" asp-append-version="true" />
+}

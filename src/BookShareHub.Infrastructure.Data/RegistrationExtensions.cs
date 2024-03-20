@@ -20,6 +20,7 @@ namespace BookShareHub.Infrastructure.Data
 		{
 			services.AddTransient<UserDataGeneration>();
 			services.AddTransient<BookDataGeneration>();
+			services.AddTransient<RaffleDataGeneration>();
 
 			return services;
 		}

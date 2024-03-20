@@ -12,28 +12,7 @@ namespace BookShareHub.Infrastructure.Data
 			using var scope = applicationBuilder.ApplicationServices.CreateScope();
 			var dbContext = scope.ServiceProvider.GetRequiredService<BookShareHubDbContext>();
 
-			// Rebuild the database
-			//var database = dbContext.Database;
-			//await database.EnsureDeletedAsync();
-			//await database.EnsureCreatedAsync();
-
-			// Remove data from the table users and books to refill them
-			//dbContext.AspNetUsers.RemoveRange(dbContext.AspNetUsers);
-			//dbContext.Books.RemoveRange(dbContext.Books);
-			//dbContext.Orders.RemoveRange(dbContext.Orders);
-			//dbContext.OrdersLists.RemoveRange(dbContext.OrdersLists);
-
-			//var books = await dbContext.Books
-			//	.Where(x => x.IsActive == false)
-			//	.ToListAsync();	
-
-			//foreach ( var book in books )
-			//{
-			//	book.IsActive = true;
-			//}
-			//dbContext.Books.UpdateRange(books);
-
-			//await dbContext.SaveChangesAsync();
+			//await ClearExistingTables(dbContext);
 
 			await dbContext.Database.MigrateAsync();
 
@@ -45,6 +24,11 @@ namespace BookShareHub.Infrastructure.Data
 			if (!await dbContext.Books.AnyAsync())
 			{
 				await SeedInitialBooksData(dbContext);
+			}
+
+			if(!await dbContext.Raffles.AnyAsync())
+			{
+				await SeedInitialRafflesData(dbContext);
 			}
 		}
 
@@ -73,6 +57,49 @@ namespace BookShareHub.Infrastructure.Data
 				var books = bookDataGeneration.GenerateBooks(5, user.Id);
 				dbContext.Books.AddRange(books);
 			}
+
+			await dbContext.SaveChangesAsync();
+		}
+		
+		private static async Task SeedInitialRafflesData(BookShareHubDbContext dbContext)
+		{
+			var raffleDataGeneration = new RaffleDataGeneration();
+
+			var users = await dbContext.Users.Take(10).ToListAsync();
+
+			foreach (var user in users)
+			{
+				var raffles = raffleDataGeneration.GenerateRaffles(2, user.Id);
+				dbContext.Raffles.AddRange(raffles);
+			}
+
+			await dbContext.SaveChangesAsync();
+		}
+
+		private static async Task ClearExistingTables(BookShareHubDbContext dbContext)
+		{
+			// Rebuild the database
+			// var database = dbContext.Database;
+			// await database.EnsureDeletedAsync();
+			// await database.EnsureCreatedAsync();
+
+			// Remove data from the table users and books to refill them
+			dbContext.AspNetUsers.RemoveRange(dbContext.AspNetUsers);
+			dbContext.Books.RemoveRange(dbContext.Books);
+			dbContext.Orders.RemoveRange(dbContext.Orders);
+			dbContext.OrdersLists.RemoveRange(dbContext.OrdersLists);
+			dbContext.Raffles.RemoveRange(dbContext.Raffles);
+
+			// Reset books availability
+			var books = await dbContext.Books
+				.Where(x => x.IsActive == false)
+				.ToListAsync();
+
+			foreach (var book in books)
+			{
+				book.IsActive = true;
+			}
+			dbContext.Books.UpdateRange(books);
 
 			await dbContext.SaveChangesAsync();
 		}

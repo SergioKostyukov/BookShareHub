@@ -209,6 +209,75 @@ namespace BookShareHub.Infrastructure.Data.Migrations
                     b.ToTable("ProfileComments");
                 });
 
+            modelBuilder.Entity("BookShareHub.Core.Domain.Entities.Raffle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Author")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("EndDateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Genre")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ImagePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("bit");
+
+                    b.Property<int>("Language")
+                        .HasColumnType("int");
+
+                    b.Property<string>("OwnerId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<decimal>("TicketPrice")
+                        .HasColumnType("decimal(8,2)");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("Type")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Raffles");
+                });
+
+            modelBuilder.Entity("BookShareHub.Core.Domain.Entities.RaffleParticipantsList", b =>
+                {
+                    b.Property<int>("RaffleId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("RaffleUserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("ParticipationTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("TicketsCount")
+                        .HasColumnType("int");
+
+                    b.HasKey("RaffleId", "RaffleUserId");
+
+                    b.ToTable("RafflesParticipantsLists");
+                });
+
             modelBuilder.Entity("BookShareHub.Core.Domain.Entities.User", b =>
                 {
                     b.Property<string>("Id")

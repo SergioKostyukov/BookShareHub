@@ -17,6 +17,8 @@ namespace BookShareHub.Infrastructure.Data
 		public DbSet<OrderList> OrdersLists { get; set; }
 		public DbSet<Chat> Chats { get; set; }
 		public DbSet<ChatSubscribersList> ChatsSubscribersLists { get; set; }
+		public DbSet<Raffle> Raffles { get; set; }
+		public DbSet<RaffleParticipantsList> RafflesParticipantsLists { get; set; }
 
 		protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
@@ -29,8 +31,10 @@ namespace BookShareHub.Infrastructure.Data
             modelBuilder.ApplyConfiguration(new OrderListEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ChatEntityConfiguration());
             modelBuilder.ApplyConfiguration(new ChatSubscribersListEntityConfiguration());
+			modelBuilder.ApplyConfiguration(new RaffleEntityConfiguration());
+			modelBuilder.ApplyConfiguration(new RaffleParticipantsListEntityConfiguration());
 
-            modelBuilder.Entity<IdentityUserLogin<string>>()
+			modelBuilder.Entity<IdentityUserLogin<string>>()
 				.HasKey(x => new { x.LoginProvider, x.ProviderKey });
 		}
 	}

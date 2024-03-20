@@ -8,5 +8,5 @@ public class LibraryModel
 	public required string UserId { get; set; }
 	public required List<BookTitleDto> BookTitles { get; set; }
 	public LibraryFilter? FilterQuery { get; set; }
-	public LibrarySearch? SearchQuery { get; set; }
+	public SearchFilter? SearchQuery { get; set; }
 }

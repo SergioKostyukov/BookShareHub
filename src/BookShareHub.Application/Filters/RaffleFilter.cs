@@ -2,10 +2,10 @@
 
 namespace BookShareHub.Application.Filters
 {
-	public class LibraryFilter
+	public class RaffleFilter
 	{
 		public BookLanguage? SelectedLanguage { get; set; }
-		public BookGenre? SelectedGenre { get; set; }
-		public decimal? MaxPrice { get; set; }
+		public RaffleType? SelectedType { get; set; }
+		public decimal? SelectedMaxTicketPrice { get; set; }
 	}
 }
