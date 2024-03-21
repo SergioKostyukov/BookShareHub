@@ -1,10 +1,12 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Dto.Order;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
 using BookShareHub.Infrastructure.Interfaces;
+using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -95,7 +97,10 @@ namespace BookShareHub.Application.Services
 			order.CheckAmount = 0;
 
 			_context.Orders.Add(order);
+
 			await _context.SaveChangesAsync();
+
+			_logger.LogWarning("Order template created2" + order.Id);
 
 			return order.Id;
 		}
@@ -133,6 +138,8 @@ namespace BookShareHub.Application.Services
 
 		public async Task ConfirmOrderTemplateAsync(int orderId)
 		{
+			_logger.LogWarning("Order service. " + orderId.ToString());
+
 			var order = await _context.Orders
 				.Where(o => o.Id == orderId)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
@@ -149,6 +156,21 @@ namespace BookShareHub.Application.Services
 			await SetBooksListActiveValue(booksList, false);
 
 			_context.Orders.Update(order);
+		}
+
+		public async Task AddBookToOrder(int orderId, int bookId)
+		{
+			var bookQuery = new OrderList
+			{
+				BookId = bookId,
+				OrderId = orderId,
+			};
+
+			await SetBookActiveValue(bookId, false);
+
+			_context.OrdersLists.Add(bookQuery);
+			await _context.SaveChangesAsync();
+
 		}
 
 		public async Task DeleteOrderAsync(int orderId)
@@ -209,6 +231,21 @@ namespace BookShareHub.Application.Services
 			return false;
 		}
 
+		public async Task<bool> DeleteBookFromRaffleOrderAsync(BookDeleteDto book)
+		{
+			await _context.OrdersLists
+				.Where(o => o.OrderId == book.OrderId && o.BookId == book.Id)
+				.ExecuteDeleteAsync();
+
+			_logger.LogInformation("Book deleted from 'OrderList'");
+
+			await SetBookActiveValue(book.Id, true);
+			await _context.SaveChangesAsync();
+
+			return false;
+
+		}
+
 		private async Task<int> CreateOrderRecordAsync(OrderCreateDto request)
 		{
 			var order = _mapper.Map<Order>(request);
@@ -248,6 +285,17 @@ namespace BookShareHub.Application.Services
 					await _context.SaveChangesAsync();
 				}
 			}
+		}
+
+		private async Task SetBookActiveValue(int bookId, bool isActive)
+		{
+			var book = await _context.Books
+						.Where(book => book.Id == bookId)
+						.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Book not found");
+
+			book.IsActive = isActive;
+
+			_context.Books.Update(book);
 		}
 
 		private async Task SetBooksListActiveValue(IEnumerable<int> booksList, bool isActive)

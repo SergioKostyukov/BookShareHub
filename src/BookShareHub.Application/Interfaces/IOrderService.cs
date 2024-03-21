@@ -12,7 +12,9 @@ namespace BookShareHub.Application.Interfaces
 		Task<int> CreateOrderTemplateAsync(OrderTemplateCreateDto request);
  		Task ConfirmOrderAsync(OrderConfirmDto request);
 		Task ConfirmOrderTemplateAsync(int orderId);
+		Task AddBookToOrder(int orderId, int bookId);
 		Task DeleteOrderAsync(int orderId);
 		Task<bool> DeleteBookFromOrderAsync(BookDeleteDto book);
+		Task<bool> DeleteBookFromRaffleOrderAsync(BookDeleteDto book);
 	}
 }

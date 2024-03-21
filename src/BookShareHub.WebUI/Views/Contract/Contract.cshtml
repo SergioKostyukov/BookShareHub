@@ -74,6 +74,27 @@
 	{
 		<p>@Localizer["No available"]</p>
 	}
+
+	<h3>@Localizer["Created raffles"]</h3>
+	@if (Model.RaffleTitleDtos != null && Model.RaffleTitleDtos.Any())
+	{
+		@foreach (var orderTitle in Model.RaffleTitleDtos)
+		{
+			<div class="row order-item" onclick="location.href='@Url.Action("Order", "Order", new { orderId = orderTitle.Id })'">
+				<p>
+					@orderTitle.Id
+					<span class="arrow">&rarr;</span>
+					@orderTitle.OrderId
+				</p>
+				<span class="type">@orderTitle.Type</span>
+				<p>@Localizer["Ended"]: @orderTitle.EndDateTime</p>
+			</div>
+		}
+	}
+	else
+	{
+		<p>@Localizer["No available"]</p>
+	}
 </div>
 
 @section Styles {

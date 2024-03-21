@@ -49,26 +49,20 @@
 				{
 					@foreach (var orderItem in Model.RaffleList)
 					{
-						<div class="row order-item">
-							<div class="col-md-2">
-								<img src="@orderItem.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
-							</div>
-							<div class="col-md-8">
-								<p style="font-weight: bold;">@orderItem.Title</p>
-								<p>@orderItem.Author</p>
-								<p>@orderItem.Price.ToString("C")</p>
-							</div>
-							<div class="col-md-2 btn-remove-container">
-								<form method="post" action="@Url.Action("RemoveBookFromRaffle", "Raffle")">
-									<input type="hidden" asp-for="DeleteBookDetails.OrderId" value="@Model.OrderId" />
-									<input type="hidden" asp-for="DeleteBookDetails.Id" value="@orderItem.Id" />
-									<input type="hidden" asp-for="DeleteBookDetails.Price" value="@orderItem.Price" />
-									<button type="submit" class="btn btn-remove">
-										<span aria-hidden="true">&times;</span>
-									</button>
-								</form>
-							</div>
-						</div>
+						<form method="post" action="@Url.Action("RemoveBookFromRaffle", "Raffle")">
+							<input type="hidden" asp-for="DeleteBookDetails.OrderId" value="@Model.OrderId" />
+							<input type="hidden" asp-for="DeleteBookDetails.Id" value="@orderItem.Id" />
+							<button class="row order-item item-ref" type="submit">
+								<div class="col-md-2">
+									<img src="@orderItem.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
+								</div>
+								<div class="col-md-8">
+									<p style="font-weight: bold;">@orderItem.Title</p>
+									<p>@orderItem.Author</p>
+									<p>@orderItem.Price.ToString("C")</p>
+								</div>
+							</button>
+						</form>
 					}
 				}
 				else
@@ -82,18 +76,23 @@
 			<div class="items">
 				@if (Model.MyOtherBooks != null && Model.MyOtherBooks.Any())
 				{
-					@foreach (var orderItem in Model.MyOtherBooks)
+					@foreach (var myBook in Model.MyOtherBooks)
 					{
-						<div class="row order-item item-ref" onclick="location.href='@Url.Action("AddBookToRaffle", "Raffle", new { id = orderItem.Id })'">
-							<div class="col-md-2">
-								<img src="@orderItem.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
-							</div>
-							<div class="col-md-8">
-								<p style="font-weight: bold;">@orderItem.Title</p>
-								<p>@orderItem.Author</p>
-								<p>@orderItem.Price.ToString("C")</p>
-							</div>
-						</div>
+						<form method="post" action="@Url.Action("AddBookToRaffle", "Raffle")">
+							<input type="hidden" asp-for="DeleteBookDetails.OrderId" value="@Model.OrderId" />
+							<input type="hidden" asp-for="DeleteBookDetails.Id" value="@myBook.Id" />
+							<button class="row order-item item-ref" type="submit">
+								<div class="col-md-2">
+									<img src="@myBook.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
+								</div>
+								<div class="col-md-8">
+									<p style="font-weight: bold;">@myBook.Title</p>
+									<p>@myBook.Author</p>
+									<p>@myBook.Price.ToString("C")</p>
+								</div>
+							</button>
+						</form>
+
 					}
 				}
 				else
@@ -102,8 +101,8 @@
 				}
 			</div>
 		</div>
-		<form asp-controller="Raffle" asp-action="DeleteRaffle" method="post" autocomplete="off">
-			<input type="hidden" name="id" value="@Model.OrderId" />
+		<form asp-controller="Raffle" asp-action="DeleteOrder" method="post" autocomplete="off">
+			<input type="hidden" name="orderId" value="@Model.OrderId" />
 			<div class="btn-confirm-container">
 				<button type="submit" class="btn btn-danger">@Localizer["Delete raffle"]</button>
 			</div>

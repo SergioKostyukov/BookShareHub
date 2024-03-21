@@ -75,7 +75,9 @@ namespace BookShareHub.WebUI.Controllers
 
 			var orderId = await _orderService.CreateOrderTemplateAsync(OrderTemplateCreate);
 
-			return RedirectToAction("GetAddRaffle", "Raffle", new { orderId }); 
+			_logger.LogWarning("RafflesLibrary Controller." + orderId.ToString());
+
+			return RedirectToAction("GetAddRaffle", "Raffle", new { orderId = orderId }); 
 		}
 	}
 }

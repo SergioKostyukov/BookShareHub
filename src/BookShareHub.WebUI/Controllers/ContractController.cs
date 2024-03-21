@@ -9,11 +9,13 @@ namespace BookShareHub.WebUI.Controllers
 	[Authorize]
 	public class ContractController(ILogger<ContractController> logger, 
 								    IHttpContextAccessor httpContextAccessor, 
-									IOrderService orderService) : Controller
+									IOrderService orderService,
+									IRaffleService raffleService) : Controller
 	{
 		private readonly ILogger<ContractController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 		private readonly IOrderService _orderService = orderService;
+		private readonly IRaffleService _raffleService = raffleService;
 		
 		[HttpGet]
 		public async Task<IActionResult> Contract()
@@ -34,7 +36,8 @@ namespace BookShareHub.WebUI.Controllers
 													x.CustomerId == userId).ToList(),
 				OrdersToMeConfirmed = orderTitles
 										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Confirmed &&
-													x.OwnerId == userId).ToList()
+													x.OwnerId == userId).ToList(),
+				RaffleTitleDtos = await _raffleService.GetActualRafflesAsync(userId)
 			};
 
 			return View("~/Views/Contract/Contract.cshtml", model);

@@ -9,16 +9,19 @@ namespace BookShareHub.WebUI.Controllers
 	public class RaffleController(ILogger<RaffleController> logger,
 								  IHttpContextAccessor httpContextAccessor,
 								  IBooksLibraryService libraryService,
-								  IRaffleService raffleService) : Controller
+								  IRaffleService raffleService,
+								  IOrderService orderService) : Controller
 	{
 		private readonly ILogger<RaffleController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 		private readonly IBooksLibraryService _libraryService = libraryService;
 		private readonly IRaffleService _raffleService = raffleService;
+		private readonly IOrderService _orderService = orderService;
 
 		[HttpGet]
 		public async Task<IActionResult> GetAddRaffle(int orderId)
 		{
+			_logger.LogWarning("Raffle controller. " + orderId.ToString());
 			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			if (userId == null)
 			{
@@ -41,6 +44,8 @@ namespace BookShareHub.WebUI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
+				_logger.LogWarning(model.OrderId.ToString());
+
 				var RaffleCreate = new RaffleCreateDto(
 					OwnerId: model.OwnerId,
 					OrderId: model.OrderId,
@@ -68,52 +73,33 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> AddBookToRaffle(int orderId, int bookId)
+		public async Task<IActionResult> AddBookToRaffle(AddRaffleModel model)
 		{
+			_logger.LogWarning("Add to raffle started");
+			await _orderService.AddBookToOrder(model.DeleteBookDetails.OrderId, model.DeleteBookDetails.Id);
+			_logger.LogWarning("Add to raffle ended");
 
-			return RedirectToAction("GetAddRaffle", new { orderId });
+			return RedirectToAction("GetAddRaffle", new { orderId = model.DeleteBookDetails.OrderId });
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> RemoveBookFromRaffle(int orderId, int bookId)
+		public async Task<IActionResult> RemoveBookFromRaffle(AddRaffleModel model)
 		{
+			_logger.LogWarning("Delete form raffle started");
 
-			return RedirectToAction("GetAddRaffle", new { orderId });
+			await _orderService.DeleteBookFromRaffleOrderAsync(model.DeleteBookDetails);
+
+			_logger.LogWarning("Delete form raffle finished");
+
+			return RedirectToAction("GetAddRaffle", new { orderId = model.DeleteBookDetails.OrderId });
 		}
 
 		[HttpPost]
-		public async Task<IActionResult> DeleteRaffle(int orderId)
+		public async Task<IActionResult> DeleteOrder(int orderId)
 		{
+			await _orderService.DeleteOrderAsync(orderId);
 
-			return RedirectToAction("MyBooksLibrary", "MyBooksLibrary");
+			return RedirectToAction("RafflesLibrary", "RafflesLibrary");
 		}
-
-		//[HttpPost]
-		//public async Task<IActionResult> AddRaffle(AddRaffleModel model)
-		//{
-		//	if (ModelState.IsValid)
-		//	{
-		//		string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-		//		if (userId == null)
-		//		{
-		//			return BadRequest("UserId not found");
-		//		}
-		//		model.Raffle.OwnerId = userId;
-
-		//		await _raffleService.AddRaffleAsync(model.Raffle, new ImageFileDto { ImageFile = model.ImageFile });
-		//		return RedirectToAction("MyBooksLibrary", "MyBooksLibrary");
-		//	}
-		//	else
-		//	{
-		//		_logger.LogError("Error. No valid data");
-		//		var errors = ModelState.Values.SelectMany(v => v.Errors);
-		//		foreach (var error in errors)
-		//		{
-		//			_logger.LogError($"Error. {error.ErrorMessage}");
-		//		}
-		//	}
-
-		//	return View("~/Views/Raffle/Raffle.cshtml", model);
-		//}
 	}
 }

@@ -17,5 +17,6 @@ public record RaffleTitleDto
 //	int OrderId,
 //	RaffleType Type,
 //	decimal TicketPrice,
-//	DateTime EndDateTime
+//	DateTime EndDateTime,
+//  string? ImagePath
 //);
