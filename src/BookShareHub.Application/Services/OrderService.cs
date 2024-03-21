@@ -26,7 +26,8 @@ namespace BookShareHub.Application.Services
 		{
 			var orders = await _context.Orders
 				.Where(b => (b.CustomerId == userId || b.OwnerId == userId) &&
-							b.Status != Core.Domain.Enums.OrderStatus.Done)
+							b.Status != Core.Domain.Enums.OrderStatus.Done &&
+							b.Type != Core.Domain.Enums.OrderType.Raffle)
 				.ToListAsync();
 
 			var orderTitleList = _mapper.Map<List<ActualOrderTitleDto>>(orders);
@@ -68,8 +69,8 @@ namespace BookShareHub.Application.Services
 		public async Task<int> CreateOrderAsync(OrderCreateDto request)
 		{
 			var id = await _context.Orders
-				.Where(ol => ol.CustomerId == request.CustomerId && 
-							 ol.OwnerId == request.OwnerId && 
+				.Where(ol => ol.CustomerId == request.CustomerId &&
+							 ol.OwnerId == request.OwnerId &&
 							 ol.Status == Core.Domain.Enums.OrderStatus.Template)
 				.Select(ol => ol.Id)
 				.FirstOrDefaultAsync();
@@ -84,6 +85,19 @@ namespace BookShareHub.Application.Services
 			await CreateOrderListRecordAsync(request, id);
 
 			return id;
+		}
+
+		public async Task<int> CreateOrderTemplateAsync(OrderTemplateCreateDto request)
+		{
+			var order = _mapper.Map<Order>(request);
+			order.Status = Core.Domain.Enums.OrderStatus.Template;
+			order.CreateDate = DateTime.Now;
+			order.CheckAmount = 0;
+
+			_context.Orders.Add(order);
+			await _context.SaveChangesAsync();
+
+			return order.Id;
 		}
 
 		public async Task ConfirmOrderAsync(OrderConfirmDto request)
@@ -115,6 +129,26 @@ namespace BookShareHub.Application.Services
 								 .FirstOrDefaultAsync() ?? throw new InvalidOperationException("User not found");
 
 			_emailSender.SendEmail(ownerEmail, request.OwnerName, "Book Share Hub notification", "Order Confirmed!");
+		}
+
+		public async Task ConfirmOrderTemplateAsync(int orderId)
+		{
+			var order = await _context.Orders
+				.Where(o => o.Id == orderId)
+				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
+
+			order.Status = Core.Domain.Enums.OrderStatus.Active;
+			order.CreateDate = DateTime.UtcNow;
+
+			// Set 'IsActive' to selected books as false
+			var booksList = await _context.OrdersLists
+						.Where(ol => ol.OrderId == orderId)
+						.Select(ol => ol.BookId)
+						.ToListAsync();
+
+			await SetBooksListActiveValue(booksList, false);
+
+			_context.Orders.Update(order);
 		}
 
 		public async Task DeleteOrderAsync(int orderId)
@@ -214,17 +248,6 @@ namespace BookShareHub.Application.Services
 					await _context.SaveChangesAsync();
 				}
 			}
-		}
-
-		private async Task SetBookActiveValue(int bookId, bool isActive)
-		{
-			var book = await _context.Books
-						.Where(book => book.Id == bookId)
-						.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Book not found");
-
-			book.IsActive = isActive;
-
-			_context.Books.Update(book);
 		}
 
 		private async Task SetBooksListActiveValue(IEnumerable<int> booksList, bool isActive)

@@ -2,7 +2,7 @@
 
 namespace BookShareHub.WebUI.Models;
 
-public class MyBooksModel
+public class MyBooksLibraryModel
 {
     public required List<BookTitleDto> BookTitles { get; init; }
 }

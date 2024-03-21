@@ -1,19 +1,8 @@
-﻿@model RafflesListModel
+﻿@model RafflesLibraryModel
 @using BookShareHub.Core.Domain.Enums
 
 <div class="row">
-	<form class="form-group col-md-7 align-items-end" method="get" action="@Url.Action("Filter", "Raffle")">
-		<div class="col-md-3">
-			<label for="language">@Localizer["Book language"]:</label>
-			<select class="form-control" id="language" name="FilterQuery.SelectedLanguage">
-				<option value="">All</option>
-				@foreach (BookLanguage language in Enum.GetValues(typeof(BookLanguage)))
-				{
-					string selected = Model.FilterQuery?.SelectedLanguage == language ? "selected" : "";
-					<option value="@language.ToString()" selected="@selected">@language.ToString()</option>
-				}
-			</select>
-		</div>
+	<form class="form-group col-md-7 align-items-end" method="get" action="@Url.Action("Filter", "RafflesLibrary")">
 		<div class="col-md-3">
 			<label for="genre">@Localizer["Raffle type"]:</label>
 			<select class="form-control" id="genre" name="FilterQuery.SelectedType">
@@ -34,30 +23,25 @@
 			<button type="submit" class="btn btn-primary">@Localizer["Filter"]</button>
 		</div>
 	</form>
-	<form class="form-group col-md-3 offset-md-2 align-items-end" method="get" action="@Url.Action("Search", "Raffle")">
-		<div class="col-md-8">
-			<label for="search">@Localizer["Search"]:</label>
-			<input type="text" class="form-control" id="search" name="SearchQuery.Request" value="@Model.SearchQuery?.Request">
-		</div>
-		<div class="col-md-4">
-			<input type="hidden" name="UserId" value="@Model.UserId">
-			<button type="submit" class="btn btn-primary">@Localizer["Find"]</button>
-		</div>
-	</form>
+	<div class="form-group col-md-2 offset-md-3 align-items-end">
+		<button class="btn btn-primary" onclick="location.href='@Url.Action("GetAddRaffle", "RafflesLibrary")'">
+			Create raffle
+		</button>
+	</div>
 </div>
 
 @if (Model.RaffleTitles != null && Model.RaffleTitles.Any())
 {
 	<div class="row">
-		@foreach (var book in Model.RaffleTitles)
+		@foreach (var raffle in Model.RaffleTitles)
 		{
 			<div class="col-md-3 mb-4">
-				<div class="card" onclick="location.href='@Url.Action("Raffle", "Raffle", new { id = book.Id })'">
-					<img src="@book.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Book Image">
+				<div class="card" onclick="location.href='@Url.Action("Raffle", "Raffle", new { id = raffle.Id })'">
+					<img src="@raffle.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Raffle Image">
 					<div class="card-body">
-						<span class="genre">@book.Type</span>
-						<h5 class="card-title">@book.Title</h5>
-						<p class="card-text">@book.EndDateTime</p>
+						<span class="genre">@raffle.Type</span>
+						<h5 class="card-title">@raffle.TicketPrice</h5>
+						<p class="card-text">@raffle.EndDateTime</p>
 					</div>
 				</div>
 			</div>

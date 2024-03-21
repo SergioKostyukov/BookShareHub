@@ -3,7 +3,7 @@ using BookShareHub.Application.Filters;
 
 namespace BookShareHub.WebUI.Models;
 
-public class LibraryModel
+public class BooksLibraryModel
 {
     public required string UserId { get; set; }
     public required List<BookTitleDto> BookTitles { get; set; }

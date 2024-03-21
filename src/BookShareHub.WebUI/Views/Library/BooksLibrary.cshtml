@@ -1,8 +1,8 @@
-﻿@model LibraryModel
+﻿@model BooksLibraryModel
 @using BookShareHub.Core.Domain.Enums
 
 <div class="row">
-	<form class="form-group col-md-7 align-items-end" method="get" action="@Url.Action("Filter", "Library")">
+	<form class="form-group col-md-7 align-items-end" method="get" action="@Url.Action("Filter", "BooksLibrary")">
 		<div class="col-md-3">
 			<label for="language">@Localizer["Language"]:</label>
 			<select class="form-control" id="language" name="FilterQuery.SelectedLanguage">
@@ -34,7 +34,7 @@
 			<button type="submit" class="btn btn-primary">@Localizer["Filter"]</button>
 		</div>
 	</form>
-	<form class="form-group col-md-3 offset-md-2 align-items-end" method="get" action="@Url.Action("Search", "Library")">
+	<form class="form-group col-md-3 offset-md-2 align-items-end" method="get" action="@Url.Action("Search", "BooksLibrary")">
 		<div class="col-md-8">
 			<label for="search">@Localizer["Search"]:</label>
 			<input type="text" class="form-control" id="search" name="SearchQuery.Request" value="@Model.SearchQuery?.Request">

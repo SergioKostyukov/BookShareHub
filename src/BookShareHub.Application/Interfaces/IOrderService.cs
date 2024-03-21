@@ -9,7 +9,9 @@ namespace BookShareHub.Application.Interfaces
 		Task<List<DoneOrderTitleDto>> GetDoneOrdersAsync(string userId);
 		Task<OrderDto> GetOrderDetailsAsync(int orderId);
 		Task<int> CreateOrderAsync(OrderCreateDto request);
-		Task ConfirmOrderAsync(OrderConfirmDto request);
+		Task<int> CreateOrderTemplateAsync(OrderTemplateCreateDto request);
+ 		Task ConfirmOrderAsync(OrderConfirmDto request);
+		Task ConfirmOrderTemplateAsync(int orderId);
 		Task DeleteOrderAsync(int orderId);
 		Task<bool> DeleteBookFromOrderAsync(BookDeleteDto book);
 	}

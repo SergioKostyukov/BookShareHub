@@ -1,6 +1,9 @@
-﻿namespace BookShareHub.Application.Interfaces
+﻿using BookShareHub.Application.Dto.Raffle;
+
+namespace BookShareHub.Application.Interfaces
 {
 	public interface IRaffleService
     {
+        Task AddRaffleAsync(RaffleCreateDto request);
     }
 }

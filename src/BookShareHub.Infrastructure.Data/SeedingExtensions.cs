@@ -84,22 +84,22 @@ namespace BookShareHub.Infrastructure.Data
 			// await database.EnsureCreatedAsync();
 
 			// Remove data from the table users and books to refill them
-			dbContext.AspNetUsers.RemoveRange(dbContext.AspNetUsers);
-			dbContext.Books.RemoveRange(dbContext.Books);
-			dbContext.Orders.RemoveRange(dbContext.Orders);
-			dbContext.OrdersLists.RemoveRange(dbContext.OrdersLists);
+			//dbContext.AspNetUsers.RemoveRange(dbContext.AspNetUsers);
+			//dbContext.Books.RemoveRange(dbContext.Books);
+			//dbContext.Orders.RemoveRange(dbContext.Orders);
+			//dbContext.OrdersLists.RemoveRange(dbContext.OrdersLists);
 			dbContext.Raffles.RemoveRange(dbContext.Raffles);
 
 			// Reset books availability
-			var books = await dbContext.Books
-				.Where(x => x.IsActive == false)
-				.ToListAsync();
+			//var books = await dbContext.Books
+			//	.Where(x => x.IsActive == false)
+			//	.ToListAsync();
 
-			foreach (var book in books)
-			{
-				book.IsActive = true;
-			}
-			dbContext.Books.UpdateRange(books);
+			//foreach (var book in books)
+			//{
+			//	book.IsActive = true;
+			//}
+			//dbContext.Books.UpdateRange(books);
 
 			await dbContext.SaveChangesAsync();
 		}

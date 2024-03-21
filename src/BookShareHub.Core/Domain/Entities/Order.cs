@@ -13,4 +13,5 @@ public class Order
 	public DateTime? CloseDate { get; set; }
 	public string Comment { get; set; } = string.Empty;
 	public decimal CheckAmount { get; set; }
+	// delivery parameters
 }

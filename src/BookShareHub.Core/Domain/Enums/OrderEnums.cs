@@ -6,7 +6,8 @@
 		Confirmed,
 		Sended,
 		Done,
-		Canceled
+		Canceled,
+		Active
 	}
 
 	public enum OrderType

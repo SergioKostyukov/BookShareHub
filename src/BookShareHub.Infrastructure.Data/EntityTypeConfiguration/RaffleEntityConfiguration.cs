@@ -17,8 +17,6 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired()
 				.HasConversion<int>();
 
-			builder.Property(x => x.Description);
-
 			builder.Property(x => x.TicketPrice)
 				.IsRequired()
 				.HasColumnType("decimal(8,2)");
@@ -26,22 +24,7 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 			builder.Property(x => x.EndDateTime)
 				.IsRequired();
 
-			builder.Property(x => x.Title)
-				.IsRequired();
-
-			builder.Property(x => x.Author)
-				.IsRequired();
-
-			builder.Property(x => x.Genre)
-				.IsRequired()
-				.HasConversion<int>();
-
-			builder.Property(x => x.Language)
-				.IsRequired()
-				.HasConversion<int>();
-
-			builder.Property(x => x.ImagePath)
-				.IsRequired();
+			builder.Property(x => x.Description);
 
 			builder.Property(x => x.IsActive)
 				.IsRequired();

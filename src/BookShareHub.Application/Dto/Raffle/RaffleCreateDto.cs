@@ -2,8 +2,7 @@
 
 namespace BookShareHub.Application.Dto.Raffle;
 
-public record RaffleDto(
-	int Id,
+public record RaffleCreateDto(
 	string OwnerId,
 	int OrderId,
 	RaffleType Type,

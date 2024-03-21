@@ -24,7 +24,7 @@ namespace BookShareHub.WebUI.Controllers
 				return BadRequest("UserId not found");
 			}
 
-			var model = new LibraryModel
+			var model = new BooksLibraryModel
 			{
 				UserId = userId,
 				BookTitles = await _libraryService.GetAllBooksAsync(userId),
@@ -34,7 +34,7 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Filter(LibraryModel model)
+		public async Task<IActionResult> Filter(BooksLibraryModel model)
 		{
 			model.BookTitles = await _libraryService.GetAllBooksByFilterAsync(model.FilterQuery, model.UserId);
 
@@ -42,7 +42,7 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> Search(LibraryModel model)
+		public async Task<IActionResult> Search(BooksLibraryModel model)
 		{
 			model.BookTitles = await _libraryService.GetAllBooksBySearchAsync(model.SearchQuery, model.UserId);
 

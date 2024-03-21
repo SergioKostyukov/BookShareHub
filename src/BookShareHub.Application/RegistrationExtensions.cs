@@ -19,6 +19,7 @@ namespace BookShareHub.Application
 			services.AddScoped<IUserService, UserService>();
 			services.AddScoped<IOrderService, OrderService>();
 			services.AddScoped<IRafflesLibraryService, RafflesLibraryService>();
+			services.AddScoped<IRaffleService, RaffleService>();
 
 			return services;
 		}

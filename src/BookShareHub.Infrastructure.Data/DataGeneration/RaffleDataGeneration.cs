@@ -18,11 +18,6 @@ public class RaffleDataGeneration
 			.RuleFor(b => b.Description, f => f.Lorem.Paragraph())
 			.RuleFor(b => b.TicketPrice, f => f.Random.Decimal(30, 100))
 			.RuleFor(b => b.EndDateTime, f => f.Date.Recent(3))
-			.RuleFor(b => b.Title, f => f.Commerce.ProductName())
-			.RuleFor(b => b.Author, f => f.Person.FullName)
-			.RuleFor(b => b.Genre, f => f.PickRandom<BookGenre>())
-			.RuleFor(b => b.Language, f => f.PickRandom<BookLanguage>())
-			.RuleFor(b => b.ImagePath, f => DefaultImagePath)
 			.RuleFor(b => b.IsActive, true);
 	}
 

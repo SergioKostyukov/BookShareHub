@@ -23,7 +23,7 @@ namespace BookShareHub.WebUI.Controllers
 				return BadRequest("UserId not found");
 			}
 
-			var booksTitles = new MyBooksModel
+			var booksTitles = new MyBooksLibraryModel
 			{
 				BookTitles = await _libraryService.GetAllBooksByUserIdAsync(userId),
 			};
