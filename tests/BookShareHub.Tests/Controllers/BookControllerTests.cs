@@ -27,7 +27,7 @@ namespace BookShareHub.Tests.Controllers
 		{
 			// Arrange
 			_httpContextMock.Setup(c => c.HttpContext.User).Returns(HttpContextSetup());
-			//_bookServiceMock.Setup(c => c.AddBookAsync(It.IsAny<BookDto>(), It.IsAny<ImageFileDto>())).Returns(Task.CompletedTask);
+			_bookServiceMock.Setup(c => c.AddBookAsync(It.IsAny<BookDto>(), It.IsAny<ImageFileDto>())).Returns(Task.CompletedTask);
 			_controller = new BookController(_loggerMock.Object, _httpContextMock.Object, _bookServiceMock.Object);
 
 			var book = _bookDataFake.GenerateBook();
@@ -50,12 +50,11 @@ namespace BookShareHub.Tests.Controllers
 			// Arrange
 			_httpContextMock.Setup(c => c.HttpContext.User).Returns(HttpContextSetup());
 			_controller = new BookController(_loggerMock.Object, _httpContextMock.Object, _bookServiceMock.Object);
+			_controller.ModelState.AddModelError("Book.Title", "The Title field is required");
 
 			var book = _bookDataFake.GenerateBook();
 			var image = CreateTestFormFile();
 			var model = new AddBookModel { Book = book, ImageFile = image };
-
-			_controller.ModelState.AddModelError("Book.Title", "The Title field is required");
 
 			// Act
 			var result = await _controller.AddBook(model);
@@ -63,6 +62,25 @@ namespace BookShareHub.Tests.Controllers
 			// Assert
 			var viewResult = Assert.IsType<ViewResult>(result);
 			Assert.Equal("~/Views/Book/AddBook.cshtml", viewResult.ViewName);
+			_bookServiceMock.Verify(x => x.AddBookAsync(It.IsAny<BookDto>(), It.IsAny<ImageFileDto>()), Times.Never);
+		}
+
+		[Fact]
+		public async Task AddBook_ReturnsBadRequest_NoUserInHttpContest()
+		{
+			// Arrange
+			_controller = new BookController(_loggerMock.Object, _httpContextMock.Object, _bookServiceMock.Object);
+
+			var book = _bookDataFake.GenerateBook();
+			var image = CreateTestFormFile();
+			var model = new AddBookModel { Book = book, ImageFile = image };
+
+			// Act
+			var result = await _controller.AddBook(model);
+
+			// Assert
+			var badRequestResult = Assert.IsType<BadRequestObjectResult>(result);
+			Assert.Equal("UserId not found", badRequestResult.Value);
 			_bookServiceMock.Verify(x => x.AddBookAsync(It.IsAny<BookDto>(), It.IsAny<ImageFileDto>()), Times.Never);
 		}
 

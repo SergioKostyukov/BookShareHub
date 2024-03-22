@@ -11,12 +11,12 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShareHub.WebUI.Controllers
 {
 	[Authorize]
-	public class RafflesLibraryController(ILogger<BooksLibraryController> logger,
+	public class RafflesLibraryController(ILogger<RafflesLibraryController> logger,
 								  IHttpContextAccessor httpContextAccessor,
 								  IRafflesLibraryService rafflesLibraryService,
 								  IOrderService orderService) : Controller
 	{
-		private readonly ILogger<BooksLibraryController> _logger = logger;
+		private readonly ILogger<RafflesLibraryController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 		private readonly IRafflesLibraryService _rafflesLibraryService = rafflesLibraryService;
 		private readonly IOrderService _orderService = orderService;

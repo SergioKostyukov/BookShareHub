@@ -7,12 +7,10 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShareHub.WebUI.Controllers
 {
 	[Authorize]
-	public class ContractController(ILogger<ContractController> logger, 
-								    IHttpContextAccessor httpContextAccessor, 
+	public class ContractController(IHttpContextAccessor httpContextAccessor, 
 									IOrderService orderService,
 									IRaffleService raffleService) : Controller
 	{
-		private readonly ILogger<ContractController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 		private readonly IOrderService _orderService = orderService;
 		private readonly IRaffleService _raffleService = raffleService;
@@ -30,13 +28,16 @@ namespace BookShareHub.WebUI.Controllers
 			var model = new ContractModel
 			{
 				OrdersTemplated = orderTitles
-										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Template).ToList(),
+										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Template)
+										.ToList(),
 				OrdersByMeConfirmed = orderTitles
 										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Confirmed &&
-													x.CustomerId == userId).ToList(),
+													x.CustomerId == userId)
+										.ToList(),
 				OrdersToMeConfirmed = orderTitles
 										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Confirmed &&
-													x.OwnerId == userId).ToList(),
+													x.OwnerId == userId)
+										.ToList(),
 				RaffleTitleDtos = await _raffleService.GetActualRafflesAsync(userId),
 				TemplateRaffleTitleDtos = await _orderService.GetActualTemplatedOrdersAsync(userId)
 			};

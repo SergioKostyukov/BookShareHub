@@ -21,14 +21,24 @@ namespace BookShareHub.Application.Services
 
 		public async Task AddBookAsync(BookDto bookDto, ImageFileDto imageFile)
 		{
-			using (var stream = imageFile.ImageFile.OpenReadStream())
+			try
 			{
-				bookDto.ImagePath = await _imageKeeperService.UploadImageAsync(stream, imageFile.ImageFile.FileName);
-				_logger.LogInformation("Image saved with URL: " + bookDto.ImagePath);
-			}
+				using (var stream = imageFile.ImageFile.OpenReadStream())
+				{
+					bookDto.ImagePath = await _imageKeeperService.UploadImageAsync(stream, imageFile.ImageFile.FileName);
+					_logger.LogInformation("Image saved with URL: " + bookDto.ImagePath);
+				}
 
-			_context.Books.Add(_mapper.Map<Book>(bookDto));
-			await _context.SaveChangesAsync();
+				_context.Books.Add(_mapper.Map<Book>(bookDto));
+				await _context.SaveChangesAsync();
+
+				_logger.LogInformation("Book added successfully");
+			}
+			catch (Exception ex)
+			{
+				_logger.LogError(ex, "Error occurred while adding a book.");
+				throw;
+			}
 		}
 
 		public async Task EditBookAsync(BookDto bookDto, ImageFileDto? imageFile)

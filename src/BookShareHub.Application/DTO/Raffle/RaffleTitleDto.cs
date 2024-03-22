@@ -11,12 +11,3 @@ public record RaffleTitleDto
 	public DateTime EndDateTime { get; init; }
 	public string? ImagePath { get; set; }
 }
-
-//(
-//	int Id,
-//	int OrderId,
-//	RaffleType Type,
-//	decimal TicketPrice,
-//	DateTime EndDateTime,
-//  string? ImagePath
-//);

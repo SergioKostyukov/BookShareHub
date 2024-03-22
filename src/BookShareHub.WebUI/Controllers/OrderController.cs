@@ -7,13 +7,11 @@ using Microsoft.AspNetCore.Mvc;
 namespace BookShareHub.WebUI.Controllers
 {
     [Authorize]
-	public class OrderController(ILogger<OrderController> logger,
-								 IHttpContextAccessor httpContextAccessor,
+	public class OrderController(IHttpContextAccessor httpContextAccessor,
 								 IBooksLibraryService libraryService,
 								 IOrderService orderService,
 								 IUserService userService) : Controller
 	{
-		private readonly ILogger<OrderController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 		private readonly IBooksLibraryService _libraryService = libraryService;
 		private readonly IOrderService _orderService = orderService;
