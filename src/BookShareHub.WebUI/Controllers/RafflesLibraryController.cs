@@ -48,17 +48,6 @@ namespace BookShareHub.WebUI.Controllers
 		}
 
 		[HttpGet]
-		public async Task<IActionResult> GetEditRaffle(int id)
-		{
-			var model = new EditRaffleModel
-			{
-				Raffle = await _rafflesLibraryService.GetRaffleByIdAsync(id),
-			};
-
-			return View("~/Views/Raffle/EditRaffle.cshtml", model);
-		}
-
-		[HttpGet]
 		public async Task<IActionResult> GetAddRaffle()
 		{
 			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -74,8 +63,6 @@ namespace BookShareHub.WebUI.Controllers
 			};
 
 			var orderId = await _orderService.CreateOrderTemplateAsync(OrderTemplateCreate);
-
-			_logger.LogWarning("RafflesLibrary Controller." + orderId.ToString());
 
 			return RedirectToAction("GetAddRaffle", "Raffle", new { orderId = orderId }); 
 		}

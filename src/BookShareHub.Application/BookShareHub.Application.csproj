@@ -17,7 +17,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Dto\Auction\" />
     <Folder Include="Dto\Chat\" />
   </ItemGroup>
 

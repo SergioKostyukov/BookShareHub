@@ -1,12 +1,10 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Dto.Order;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
 using BookShareHub.Infrastructure.Interfaces;
-using MailKit.Search;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
@@ -40,6 +38,17 @@ namespace BookShareHub.Application.Services
 			}
 
 			return orderTitleList;
+		}
+
+		public async Task<List<ActualTemplatedOrderDto>> GetActualTemplatedOrdersAsync(string userId)
+		{
+			var orders = await _context.Orders
+				.Where(b => (b.OwnerId == userId &&
+							b.Status == Core.Domain.Enums.OrderStatus.Template &&
+							b.Type == Core.Domain.Enums.OrderType.Raffle))
+				.ToListAsync();
+
+			return _mapper.Map<List<ActualTemplatedOrderDto>>(orders);
 		}
 
 		public async Task<List<DoneOrderTitleDto>> GetDoneOrdersAsync(string userId)
@@ -100,8 +109,6 @@ namespace BookShareHub.Application.Services
 
 			await _context.SaveChangesAsync();
 
-			_logger.LogWarning("Order template created2" + order.Id);
-
 			return order.Id;
 		}
 
@@ -138,8 +145,6 @@ namespace BookShareHub.Application.Services
 
 		public async Task ConfirmOrderTemplateAsync(int orderId)
 		{
-			_logger.LogWarning("Order service. " + orderId.ToString());
-
 			var order = await _context.Orders
 				.Where(o => o.Id == orderId)
 				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
@@ -158,19 +163,57 @@ namespace BookShareHub.Application.Services
 			_context.Orders.Update(order);
 		}
 
-		public async Task AddBookToOrder(int orderId, int bookId)
+		public async Task AddBookToOrderAsync(BookActionDto book)
 		{
 			var bookQuery = new OrderList
 			{
-				BookId = bookId,
-				OrderId = orderId,
+				BookId = book.Id,
+				OrderId = book.OrderId,
 			};
 
-			await SetBookActiveValue(bookId, false);
+			await SetBookActiveValue(book.Id, false);
 
 			_context.OrdersLists.Add(bookQuery);
 			await _context.SaveChangesAsync();
 
+		}
+		
+		public async Task<bool> DeleteBookFromOrderAsync(BookActionDto book, decimal bookPrice = 0)
+		{
+			await _context.OrdersLists
+				.Where(o => o.OrderId == book.OrderId && o.BookId == book.Id)
+				.ExecuteDeleteAsync();
+			_logger.LogInformation("Book deleted from 'OrderList'");
+
+			bool isLast = false;
+			if (bookPrice != 0)
+			{
+				// decrease order CheckAmount
+				var order = await _context.Orders
+					.Where(o => o.Id == book.OrderId)
+					.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
+
+				order.CheckAmount -= bookPrice;
+
+				if (order.CheckAmount <= 0)
+				{
+					_context.Orders.Remove(order);
+					_logger.LogInformation("Order deleted");
+
+					isLast = true;
+				}
+				else
+				{
+					_context.Orders.Update(order);
+				}
+			}
+			else
+			{
+				await SetBookActiveValue(book.Id, true);
+			}
+
+			await _context.SaveChangesAsync();
+			return isLast;
 		}
 
 		public async Task DeleteOrderAsync(int orderId)
@@ -192,58 +235,11 @@ namespace BookShareHub.Application.Services
 			}
 
 			_context.OrdersLists.RemoveRange(orderLists);
-			_logger.LogInformation("OrderList cleared");
 
 			_context.Orders.Remove(order);
 			_logger.LogInformation("Order deleted");
 
 			await _context.SaveChangesAsync();
-		}
-
-		public async Task<bool> DeleteBookFromOrderAsync(BookDeleteDto book)
-		{
-			await _context.OrdersLists
-				.Where(o => o.OrderId == book.OrderId && o.BookId == book.Id)
-				.ExecuteDeleteAsync();
-			_logger.LogInformation("Book deleted from 'OrderList'");
-
-			// decrease order CheckAmount
-			var order = await _context.Orders
-				.Where(o => o.Id == book.OrderId)
-				.FirstOrDefaultAsync() ?? throw new InvalidOperationException("Order not found");
-
-			order.CheckAmount -= book.Price;
-
-			if (order.CheckAmount <= 0)
-			{
-				_context.Orders.Remove(order);
-				_logger.LogInformation("Order deleted");
-
-				await _context.SaveChangesAsync();
-				return true;
-			}
-			else
-			{
-				_context.Orders.Update(order);
-			}
-
-			await _context.SaveChangesAsync();
-			return false;
-		}
-
-		public async Task<bool> DeleteBookFromRaffleOrderAsync(BookDeleteDto book)
-		{
-			await _context.OrdersLists
-				.Where(o => o.OrderId == book.OrderId && o.BookId == book.Id)
-				.ExecuteDeleteAsync();
-
-			_logger.LogInformation("Book deleted from 'OrderList'");
-
-			await SetBookActiveValue(book.Id, true);
-			await _context.SaveChangesAsync();
-
-			return false;
-
 		}
 
 		private async Task<int> CreateOrderRecordAsync(OrderCreateDto request)

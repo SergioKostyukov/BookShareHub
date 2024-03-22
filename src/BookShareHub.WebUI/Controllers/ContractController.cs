@@ -37,7 +37,8 @@ namespace BookShareHub.WebUI.Controllers
 				OrdersToMeConfirmed = orderTitles
 										.Where(x => x.Status == Core.Domain.Enums.OrderStatus.Confirmed &&
 													x.OwnerId == userId).ToList(),
-				RaffleTitleDtos = await _raffleService.GetActualRafflesAsync(userId)
+				RaffleTitleDtos = await _raffleService.GetActualRafflesAsync(userId),
+				TemplateRaffleTitleDtos = await _orderService.GetActualTemplatedOrdersAsync(userId)
 			};
 
 			return View("~/Views/Contract/Contract.cshtml", model);

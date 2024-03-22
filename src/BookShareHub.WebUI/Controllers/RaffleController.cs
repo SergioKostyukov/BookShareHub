@@ -8,20 +8,27 @@ namespace BookShareHub.WebUI.Controllers
 {
 	public class RaffleController(ILogger<RaffleController> logger,
 								  IHttpContextAccessor httpContextAccessor,
-								  IBooksLibraryService libraryService,
+								  IBooksLibraryService booksLibraryService,
 								  IRaffleService raffleService,
 								  IOrderService orderService) : Controller
 	{
 		private readonly ILogger<RaffleController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
-		private readonly IBooksLibraryService _libraryService = libraryService;
+		private readonly IBooksLibraryService _booksLibraryService = booksLibraryService;
 		private readonly IRaffleService _raffleService = raffleService;
 		private readonly IOrderService _orderService = orderService;
 
 		[HttpGet]
+		public async Task<IActionResult> Raffle(int raffleId)
+		{
+
+
+			return View("~/Views/Raffle/Raffle.cshtml");
+		}
+
+		[HttpGet]
 		public async Task<IActionResult> GetAddRaffle(int orderId)
 		{
-			_logger.LogWarning("Raffle controller. " + orderId.ToString());
 			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			if (userId == null)
 			{
@@ -32,11 +39,22 @@ namespace BookShareHub.WebUI.Controllers
 			{
 				OwnerId = userId,
 				OrderId = orderId,
-				RaffleList = await _libraryService.GetAllBooksByOrderIdAsync(orderId),
-				MyOtherBooks = await _libraryService.GetAllBooksByUserIdAsync(userId)
+				RaffleList = await _booksLibraryService.GetAllBooksByOrderIdAsync(orderId),
+				MyOtherBooks = await _booksLibraryService.GetAllBooksByUserIdAsync(userId)
 			};
 
 			return View("~/Views/Raffle/AddRaffle.cshtml", model);
+		}
+
+		[HttpGet]
+		public async Task<IActionResult> GetEditRaffle(int raffleId)
+		{
+			//var model = new EditRaffleModel
+			//{
+			//	Raffle = await _rafflesLibraryService.GetRaffleByIdAsync(raffleId),
+			//};
+
+			return View("~/Views/Raffle/EditRaffle.cshtml");
 		}
 
 		[HttpPost]
@@ -44,18 +62,7 @@ namespace BookShareHub.WebUI.Controllers
 		{
 			if (ModelState.IsValid)
 			{
-				_logger.LogWarning(model.OrderId.ToString());
-
-				var RaffleCreate = new RaffleCreateDto(
-					OwnerId: model.OwnerId,
-					OrderId: model.OrderId,
-					Type: model.Type,
-					TicketPrice: model.TicketPrice,
-					EndDateTime: model.EndDateTime,
-					Description: model.Description
-				);
-
-				await _raffleService.AddRaffleAsync(RaffleCreate);
+				await _raffleService.AddRaffleAsync(model.RaffleCreate);
 
 				return RedirectToAction("RafflesLibrary", "RafflesLibrary");
 			}
@@ -75,23 +82,17 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpPost]
 		public async Task<IActionResult> AddBookToRaffle(AddRaffleModel model)
 		{
-			_logger.LogWarning("Add to raffle started");
-			await _orderService.AddBookToOrder(model.DeleteBookDetails.OrderId, model.DeleteBookDetails.Id);
-			_logger.LogWarning("Add to raffle ended");
+			await _orderService.AddBookToOrderAsync(model.BookActionDetails);
 
-			return RedirectToAction("GetAddRaffle", new { orderId = model.DeleteBookDetails.OrderId });
+			return RedirectToAction("GetAddRaffle", new { orderId = model.BookActionDetails.OrderId });
 		}
 
 		[HttpPost]
 		public async Task<IActionResult> RemoveBookFromRaffle(AddRaffleModel model)
 		{
-			_logger.LogWarning("Delete form raffle started");
+			await _orderService.DeleteBookFromOrderAsync(model.BookActionDetails);
 
-			await _orderService.DeleteBookFromRaffleOrderAsync(model.DeleteBookDetails);
-
-			_logger.LogWarning("Delete form raffle finished");
-
-			return RedirectToAction("GetAddRaffle", new { orderId = model.DeleteBookDetails.OrderId });
+			return RedirectToAction("GetAddRaffle", new { orderId = model.BookActionDetails.OrderId });
 		}
 
 		[HttpPost]

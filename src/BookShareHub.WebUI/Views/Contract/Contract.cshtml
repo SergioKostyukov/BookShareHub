@@ -78,16 +78,37 @@
 	<h3>@Localizer["Created raffles"]</h3>
 	@if (Model.RaffleTitleDtos != null && Model.RaffleTitleDtos.Any())
 	{
-		@foreach (var orderTitle in Model.RaffleTitleDtos)
+		@foreach (var raffleTitle in Model.RaffleTitleDtos)
 		{
-			<div class="row order-item" onclick="location.href='@Url.Action("Order", "Order", new { orderId = orderTitle.Id })'">
+			<div class="row order-item" onclick="location.href='@Url.Action("GetEditRaffle", "Raffle", new { raffleId = raffleTitle.Id })'">
+				<p>
+					@raffleTitle.Id
+					<span class="arrow">&rarr;</span>
+					@raffleTitle.OrderId
+				</p>
+				<span class="type">@raffleTitle.Type</span>
+				<p>@Localizer["Ended"]: @raffleTitle.EndDateTime</p>
+			</div>
+		}
+	}
+	else
+	{
+		<p>@Localizer["No available"]</p>
+	}
+
+	<h3>@Localizer["Templated raffles"]</h3>
+	@if (Model.TemplateRaffleTitleDtos != null && Model.TemplateRaffleTitleDtos.Any())
+	{
+		@foreach (var orderTitle in Model.TemplateRaffleTitleDtos)
+		{
+			<div class="row order-item" onclick="location.href='@Url.Action("GetAddRaffle", "Raffle", new { raffleId = orderTitle.Id })'">
 				<p>
 					@orderTitle.Id
 					<span class="arrow">&rarr;</span>
-					@orderTitle.OrderId
+					@orderTitle.OwnerId
 				</p>
 				<span class="type">@orderTitle.Type</span>
-				<p>@Localizer["Ended"]: @orderTitle.EndDateTime</p>
+				<p>@Localizer["Ended"]: @orderTitle.CreateDate</p>
 			</div>
 		}
 	}

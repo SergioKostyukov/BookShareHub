@@ -2,11 +2,12 @@
 
 namespace BookShareHub.Application.Dto.Raffle;
 
-public record RaffleCreateDto(
-	string OwnerId,
-	int OrderId,
-	RaffleType Type,
-	decimal TicketPrice,
-	DateTime EndDateTime,
-	string? Description
-);
+public record RaffleCreateDto
+{
+	public string OwnerId { get; set; }
+	public int OrderId { get; set; }
+	public RaffleType Type { get; set; }
+	public decimal TicketPrice { get; set; }
+	public DateTime EndDateTime { get; set; }
+	public string? Description { get; set; }
+}

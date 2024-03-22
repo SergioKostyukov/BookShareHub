@@ -15,7 +15,6 @@
 		Free,
 		Trade,
 		Sale,
-		Raffle,
-		Auction
+		Raffle
 	}
 }

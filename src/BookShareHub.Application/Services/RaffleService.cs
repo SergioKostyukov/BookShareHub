@@ -1,5 +1,4 @@
 ﻿using AutoMapper;
-using BookShareHub.Application.Dto.Order;
 using BookShareHub.Application.Dto.Raffle;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
@@ -21,8 +20,6 @@ namespace BookShareHub.Application.Services
 
 		public async Task AddRaffleAsync(RaffleCreateDto request)
 		{
-			_logger.LogWarning("Raffle service. " + request.OrderId.ToString());
-
 			var raffle = _mapper.Map<Raffle>(request);
 			_context.Raffles.Add(raffle);
 

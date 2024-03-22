@@ -24,3 +24,12 @@ public class ActualOrderTitleDto
 	public OrderType Type { get; init; }
     public DateTime CreateDate { get; init; }
 }
+
+public class ActualTemplatedOrderDto
+{
+	public int Id { get; init; }
+	public string OwnerId { get; init; }
+	public OrderStatus Status { get; init; }
+	public OrderType Type { get; init; }
+	public DateTime CreateDate { get; init; }
+}

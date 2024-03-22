@@ -47,9 +47,9 @@
 							</div>
 							<div class="col-md-2 btn-remove-container">
 								<form method="post" action="@Url.Action("DeleteBookFromOrder", "Order")">
-									<input type="hidden" asp-for="DeleteBookDetails.OrderId" value="@Model.Order.Id" />
-									<input type="hidden" asp-for="DeleteBookDetails.Id" value="@orderItem.Id" />
-									<input type="hidden" asp-for="DeleteBookDetails.Price" value="@orderItem.Price" />
+									<input type="hidden" asp-for="BookActionDetails.OrderId" value="@Model.Order.Id" />
+									<input type="hidden" asp-for="BookActionDetails.Id" value="@orderItem.Id" />
+									<input type="hidden" asp-for="BookPrice" value="@orderItem.Price" />
 									<button type="submit" class="btn btn-remove">
 										<span aria-hidden="true">&times;</span>
 									</button>

@@ -6,7 +6,8 @@ namespace BookShareHub.WebUI.Models;
 
 public class OrderModel
 {
-    public BookDeleteDto DeleteBookDetails { get; set; } = new BookDeleteDto();
+    public BookActionDto BookActionDetails { get; set; } = new BookActionDto();
+    public decimal BookPrice { get; set; }
     public required OrderDto Order { get; set; }
     public required UserDto Owner { get; init; }
     public required List<BookTitleDto> OrderList { get; init; }
