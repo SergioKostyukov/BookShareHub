@@ -5,7 +5,7 @@ using BookShareHub.Infrastructure.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Localization.Routing;
 using Microsoft.AspNetCore.Mvc.Razor;
-
+ 
 namespace BookShareHub;
 public class Program
 {
@@ -54,7 +54,7 @@ public class Program
 
 		app.UseHttpsRedirection();
 		app.UseStaticFiles();
-
+		
 		app.UseRouting();
 
 		app.UseRequestLocalization(options =>

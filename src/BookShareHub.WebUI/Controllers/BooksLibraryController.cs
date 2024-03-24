@@ -16,8 +16,11 @@ namespace BookShareHub.WebUI.Controllers
 		private readonly IBooksLibraryService _libraryService = libraryService;
 
 		[HttpGet]
-		public async Task<IActionResult> BooksLibrary()
+		public async Task<IActionResult> BooksLibrary(int pageNumber = 1, int pageSize = 10)
 		{
+			_logger.LogWarning(pageNumber.ToString() + "    " + pageSize.ToString());
+
+
 			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			if (userId == null)
 			{
@@ -27,8 +30,13 @@ namespace BookShareHub.WebUI.Controllers
 			var model = new BooksLibraryModel
 			{
 				UserId = userId,
-				BookTitles = await _libraryService.GetAllBooksAsync(userId),
+				TotalItems = await _libraryService.GetTotalBooksCountAsync(userId),
+				BookTitles = await _libraryService.GetBooksForPageAsync(userId, pageNumber, pageSize),
+				PageNumber = pageNumber,
+				PageSize = pageSize
 			};
+
+			_logger.LogWarning(model.TotalItems.ToString() + "    " + model.BookTitles.Count().ToString());
 
 			return View("~/Views/Library/BooksLibrary.cshtml", model);
 		}

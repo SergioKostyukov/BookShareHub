@@ -1,6 +1,10 @@
 ﻿@model BooksLibraryModel
 @using BookShareHub.Core.Domain.Enums
 
+@{
+	var totalPages = (int)Math.Ceiling((double)Model.TotalItems / Model.PageSize);
+}
+
 <div class="row">
 	<form class="form-group col-md-7 align-items-end" method="get" action="@Url.Action("Filter", "BooksLibrary")">
 		<div class="col-md-3">
@@ -63,11 +67,24 @@
 			</div>
 		}
 	</div>
+
+	@if (totalPages > 1)
+	{
+		<ul class="pagination">
+			@for (int i = 1; i <= totalPages; i++)
+			{
+				<li class="page-item @(i == Model.PageNumber ? "active" : "")">
+					<a class="page-link" href="@Url.Action("BooksLibrary", "BooksLibrary", new { pageNumber = i, pageSize = Model.PageSize })">@i</a>
+				</li>
+			}
+		</ul>
+	}
 }
 else
 {
 	<p>@Localizer["No available"]</p>
 }
+
 
 @section Styles {
 	<link rel="stylesheet" href="~/css/bookList.css" asp-append-version="true" />

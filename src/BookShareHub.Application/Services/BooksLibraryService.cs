@@ -16,10 +16,19 @@ namespace BookShareHub.Application.Services
 		private readonly BookShareHubDbContext _context = context;
 		private readonly IMapper _mapper = mapper;
 
-		public async Task<List<BookTitleDto>> GetAllBooksAsync(string userId)
+		public async Task<int> GetTotalBooksCountAsync(string userId)
+		{
+			return await _context.Books
+				.Where(b => b.OwnerId != userId && b.IsActive)
+				.CountAsync();
+		}
+
+		public async Task<List<BookTitleDto>> GetBooksForPageAsync(string userId, int pageNumber, int pageSize)
 		{
 			var books = await _context.Books
-				.Where(b => b.OwnerId != userId && b.IsActive == true)
+				.Where(b => b.OwnerId != userId && b.IsActive)
+				.Skip((pageNumber - 1) * pageSize)
+				.Take(pageSize)
 				.ToListAsync();
 
 			return _mapper.Map<List<BookTitleDto>>(books);

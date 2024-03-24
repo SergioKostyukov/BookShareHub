@@ -30,7 +30,9 @@ namespace BookShareHub.Tests.Controllers
 			_httpContextMock.Setup(c => c.HttpContext.User).Returns(HttpContextSetup(userId));
 
 			var expectedBookTitles = _bookDataFake.GenerateBooks(3);
-			_booksLibraryServiceMock.Setup(s => s.GetAllBooksAsync(It.IsAny<string>())).ReturnsAsync(expectedBookTitles);
+			var expectedBookCount = 3;
+			_booksLibraryServiceMock.Setup(s => s.GetBooksForPageAsync(It.IsAny<string>(), It.IsAny<int>(), It.IsAny<int>())).ReturnsAsync(expectedBookTitles);
+			_booksLibraryServiceMock.Setup(s => s.GetTotalBooksCountAsync(It.IsAny<string>())).ReturnsAsync(expectedBookCount);
 			_controller = new BooksLibraryController(_loggerMock.Object, _httpContextMock.Object, _booksLibraryServiceMock.Object);
 
 			// Act

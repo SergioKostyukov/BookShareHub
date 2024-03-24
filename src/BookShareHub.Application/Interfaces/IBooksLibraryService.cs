@@ -5,7 +5,8 @@ namespace BookShareHub.Application.Interfaces
 {
     public interface IBooksLibraryService
 	{
-		Task<List<BookTitleDto>> GetAllBooksAsync(string userId);
+		Task<int> GetTotalBooksCountAsync(string userId);
+		Task<List<BookTitleDto>> GetBooksForPageAsync(string userId, int pageNumber, int pageSize);
 		Task<List<BookTitleDto>> GetAllBooksByUserIdAsync(string userId);
 		Task<List<BookTitleDto>> GetAllBooksByFilterAsync(BooksLibraryFilter filter, string userId);
 		Task<List<BookTitleDto>> GetAllBooksBySearchAsync(SearchFilter request, string userId);
