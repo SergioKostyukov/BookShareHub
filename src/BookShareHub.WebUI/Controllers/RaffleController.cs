@@ -1,7 +1,9 @@
 ﻿using System.Security.Claims;
 using BookShareHub.Application.Dto.Raffle;
 using BookShareHub.Application.Interfaces;
+using BookShareHub.Core.Domain.Entities;
 using BookShareHub.WebUI.Models;
+using MailKit.Search;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
@@ -9,21 +11,43 @@ namespace BookShareHub.WebUI.Controllers
 	public class RaffleController(ILogger<RaffleController> logger,
 								  IHttpContextAccessor httpContextAccessor,
 								  IBooksLibraryService booksLibraryService,
+								  IRafflesLibraryService rafflesLibraryService,
 								  IRaffleService raffleService,
-								  IOrderService orderService) : Controller
+								  IOrderService orderService,
+								  IUserService userService) : Controller
 	{
 		private readonly ILogger<RaffleController> _logger = logger;
 		private readonly IHttpContextAccessor _httpContextAccessor = httpContextAccessor;
 		private readonly IBooksLibraryService _booksLibraryService = booksLibraryService;
+		private readonly IRafflesLibraryService _rafflesLibraryService = rafflesLibraryService;
 		private readonly IRaffleService _raffleService = raffleService;
 		private readonly IOrderService _orderService = orderService;
+		private readonly IUserService _userService = userService;
 
 		[HttpGet]
 		public async Task<IActionResult> Raffle(int raffleId)
 		{
+			var raffle = await _rafflesLibraryService.GetRaffleByIdAsync(raffleId);
+            if (raffle == null)
+			{
+				return NotFound();
+			}
 
+			var ownerInfo = await _userService.GetUserByIdAsync(raffle.OwnerId);
+			if (ownerInfo == null)
+			{
+				return NotFound();
+			}
 
-			return View("~/Views/Raffle/Raffle.cshtml");
+			var model = new RaffleModel
+			{
+				Raffle = raffle,
+				Owner = ownerInfo,
+				OrderDetails = await _orderService.GetOrderDetailsAsync(raffle.OrderId),
+				RaffleList = await _booksLibraryService.GetAllBooksByOrderIdAsync(raffle.OrderId)
+			};
+
+			return View("~/Views/Raffle/Raffle.cshtml", model);
 		}
 
 		[HttpGet]

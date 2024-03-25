@@ -36,7 +36,7 @@
 		@foreach (var raffle in Model.RaffleTitles)
 		{
 			<div class="col-md-3 mb-4">
-				<div class="card" onclick="location.href='@Url.Action("Raffle", "Raffle", new { id = raffle.Id })'">
+				<div class="card" onclick="location.href='@Url.Action("Raffle", "Raffle", new { raffleId = raffle.Id })'">
 					<img src="@raffle.ImagePath" asp-append-version="true" class="img-fluid rounded" alt="Raffle Image">
 					<div class="card-body">
 						<span class="genre">@raffle.Type</span>

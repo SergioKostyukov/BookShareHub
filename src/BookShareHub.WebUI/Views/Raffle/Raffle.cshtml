@@ -1,2 +1,132 @@
-﻿<h1>In progress...</h1>
+﻿@model RaffleModel
 
+<div class="row" style="height: 85vh;">
+	<div class="col-md-8" style="height: 100%;">
+		<div class="background-block" style="height: 100%;">
+			<div class="title-block">
+				<div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
+					<div class="carousel-inner">
+						@foreach (var item in Model.RaffleList)
+						{
+							<div class="carousel-item @(item == Model.RaffleList.First() ? "active" : "")">
+								<img src="@item.ImagePath" asp-append-version="true" class="img-fluid" alt="Book Image" style="max-height: 250px;">
+								<div class="card-body">
+									<h5 class="card-title">@item.Title</h5>
+									<p class="card-text">@item.Author</p>
+								</div>
+							</div>
+						}
+					</div>
+
+					<button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
+						<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Previous</span>
+					</button>
+					<button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
+						<span class="carousel-control-next-icon" aria-hidden="true"></span>
+						<span class="visually-hidden">Next</span>
+					</button>
+				</div>
+			</div>
+			<div class="card-body">
+				<p>@Localizer["Type"]: @Model.Raffle.Type</p>
+				<p>@Localizer["Description"]: @Model.Raffle.Description</p>
+				<p>@Localizer["Ticket price"]: @Model.Raffle.TicketPrice.ToString("C")</p>
+				<p>@Localizer["End time"]: @Model.Raffle.EndDateTime</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-4" style="height: 100%;">
+		<div class="background-block" style="height: 100%;">
+			<div class="nested-block" style="height: 30%;">
+				<h3>@Localizer["Owner statistic"]</h3>
+				<div class="card-body">
+					<p>@Localizer["OwnerName"]: @Model.Owner.UserName</p>
+					<p>
+						@Localizer["Rating"]:
+						@if (Model.Owner.Rating != null)
+						{
+							@for (int i = 0; i < (int)Model.Owner.Rating; i++)
+							{
+								<span>&#9733;</span>
+							}
+						}
+						else
+						{
+							@Localizer["no rating"]
+						}
+					</p>
+				</div>
+				<form class="btn-container" method="post" action="@Url.Action("Chat", "Chat")">
+					<button type="submit" class="btn btn-primary">@Localizer["Write message"]</button>
+				</form>
+			</div>
+			<div class="nested-block" style="height: 70%; margin-bottom: 10px">
+				<h3>@Localizer["Order info"]</h3>
+				<div class="card-body">
+					<div class="delivery-variants">
+						<h4>Delivery Variants</h4>
+						<input type="radio" id="delivery1" name="delivery" value="delivery1">
+						<label for="delivery1">Delivery Option 1</label><br>
+						<input type="radio" id="delivery2" name="delivery" value="delivery2">
+						<label for="delivery2">Delivery Option 2</label><br>
+						<input type="radio" id="delivery3" name="delivery" value="delivery3">
+						<label for="delivery3">Delivery Option 3</label><br>
+					</div>
+
+					<div class="ticket-buying">
+						<h4>Ticket Buying</h4>
+						<label for="ticket-quantity">Number of Tickets:</label>
+						<input type="number" id="ticket-quantity" name="ticket-quantity" value="1" min="1">
+						<p>Total Amount: <span id="amount-check">@Model.Raffle.TicketPrice</span></p>
+					</div>
+				</div>
+
+				<form method="post" action="@Url.Action("AddOrder", "PreOrder")">
+					<input type="hidden" asp-for="Owner.Id" />
+					<button type="submit" class="btn btn-primary">@Localizer["Participate"]</button>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	var currentIndex = 0;
+	var raffleList = @Html.Raw(Json.Serialize(Model.RaffleList));
+
+	function showProduct(index) {
+		var product = raffleList[index];
+		document.getElementById("author").innerText = product.Author;
+		document.getElementById("description").innerText = product.Description;
+		document.getElementById("language").innerText = product.Language;
+		document.getElementById("price").innerText = product.Price;
+	}
+
+	function showPreviousProduct() {
+		if (currentIndex > 0) {
+			currentIndex--;
+		} else {
+			currentIndex = raffleList.length - 1;
+		}
+		showProduct(currentIndex);
+	}
+
+	function showNextProduct() {
+		if (currentIndex < raffleList.length - 1) {
+			currentIndex++;
+		} else {
+			currentIndex = 0;
+		}
+		showProduct(currentIndex);
+	}
+
+	showProduct(currentIndex);
+</script>
+
+@section Styles {
+	<link rel="stylesheet" href="~/css/backgroundBlock.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/preOrder.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/raffle.css" asp-append-version="true" />
+}

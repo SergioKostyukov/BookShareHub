@@ -1,0 +1,18 @@
+﻿.card-body {
+    padding: 0 16px;
+}
+
+.title-block {
+    max-height: 50%;
+}
+
+.carousel.slide {
+    height: 100%;
+    margin-top: 20px;
+    width: 50%;
+}
+
+.carousel-item img{
+    display: flex;
+    justify-self: center;
+}

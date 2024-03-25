@@ -80,7 +80,7 @@
 	{
 		@foreach (var raffleTitle in Model.RaffleTitleDtos)
 		{
-			<div class="row order-item" onclick="location.href='@Url.Action("GetEditRaffle", "Raffle", new { raffleId = raffleTitle.Id })'">
+			<div class="row order-item" onclick="location.href='@Url.Action("Raffle", "Raffle", new { raffleId = raffleTitle.Id })'">
 				<p>
 					@raffleTitle.Id
 					<span class="arrow">&rarr;</span>

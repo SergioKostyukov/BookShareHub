@@ -3,7 +3,6 @@ using BookShareHub.Application.Dto.Raffle;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.Core.Domain.Entities;
 using BookShareHub.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
 namespace BookShareHub.Application.Services
@@ -26,17 +25,6 @@ namespace BookShareHub.Application.Services
 			await _orderService.ConfirmOrderTemplateAsync(request.OrderId);
 
 			await _context.SaveChangesAsync();
-		}
-
-		public async Task<List<RaffleTitleDto>> GetActualRafflesAsync(string userId)
-		{
-			var raffles = await _context.Raffles
-				.Where(b => (b.OwnerId == userId && b.IsActive))
-				.ToListAsync();
-
-			var raffleTitleList = _mapper.Map<List<RaffleTitleDto>>(raffles);
-
-			return raffleTitleList;
 		}
 	}
 }
