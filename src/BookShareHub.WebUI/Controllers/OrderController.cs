@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
 {
-    [Authorize]
+	[Authorize]
 	public class OrderController(IHttpContextAccessor httpContextAccessor,
 								 IBooksLibraryService libraryService,
 								 IOrderService orderService,
@@ -83,7 +83,10 @@ namespace BookShareHub.WebUI.Controllers
 				OrderId: model.Order.Id,
 				OwnerId: model.Owner.Id,
 				OwnerName: model.Owner.UserName,
-				Comment: model.Order.Comment ?? string.Empty
+				Comment: model.Order.Comment ?? string.Empty,
+				DeliveryAddress: model.DeliveryParams.DeliveryAddress
+				//DeliveryUser: model.Order.DeliveryUser,
+				//DeliveryUserPhone: model.Order.DeliveryUserPhone
 				// Other order parameters(delivery, pay options)
 			);
 

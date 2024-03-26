@@ -14,4 +14,7 @@ public class Order
 	public string Comment { get; set; } = string.Empty;
 	public decimal CheckAmount { get; set; }
 	// delivery parameters
+	public string DeliveryAddress { get; set; } = string.Empty;
+	public string DeliveryUser { get; set; } = string.Empty;
+	public string DeliveryUserPhone { get; set; } = string.Empty;
 }

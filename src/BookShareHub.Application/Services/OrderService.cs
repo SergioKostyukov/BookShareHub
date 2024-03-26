@@ -122,6 +122,9 @@ namespace BookShareHub.Application.Services
 			order.CreateDate = DateTime.UtcNow;
 			order.Comment = request.Comment;
 			// Update other order parameters (delivery, pay options) here soon
+			order.DeliveryAddress = request.DeliveryAddress;
+			//order.DeliveryUser = request.DeliveryUser;
+			//order.DeliveryUserPhone = request.DeliveryUserPhone;
 
 			// Set 'IsActive' to selected books as false
 			var booksList = await _context.OrdersLists

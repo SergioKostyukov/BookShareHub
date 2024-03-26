@@ -1,9 +1,6 @@
 ﻿using System.Security.Claims;
-using BookShareHub.Application.Dto.Raffle;
 using BookShareHub.Application.Interfaces;
-using BookShareHub.Core.Domain.Entities;
 using BookShareHub.WebUI.Models;
-using MailKit.Search;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BookShareHub.WebUI.Controllers
