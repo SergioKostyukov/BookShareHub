@@ -2,6 +2,15 @@
     justify-content: flex-start;
 }
 
+.delivery-block {
+    margin: 0 10px 10px 10px;
+    padding: 0 15px;
+    width: 100%;
+    min-height: calc(100% - 50px);
+    text-align: start;
+    overflow: auto;
+}
+
 h2 {
     margin: 0;
     display: flex;
@@ -10,6 +19,7 @@ h2 {
 }
 
 h4 {
+    height: 30px;
     margin: 10px 0 5px 0;
 }
 
@@ -111,16 +121,17 @@ textarea.form-control {
 
 
 
-.autocomplete {
+.delivery-line {
     width: 95%;
     position: relative;
 }
 
-.autocomplete .form-control{
-    width: 100%;
-}
+    .delivery-line .form-control {
+        width: 100%;
+    }
 
-#city-list {
+#city-list,
+#point-list {
     position: absolute;
     z-index: 1000;
     background-color: #fff;
@@ -134,12 +145,14 @@ textarea.form-control {
     overflow-y: auto;
 }
 
-    #city-list li {
+    #city-list li,
+    #point-list li{
         padding: 8px 12px;
         cursor: pointer;
         min-width: 300px;
     }
 
-        #city-list li:hover {
+        #city-list li:hover,
+        #point-list li:hover {
             background-color: #f4f4f4;
         }

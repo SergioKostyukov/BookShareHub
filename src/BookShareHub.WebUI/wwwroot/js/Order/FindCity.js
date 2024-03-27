@@ -7,7 +7,7 @@
     }
 
     var requestData = {
-        apiKey: "238ac926741f96a0b6563f3b5bd5e9d4",
+        apiKey: novaPoshtaApiKey,
         modelName: "Address",
         calledMethod: "searchSettlements",
         methodProperties: {
@@ -17,7 +17,7 @@
         }
     };
 
-    fetch('https://localhost:7201/searchSettlements', {
+    fetch('https://localhost:7201/NovaPoshtaRequest', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -26,26 +26,27 @@
     })
         .then(response => response.json())
         .then(data => {
-            displaySearchResults(data);
+            console.log(data)
+            displayCitySearchResults(data);
         })
         .catch(error => {
             console.error('Error:', error);
         });
 });
 
-function displaySearchResults(results) {
+function displayCitySearchResults(results) {
     var cityList = document.getElementById("city-list");
     cityList.innerHTML = "";
 
     if (results.data.length > 0 && results.data[0].Addresses.length > 0) {
         results.data[0].Addresses.forEach(function (result) {
-            var cityName = result.MainDescription;
+            var cityName = result.Present;
+            var shortCityName = result.MainDescription;
 
             var li = document.createElement("li");
             li.textContent = cityName;
             li.addEventListener("click", function () {
-                document.getElementById("city").value = cityName;
-                cityList.innerHTML = "";
+                handleCityItemClick(cityName, shortCityName);
             });
             cityList.appendChild(li);
         });
@@ -57,10 +58,16 @@ function displaySearchResults(results) {
 }
 
 document.addEventListener("click", function (event) {
-    var autocomplete = document.querySelector(".autocomplete");
     var cityList = document.getElementById("city-list");
 
     if (event.target !== cityList && !cityList.contains(event.target)) {
         cityList.innerHTML = "";
     }
 });
+
+function handleCityItemClick(cityName, shortCityName) {
+    document.getElementById("city").value = cityName;
+    document.getElementById("cityTitle").value = shortCityName;
+    var cityList = document.getElementById("city-list");
+    cityList.innerHTML = "";
+}

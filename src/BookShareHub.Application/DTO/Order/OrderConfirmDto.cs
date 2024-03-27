@@ -5,7 +5,7 @@ public record OrderConfirmDto(
 	string OwnerId,
 	string OwnerName,
 	string Comment,
-	string DeliveryAddress
-	//string DeliveryUser,
-	//string DeliveryUserPhone
+	string DeliveryAddress,
+	string DeliveryUserFullName,
+	string DeliveryUserPhone
 );

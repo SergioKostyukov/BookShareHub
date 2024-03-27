@@ -10,8 +10,8 @@ namespace BookShareHub.WebApi.Controllers
 		private readonly IHttpClientFactory _clientFactory = clientFactory;
 
 		[HttpPost]
-		[Route("searchSettlements")]
-		public async Task<IActionResult> SearchSettlements([FromBody] NovaPoshtaSearchSettlementsRequest request)
+		[Route("NovaPoshtaRequest")]
+		public async Task<IActionResult> MakeNovaPoshtaRequest([FromBody] NovaPoshtaRequestBase request)
 		{
 			var client = _clientFactory.CreateClient();
 

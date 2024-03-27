@@ -1,17 +1,33 @@
 ﻿@model OrderModel
+@inject IConfiguration Configuration
 
 <div class="row" style="height: 85vh;">
 	<div class="col-md-6" style="height: 100%;">
 		<form style="height: 100%;" method="post" action="@Url.Action("ConfirmOrder", "Order")">
 			<div class="background-block" style="height: 40%;">
 				<h4>@Localizer["Delivery params"]</h4>
-				<label for="city">@Localizer["City"]:</label>
-				<div class="autocomplete">
-					<input type="text" id="city" name="DeliveryParams.DeliveryAddress" class="form-control" placeholder="@Localizer["Enter city name"]">
-					<ul id="city-list"></ul>
+				<div class="delivery-block">
+					<label for="fullName">@Localizer["Full name"]:</label>
+					<input type="text" id="fullName" name="DeliveryParams.DeliveryUserFullName"
+						   class="form-control" placeholder="@Localizer["Enter your full name"]">
+
+					<label for="phoneMunber">@Localizer["Phone number"]:</label>
+					<input type="text" id="phoneMunber" name="DeliveryParams.DeliveryUserPhoneNumber"
+						   class="form-control" placeholder="@Localizer["Enter your phone number"]">
+
+					<label for="city">@Localizer["City"]:</label>
+					<div class="delivery-line">
+						<input type="text" id="city" name="DeliveryParams.DeliveryCityFullAddress" class="form-control" placeholder="@Localizer["Enter city name"]">
+						<input type="hidden" id="cityTitle" name="DeliveryParams.DeliveryCityShortAddress">
+						<ul id="city-list"></ul>
+					</div>
+
+					<label for="address">@Localizer["Parcel delivery point"]:</label>
+					<div class="delivery-line">
+						<input type="text" id="address" name="DeliveryParams.DeliverySpecificAddress" class="form-control" placeholder="@Localizer["Enter name/number/address"]">
+						<ul id="point-list"></ul>
+					</div>
 				</div>
-				<label for="address">@Localizer["Address"]:</label>
-				<input type="text" id="address" name="address" class="form-control" placeholder="@Localizer["Enter address"]">
 			</div>
 
 			<div class="background-block" style="height: 35%;">
@@ -107,7 +123,11 @@
 </div>
 
 @section Scripts {
-	<script src="~/js/Order.js" asp-append-version="true"></script>
+	<script>
+		var novaPoshtaApiKey = "@Configuration["AppSettings:NovaPoshtaApiKey"]";
+	</script>
+	<script src="~/js/Order/FindCity.js" asp-append-version="true"></script>
+	<script src="~/js/Order/FindSpecificAddress.js" asp-append-version="true"></script>
 }
 
 @section Styles {

@@ -18,9 +18,6 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpGet]
 		public async Task<IActionResult> BooksLibrary(int pageNumber = 1, int pageSize = 10)
 		{
-			_logger.LogWarning(pageNumber.ToString() + "    " + pageSize.ToString());
-
-
 			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 			if (userId == null)
 			{
@@ -35,8 +32,6 @@ namespace BookShareHub.WebUI.Controllers
 				PageNumber = pageNumber,
 				PageSize = pageSize
 			};
-
-			_logger.LogWarning(model.TotalItems.ToString() + "    " + model.BookTitles.Count().ToString());
 
 			return View("~/Views/Library/BooksLibrary.cshtml", model);
 		}

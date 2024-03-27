@@ -1,6 +1,7 @@
 ﻿using BookShareHub.Infrastructure.Data.DataGeneration;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace BookShareHub.Infrastructure.Data

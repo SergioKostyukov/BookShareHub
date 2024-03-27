@@ -37,7 +37,8 @@ namespace BookShareHub.WebUI.Controllers
 				Order = orderDetails,
 				Owner = ownerInfo,
 				OrderList = await _libraryService.GetAllBooksByOrderIdAsync(orderId),
-				OtherSellerItems = await _libraryService.GetAllBooksByUserIdAsync(orderDetails.OwnerId)
+				OtherSellerItems = await _libraryService.GetAllBooksByUserIdAsync(orderDetails.OwnerId),
+				DeliveryParams = new DeliveryParams()
 			};
 
 			return View("~/Views/Order/Order.cshtml", model);
@@ -84,9 +85,9 @@ namespace BookShareHub.WebUI.Controllers
 				OwnerId: model.Owner.Id,
 				OwnerName: model.Owner.UserName,
 				Comment: model.Order.Comment ?? string.Empty,
-				DeliveryAddress: model.DeliveryParams.DeliveryAddress
-				//DeliveryUser: model.Order.DeliveryUser,
-				//DeliveryUserPhone: model.Order.DeliveryUserPhone
+				DeliveryAddress: model.DeliveryParams.DeliveryCityFullAddress + ' ' + model.DeliveryParams.DeliverySpecificAddress,
+				DeliveryUserFullName: model.DeliveryParams.DeliveryUserFullName,
+				DeliveryUserPhone: model.DeliveryParams.DeliveryUserPhoneNumber
 				// Other order parameters(delivery, pay options)
 			);
 
