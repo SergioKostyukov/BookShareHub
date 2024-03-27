@@ -1,10 +1,7 @@
 ﻿using System.Security.Claims;
-using BookShareHub.Application.Dto.Book;
 using BookShareHub.Application.Dto.Order;
-using BookShareHub.Application.Dto.Raffle;
 using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
-using BookShareHub.WebUI.Models.Raffle;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

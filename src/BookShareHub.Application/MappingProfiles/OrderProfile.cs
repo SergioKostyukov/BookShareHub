@@ -14,6 +14,7 @@ namespace BookShareHub.Application.MappingProfiles
 			CreateMap<Order, ActualOrderTitleDto>();
 			CreateMap<Order, ActualTemplatedOrderDto>();
 			CreateMap<Order, OrderDto>();
+			CreateMap<Order, ConfirmedOrderDto>();
 		}
 	}
 }

@@ -1,121 +1,128 @@
 ﻿@model ContractModel
+<div class="row">
+	<div class="col-md-6">
+		<div class="row">
+			<h2>@Localizer["Templates"]</h2>
+		</div>
 
-<div class="col-md-6">
-	<div class="row">
-		<div class="col-md-6">
-			<h2>@Localizer["Actual"]</h2>
-		</div>
-		<div class="col-md-6">
-			<div class="btn-container">
-				<button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("History", "History")'">@Localizer["History"]</button>
-			</div>
-		</div>
+		<h3>@Localizer["Wish list"]</h3>
+		@if (Model.OrdersTemplated != null && Model.OrdersTemplated.Any())
+		{
+			@foreach (var orderTitle in Model.OrdersTemplated)
+			{
+				<div class="row order-item" onclick="location.href='@Url.Action("Order", "Order", new { orderId = orderTitle.Id })'">
+					<p>
+						@orderTitle.OwnerName
+						<span class="arrow">&rarr;</span>
+						@orderTitle.CustomerName
+					</p>
+					<span class="type">@orderTitle.Type</span>
+					<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
+				</div>
+			}
+		}
+		else
+		{
+			<p>@Localizer["No available"]</p>
+		}
+
+		<h3>@Localizer["Templated raffles"]</h3>
+		@if (Model.TemplateRaffleTitleDtos != null && Model.TemplateRaffleTitleDtos.Any())
+		{
+			@foreach (var orderTitle in Model.TemplateRaffleTitleDtos)
+			{
+				<div class="row order-item" onclick="location.href='@Url.Action("GetAddRaffle", "Raffle", new { raffleId = orderTitle.Id })'">
+					<p>
+						@orderTitle.Id
+						<span class="arrow">&rarr;</span>
+						@orderTitle.OwnerId
+					</p>
+					<span class="type">@orderTitle.Type</span>
+					<p>@Localizer["Ended"]: @orderTitle.CreateDate</p>
+				</div>
+			}
+		}
+		else
+		{
+			<p>@Localizer["No available"]</p>
+		}
 	</div>
-	
-	<h3>@Localizer["Confirmed to me"]</h3>
-	@if (Model.OrdersToMeConfirmed != null && Model.OrdersToMeConfirmed.Any())
-	{
-		@foreach (var orderTitle in Model.OrdersToMeConfirmed)
-		{
-			<div class="row order-item" onclick="location.href='@Url.Action("ConfirmedOrder", "Order", new { orderId = orderTitle.Id })'">
-				<p>
-					@orderTitle.OwnerName
-					<span class="arrow">&rarr;</span>
-					@orderTitle.CustomerName
-				</p>
-				<span class="type">@orderTitle.Type</span>
-				<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
-			</div>
-		}
-	}
-	else
-	{
-		<p>@Localizer["No available"]</p>
-	}
 
-	<h3>@Localizer["Confirmed by me"]</h3>
-	@if (Model.OrdersByMeConfirmed != null && Model.OrdersByMeConfirmed.Any())
-	{
-		@foreach (var orderTitle in Model.OrdersByMeConfirmed)
-		{
-			<div class="row order-item" onclick="location.href='@Url.Action("ConfirmedOrder", "Order", new { orderId = orderTitle.Id })'">
-				<p>
-					@orderTitle.OwnerName
-					<span class="arrow">&rarr;</span>
-					@orderTitle.CustomerName
-				</p>
-				<span class="type">@orderTitle.Type</span>
-				<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
+	<div class="col-md-6">
+		<div class="row">
+			<div class="col-md-6">
+				<h2>@Localizer["Actual"]</h2>
 			</div>
-		}
-	}
-	else
-	{
-		<p>@Localizer["No available"]</p>
-	}
+			<div class="col-md-6">
+				<div class="btn-container">
+					<button type="submit" class="btn btn-primary" onclick="location.href='@Url.Action("History", "History")'">@Localizer["History"]</button>
+				</div>
+			</div>
+		</div>
 
-	<h3>@Localizer["Wish list"]</h3>
-	@if (Model.OrdersTemplated != null && Model.OrdersTemplated.Any())
-	{
-		@foreach (var orderTitle in Model.OrdersTemplated)
+		<h3>@Localizer["Confirmed to me"]</h3>
+		@if (Model.OrdersToMeConfirmed != null && Model.OrdersToMeConfirmed.Any())
 		{
-			<div class="row order-item" onclick="location.href='@Url.Action("Order", "Order", new { orderId = orderTitle.Id })'">
-				<p>
-					@orderTitle.OwnerName
-					<span class="arrow">&rarr;</span>
-					@orderTitle.CustomerName
-				</p>
-				<span class="type">@orderTitle.Type</span>
-				<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
-			</div>
+			@foreach (var orderTitle in Model.OrdersToMeConfirmed)
+			{
+				<div class="row order-item" onclick="location.href='@Url.Action("ConfirmedOrder", "Order", new { orderId = orderTitle.Id })'">
+					<p>
+						@orderTitle.OwnerName
+						<span class="arrow">&rarr;</span>
+						@orderTitle.CustomerName
+					</p>
+					<span class="type">@orderTitle.Type</span>
+					<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
+				</div>
+			}
 		}
-	}
-	else
-	{
-		<p>@Localizer["No available"]</p>
-	}
+		else
+		{
+			<p>@Localizer["No available"]</p>
+		}
 
-	<h3>@Localizer["Created raffles"]</h3>
-	@if (Model.RaffleTitleDtos != null && Model.RaffleTitleDtos.Any())
-	{
-		@foreach (var raffleTitle in Model.RaffleTitleDtos)
+		<h3>@Localizer["Confirmed by me"]</h3>
+		@if (Model.OrdersByMeConfirmed != null && Model.OrdersByMeConfirmed.Any())
 		{
-			<div class="row order-item" onclick="location.href='@Url.Action("Raffle", "Raffle", new { raffleId = raffleTitle.Id })'">
-				<p>
-					@raffleTitle.Id
-					<span class="arrow">&rarr;</span>
-					@raffleTitle.OrderId
-				</p>
-				<span class="type">@raffleTitle.Type</span>
-				<p>@Localizer["Ended"]: @raffleTitle.EndDateTime</p>
-			</div>
+			@foreach (var orderTitle in Model.OrdersByMeConfirmed)
+			{
+				<div class="row order-item" onclick="location.href='@Url.Action("ConfirmedOrder", "Order", new { orderId = orderTitle.Id })'">
+					<p>
+						@orderTitle.OwnerName
+						<span class="arrow">&rarr;</span>
+						@orderTitle.CustomerName
+					</p>
+					<span class="type">@orderTitle.Type</span>
+					<p>@Localizer["Created"]: @orderTitle.CreateDate</p>
+				</div>
+			}
 		}
-	}
-	else
-	{
-		<p>@Localizer["No available"]</p>
-	}
+		else
+		{
+			<p>@Localizer["No available"]</p>
+		}
 
-	<h3>@Localizer["Templated raffles"]</h3>
-	@if (Model.TemplateRaffleTitleDtos != null && Model.TemplateRaffleTitleDtos.Any())
-	{
-		@foreach (var orderTitle in Model.TemplateRaffleTitleDtos)
+		<h3>@Localizer["Created raffles"]</h3>
+		@if (Model.RaffleTitleDtos != null && Model.RaffleTitleDtos.Any())
 		{
-			<div class="row order-item" onclick="location.href='@Url.Action("GetAddRaffle", "Raffle", new { raffleId = orderTitle.Id })'">
-				<p>
-					@orderTitle.Id
-					<span class="arrow">&rarr;</span>
-					@orderTitle.OwnerId
-				</p>
-				<span class="type">@orderTitle.Type</span>
-				<p>@Localizer["Ended"]: @orderTitle.CreateDate</p>
-			</div>
+			@foreach (var raffleTitle in Model.RaffleTitleDtos)
+			{
+				<div class="row order-item" onclick="location.href='@Url.Action("Raffle", "Raffle", new { raffleId = raffleTitle.Id })'">
+					<p>
+						@raffleTitle.Id
+						<span class="arrow">&rarr;</span>
+						@raffleTitle.OrderId
+					</p>
+					<span class="type">@raffleTitle.Type</span>
+					<p>@Localizer["Ended"]: @raffleTitle.EndDateTime</p>
+				</div>
+			}
 		}
-	}
-	else
-	{
-		<p>@Localizer["No available"]</p>
-	}
+		else
+		{
+			<p>@Localizer["No available"]</p>
+		}
+	</div>
 </div>
 
 @section Styles {

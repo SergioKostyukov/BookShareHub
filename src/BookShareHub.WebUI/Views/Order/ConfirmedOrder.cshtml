@@ -4,6 +4,11 @@
 	<div class="col-md-6" style="height: 100%;">
 		<div class="background-block" style="height: 20%;">
 			<h4>@Localizer["Delivery params"]</h4>
+			<div class="params-block">
+				<p>User name: @Model.Order.DeliveryUser</p>
+				<p>User phone: @Model.Order.DeliveryUserPhone</p>
+				<p>Address: @Model.Order.DeliveryAddress</p>
+			</div>
 		</div>
 		<div class="background-block" style="height: 20%;">
 			<h4>@Localizer["Pay opt"]</h4>
@@ -13,7 +18,7 @@
 		</div>
 		<div class="background-block" style="height: 15%;">
 			<h4>@Localizer["Comment"]</h4>
-			<p>@Localizer["Comment by"] @Model.Order.CustomerId: @Model.Order.Comment</p>
+			<p>@Localizer["Comment by"] @Model.Order.CustomerName: @Model.Order.Comment</p>
 		</div>
 
 		<div class="background-block" style="height: 35%;">
@@ -58,6 +63,17 @@
 </div>
 
 @section Styles {
+	<style>
+		.params-block{
+			text-align: start;
+			padding: 0 15px;
+			overflow: auto;
+		}
+
+		.params-block p{
+			margin: 0;
+		}
+	</style>
 	<link rel="stylesheet" href="~/css/backgroundBlock.css" asp-append-version="true" />
 	<link rel="stylesheet" href="~/css/order.css" asp-append-version="true" />
 }

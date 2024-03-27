@@ -261,8 +261,20 @@ namespace BookShareHub.Infrastructure.Data.Migrations
                     b.Property<int>("RaffleId")
                         .HasColumnType("int");
 
-                    b.Property<string>("RaffleUserId")
+                    b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("DeliveryAddress")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeliveryUser")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("DeliveryUserPhone")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("ParticipationTime")
                         .HasColumnType("datetime2");
@@ -270,7 +282,7 @@ namespace BookShareHub.Infrastructure.Data.Migrations
                     b.Property<int>("TicketsCount")
                         .HasColumnType("int");
 
-                    b.HasKey("RaffleId", "RaffleUserId");
+                    b.HasKey("RaffleId", "UserId");
 
                     b.ToTable("RafflesParticipantsLists");
                 });

@@ -1,4 +1,5 @@
 ﻿@model RaffleModel
+@inject IConfiguration Configuration
 
 <div class="row" style="height: 85vh;">
 	<div class="col-md-8" style="height: 100%;">
@@ -65,68 +66,122 @@
 					<button type="submit" class="btn btn-primary">@Localizer["Write message"]</button>
 				</form>
 			</div>
+
 			<div class="nested-block" style="height: 70%; margin-bottom: 10px">
-				<h3>@Localizer["Order info"]</h3>
-				<div class="card-body">
-					<div class="delivery-variants">
-						<h4>Delivery Variants</h4>
-						<input type="radio" id="delivery1" name="delivery" value="delivery1">
-						<label for="delivery1">Delivery Option 1</label><br>
-						<input type="radio" id="delivery2" name="delivery" value="delivery2">
-						<label for="delivery2">Delivery Option 2</label><br>
-						<input type="radio" id="delivery3" name="delivery" value="delivery3">
-						<label for="delivery3">Delivery Option 3</label><br>
+				<form method="post" action="@Url.Action("ConfirmRaffleParticipate", "Raffle")">
+					<h3>@Localizer["Order info"]</h3>
+					<div class="card-body">
+						<div class="delivery-block">
+							<label for="fullName">@Localizer["Full name"]:</label>
+							<input type="text" id="fullName" name="DeliveryParams.DeliveryUserFullName"
+								   class="form-control" placeholder="@Localizer["Enter your full name"]">
+
+							<label for="phoneMunber">@Localizer["Phone number"]:</label>
+							<input type="text" id="phoneMunber" name="DeliveryParams.DeliveryUserPhoneNumber"
+								   class="form-control" placeholder="@Localizer["Enter your phone number"]">
+
+							<label for="city">@Localizer["City"]:</label>
+							<div class="delivery-line">
+								<input type="text" id="city" name="DeliveryParams.DeliveryCityFullAddress" class="form-control" placeholder="@Localizer["Enter city name"]">
+								<input type="hidden" id="cityTitle" name="DeliveryParams.DeliveryCityShortAddress">
+								<ul id="city-list"></ul>
+							</div>
+
+							<label for="address">@Localizer["Parcel delivery point"]:</label>
+							<div class="delivery-line">
+								<input type="text" id="address" name="DeliveryParams.DeliverySpecificAddress" class="form-control" placeholder="@Localizer["Enter name/number/address"]">
+								<ul id="point-list"></ul>
+							</div>
+						</div>
+
+						<div class="ticket-buying">
+							<h4>Ticket Buying</h4>
+							<div class="quantity-selector">
+								<button id="decrease-btn" type="button">-</button>
+								<input type="number" id="ticket-quantity" name="TicketsCount" value="1" min="1" readonly>
+								<button id="increase-btn" type="button">+</button>
+							</div>
+						</div>
 					</div>
 
-					<div class="ticket-buying">
-						<h4>Ticket Buying</h4>
-						<label for="ticket-quantity">Number of Tickets:</label>
-						<input type="number" id="ticket-quantity" name="ticket-quantity" value="1" min="1">
-						<p>Total Amount: <span id="amount-check">@Model.Raffle.TicketPrice</span></p>
-					</div>
-				</div>
-
-				<form method="post" action="@Url.Action("AddOrder", "PreOrder")">
-					<input type="hidden" asp-for="Owner.Id" />
-					<button type="submit" class="btn btn-primary">@Localizer["Participate"]</button>
+					<input type="hidden" asp-for="Raffle.Id" />
+					<button type="submit" class="btn btn-primary">@Localizer["Participate"] for <span id="amount-check">@Model.Raffle.TicketPrice</span></button>
 				</form>
 			</div>
 		</div>
 	</div>
 </div>
 
-<script>
-	var currentIndex = 0;
-	var raffleList = @Html.Raw(Json.Serialize(Model.RaffleList));
+@section Scripts {
+	<script>
+		var currentIndex = 0;
+		var raffleList = @Html.Raw(Json.Serialize(Model.RaffleList));
 
-	function showProduct(index) {
-		var product = raffleList[index];
-		document.getElementById("author").innerText = product.Author;
-		document.getElementById("description").innerText = product.Description;
-		document.getElementById("language").innerText = product.Language;
-		document.getElementById("price").innerText = product.Price;
-	}
-
-	function showPreviousProduct() {
-		if (currentIndex > 0) {
-			currentIndex--;
-		} else {
-			currentIndex = raffleList.length - 1;
+		function showProduct(index) {
+			var product = raffleList[index];
+			document.getElementById("author").innerText = product.Author;
+			document.getElementById("description").innerText = product.Description;
+			document.getElementById("language").innerText = product.Language;
+			document.getElementById("price").innerText = product.Price;
 		}
-		showProduct(currentIndex);
-	}
 
-	function showNextProduct() {
-		if (currentIndex < raffleList.length - 1) {
-			currentIndex++;
-		} else {
-			currentIndex = 0;
+		function showPreviousProduct() {
+			if (currentIndex > 0) {
+				currentIndex--;
+			} else {
+				currentIndex = raffleList.length - 1;
+			}
+			showProduct(currentIndex);
 		}
-		showProduct(currentIndex);
-	}
 
-	showProduct(currentIndex);
-</script>
+		function showNextProduct() {
+			if (currentIndex < raffleList.length - 1) {
+				currentIndex++;
+			} else {
+				currentIndex = 0;
+			}
+			showProduct(currentIndex);
+		}
+
+		showProduct(currentIndex);
+	</script>
+	<script>
+		var novaPoshtaApiKey = "@Configuration["AppSettings:NovaPoshtaApiKey"]";
+	</script>
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			const decreaseBtn = document.getElementById("decrease-btn");
+			const increaseBtn = document.getElementById("increase-btn");
+			const quantityInput = document.getElementById("ticket-quantity");
+			const amountCheck = document.getElementById("amount-check");
+			const ticketPrice = parseFloat("@Model.Raffle.TicketPrice");
+
+			function updateAmount() {
+				const count = parseInt(quantityInput.value);
+				const totalAmount = ticketPrice * count;
+				amountCheck.textContent = totalAmount.toFixed(2);
+			}
+
+			decreaseBtn.addEventListener("click", function () {
+				const currentValue = parseInt(quantityInput.value);
+				if (currentValue > 1) {
+					quantityInput.value = currentValue - 1;
+					updateAmount();
+				}
+			});
+
+			increaseBtn.addEventListener("click", function () {
+				const currentValue = parseInt(quantityInput.value);
+				quantityInput.value = currentValue + 1;
+				updateAmount();
+			});
+
+			quantityInput.addEventListener("input", updateAmount);
+		});
+	</script>
+	<script src="~/js/Order/FindCity.js" asp-append-version="true"></script>
+	<script src="~/js/Order/FindSpecificAddress.js" asp-append-version="true"></script>
+}
 
 @section Styles {
 	<link rel="stylesheet" href="~/css/backgroundBlock.css" asp-append-version="true" />

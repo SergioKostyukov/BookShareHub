@@ -77,6 +77,18 @@ namespace BookShareHub.Application.Services
 			return _mapper.Map<OrderDto>(order);
 		}
 
+		public async Task<ConfirmedOrderDto> GetConfirmedOrderDetailsAsync(int orderId)
+		{
+			var order = await _context.Orders
+				.Where(b => b.Id == orderId)
+				.FirstOrDefaultAsync();
+
+			var orderDetails = _mapper.Map<ConfirmedOrderDto>(order);
+			orderDetails.CustomerName = await _userService.GetUserNameByIdAsync(order.CustomerId);
+
+			return orderDetails;
+		}
+
 		public async Task<int> CreateOrderAsync(OrderCreateDto request)
 		{
 			var id = await _context.Orders

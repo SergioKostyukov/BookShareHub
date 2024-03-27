@@ -33,9 +33,14 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 				.IsRequired()
 				.HasColumnType("decimal(8,2)");
 
-			builder.Property(x => x.DeliveryAddress);
-			builder.Property(x => x.DeliveryUser);
-			builder.Property(x => x.DeliveryUserPhone);
+			builder.Property(x => x.DeliveryAddress)
+				.IsRequired();
+
+			builder.Property(x => x.DeliveryUser)
+				.IsRequired();
+
+			builder.Property(x => x.DeliveryUserPhone)
+				.IsRequired();
 		}
 	}
 }

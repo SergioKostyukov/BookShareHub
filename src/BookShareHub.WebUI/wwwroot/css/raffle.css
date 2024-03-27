@@ -2,6 +2,14 @@
     padding: 0 16px;
 }
 
+    .card-body p {
+        margin: 0;
+    }
+
+h3{
+    margin: 0;
+}
+
 .title-block {
     max-height: 50%;
 }
@@ -12,7 +20,51 @@
     width: 50%;
 }
 
-.carousel-item img{
+.carousel-item img {
     display: flex;
     justify-self: center;
+}
+
+
+.delivery-line {
+    width: 95%;
+    position: relative;
+}
+
+    .delivery-line .form-control {
+        width: 100%;
+    }
+
+#city-list,
+#point-list {
+    position: absolute;
+    z-index: 1000;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-height: 200px;
+    overflow-y: auto;
+}
+
+    #city-list li,
+    #point-list li {
+        padding: 8px 12px;
+        cursor: pointer;
+        min-width: 300px;
+    }
+
+        #city-list li:hover,
+        #point-list li:hover {
+            background-color: #f4f4f4;
+        }
+
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
 }

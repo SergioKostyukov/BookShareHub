@@ -26,5 +26,15 @@ namespace BookShareHub.Application.Services
 
 			await _context.SaveChangesAsync();
 		}
+
+		public async Task AddRaffleParticipant(AddRaffleParticipantDto request)
+		{
+			var raffle = _mapper.Map<RaffleParticipantsList>(request);
+			raffle.ParticipationTime = DateTime.UtcNow;
+
+			_context.RafflesParticipantsLists.Add(raffle);
+
+			await _context.SaveChangesAsync();
+		}
 	}
 }

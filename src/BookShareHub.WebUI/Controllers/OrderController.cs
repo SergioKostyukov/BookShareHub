@@ -3,6 +3,7 @@ using BookShareHub.Application.Interfaces;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using BookShareHub.Application.Dto.Order;
 
 namespace BookShareHub.WebUI.Controllers
 {
@@ -53,7 +54,7 @@ namespace BookShareHub.WebUI.Controllers
 				return BadRequest("UserId not found");
 			}
 
-			var orderDetails = await _orderService.GetOrderDetailsAsync(orderId);
+			var orderDetails = await _orderService.GetConfirmedOrderDetailsAsync(orderId);
 			if (orderDetails == null)
 			{
 				return NotFound();
@@ -79,7 +80,7 @@ namespace BookShareHub.WebUI.Controllers
 		[HttpPost]
 		public async Task<IActionResult> ConfirmOrder(OrderModel model)
 		{
-			var OrderConfirm = new Application.Dto.Order.OrderConfirmDto
+			var OrderConfirm = new OrderConfirmDto
 			(
 				OrderId: model.Order.Id,
 				OwnerId: model.Owner.Id,
@@ -88,7 +89,6 @@ namespace BookShareHub.WebUI.Controllers
 				DeliveryAddress: model.DeliveryParams.DeliveryCityFullAddress + ' ' + model.DeliveryParams.DeliverySpecificAddress,
 				DeliveryUserFullName: model.DeliveryParams.DeliveryUserFullName,
 				DeliveryUserPhone: model.DeliveryParams.DeliveryUserPhoneNumber
-				// Other order parameters(delivery, pay options)
 			);
 
 			await _orderService.ConfirmOrderAsync(OrderConfirm);

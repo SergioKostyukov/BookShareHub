@@ -8,12 +8,21 @@ namespace BookShareHub.Infrastructure.Data.EntityTypeConfiguration
 	{
 		public void Configure(EntityTypeBuilder<RaffleParticipantsList> builder)
 		{
-			builder.HasKey(x => new { x.RaffleId, x.RaffleUserId });
+			builder.HasKey(x => new { x.RaffleId, x.UserId });
 
 			builder.Property(x => x.TicketsCount)
 				.IsRequired();
 
 			builder.Property(x => x.ParticipationTime)
+				.IsRequired();
+
+			builder.Property(x => x.DeliveryAddress)
+				.IsRequired();
+
+			builder.Property(x => x.DeliveryUser)
+				.IsRequired();
+
+			builder.Property(x => x.DeliveryUserPhone)
 				.IsRequired();
 		}
 	}

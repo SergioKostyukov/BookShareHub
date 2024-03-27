@@ -3,8 +3,10 @@
 public class RaffleParticipantsList
 {
 	public int RaffleId { get; set; }
-	public string RaffleUserId { get; set; } = string.Empty;
+	public string UserId { get; set; } = string.Empty;
 	public int TicketsCount { get; set; }
 	public DateTime ParticipationTime { get; set; }
-	// delivery parameters
+	public string DeliveryAddress { get; set; } = string.Empty;
+	public string DeliveryUser { get; set; } = string.Empty;
+	public string DeliveryUserPhone { get; set; } = string.Empty;
 }

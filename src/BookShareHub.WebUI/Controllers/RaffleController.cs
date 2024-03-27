@@ -1,5 +1,7 @@
 ﻿using System.Security.Claims;
+using BookShareHub.Application.Dto.Raffle;
 using BookShareHub.Application.Interfaces;
+using BookShareHub.Core.Domain.Entities;
 using BookShareHub.WebUI.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -25,7 +27,7 @@ namespace BookShareHub.WebUI.Controllers
 		public async Task<IActionResult> Raffle(int raffleId)
 		{
 			var raffle = await _rafflesLibraryService.GetRaffleByIdAsync(raffleId);
-            if (raffle == null)
+			if (raffle == null)
 			{
 				return NotFound();
 			}
@@ -41,7 +43,8 @@ namespace BookShareHub.WebUI.Controllers
 				Raffle = raffle,
 				Owner = ownerInfo,
 				OrderDetails = await _orderService.GetOrderDetailsAsync(raffle.OrderId),
-				RaffleList = await _booksLibraryService.GetAllBooksByOrderIdAsync(raffle.OrderId)
+				RaffleList = await _booksLibraryService.GetAllBooksByOrderIdAsync(raffle.OrderId),
+				DeliveryParams = new DeliveryParams()
 			};
 
 			return View("~/Views/Raffle/Raffle.cshtml", model);
@@ -67,15 +70,27 @@ namespace BookShareHub.WebUI.Controllers
 			return View("~/Views/Raffle/AddRaffle.cshtml", model);
 		}
 
-		[HttpGet]
-		public async Task<IActionResult> GetEditRaffle(int raffleId)
+		[HttpPost]
+		public async Task<IActionResult> ConfirmRaffleParticipate(RaffleModel model)
 		{
-			//var model = new EditRaffleModel
-			//{
-			//	Raffle = await _rafflesLibraryService.GetRaffleByIdAsync(raffleId),
-			//};
+			string? userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+			if (userId == null)
+			{
+				return BadRequest("UserId not found");
+			}
 
-			return View("~/Views/Raffle/EditRaffle.cshtml");
+			var addParticipant = new AddRaffleParticipantDto(
+				RaffleId: model.Raffle.Id,
+				UserId: userId,
+				TicketsCount: model.TicketsCount,
+				DeliveryAddress: model.DeliveryParams.DeliveryCityFullAddress + ' ' + model.DeliveryParams.DeliverySpecificAddress,
+				DeliveryUser: model.DeliveryParams.DeliveryUserFullName,
+				DeliveryUserPhone: model.DeliveryParams.DeliveryUserPhoneNumber
+			);
+
+			await _raffleService.AddRaffleParticipant(addParticipant);
+
+			return RedirectToAction("RafflesLibrary", "RafflesLibrary");
 		}
 
 		[HttpPost]

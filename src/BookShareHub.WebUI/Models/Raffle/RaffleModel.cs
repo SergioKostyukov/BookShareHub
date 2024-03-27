@@ -7,8 +7,10 @@ namespace BookShareHub.WebUI.Models;
 
 public class RaffleModel
 {
-	public required RaffleDto Raffle { get; init; }
+	public RaffleDto Raffle { get; init; }
 	public required UserDto Owner { get; init; }
 	public required OrderDto OrderDetails { get; set; }
+	public int TicketsCount { get; set; } = 0;
 	public required List<BookTitleDto> RaffleList { get; init; }
+	public required DeliveryParams DeliveryParams { get; set; } = new DeliveryParams();
 }

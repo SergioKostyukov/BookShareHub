@@ -9,6 +9,7 @@ namespace BookShareHub.Application.Interfaces
 		Task<List<ActualTemplatedOrderDto>> GetActualTemplatedOrdersAsync(string userId);
 		Task<List<DoneOrderTitleDto>> GetDoneOrdersAsync(string userId);
 		Task<OrderDto> GetOrderDetailsAsync(int orderId);
+		Task<ConfirmedOrderDto> GetConfirmedOrderDetailsAsync(int orderId);
 		Task<int> CreateOrderAsync(OrderCreateDto request);
 		Task<int> CreateOrderTemplateAsync(OrderTemplateCreateDto request);
  		Task ConfirmOrderAsync(OrderConfirmDto request);
